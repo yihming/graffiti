@@ -12,3 +12,9 @@
 
 # Ignore Haskell intermediate files
 *.hi
+
+# Ignore .svn directory
+/**/.svn/
+
+# Ignore Java class files
+*.class

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+  
+  <!-- Servlets -->
+  <servlet>
+  	<servlet-name>BnuMinerServlet</servlet-name>
+  	<servlet-class>org.bnuminer.server.BnuMinerServiceImpl</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>AuthImageServlet</servlet-name>
+  	<servlet-class>org.bnuminer.server.AuthImageServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+  	<servlet-name>UploadFile</servlet-name>
+  	<servlet-class>org.bnuminer.server.UploadServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>PrepServlet</servlet-name>
+  	<servlet-class>org.bnuminer.server.PrepServiceImpl</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>ClusterServlet</servlet-name>
+  	<servlet-class>org.bnuminer.server.ClusterServiceImpl</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>KnowledgeFlowChart</servlet-name>
+  	<servlet-class>org.bnuminer.server.KnowledgeFlowChart</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>StudentFlowServlet</servlet-name>
+  	<servlet-class>org.bnuminer.server.StudentFlowServiceImpl</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>DownloadServlet</servlet-name>
+  	<servlet-class>org.bnuminer.server.DownloadServlet</servlet-class>
+  </servlet>
+  
+  <!-- Servlet Mapping -->
+  <servlet-mapping>
+  	<servlet-name>BnuMinerServlet</servlet-name>
+  	<url-pattern>/bnuminer/bnuminer</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>AuthImageServlet</servlet-name>
+  	<url-pattern>*.authimage</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>UploadFile</servlet-name>
+  	<url-pattern>/bnuminer/uploadfile</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>PrepServlet</servlet-name>
+  	<url-pattern>/bnuminer/prep</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>ClusterServlet</servlet-name>
+  	<url-pattern>/bnuminer/cluster</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>KnowledgeFlowChart</servlet-name>
+  	<url-pattern>/bnuminer/chart</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>StudentFlowServlet</servlet-name>
+  	<url-pattern>/bnuminer/studentflow</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>DownloadServlet</servlet-name>
+  	<url-pattern>/bnuminer/download</url-pattern>
+  </servlet-mapping>
+  
+  <!-- Default page to serve -->
+  <welcome-file-list>
+    <welcome-file>BnuMiner.html</welcome-file>
+  </welcome-file-list>
+
+</web-app>

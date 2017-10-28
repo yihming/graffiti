@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bnuminer-config>
+	<database-configuration>
+		<JDBC-Driver>
+			com.mysql.jdbc.Driver
+		</JDBC-Driver>
+		<Connection-URL>
+			jdbc:mysql://127.0.0.1:3309/bnuminer
+		</Connection-URL>
+		<UserName>
+			root
+		</UserName>
+		<Password>
+			871121
+		</Password>
+	</database-configuration>
+	<valid-file-type>
+		<item>arff</item>
+		<item>csv</item>
+		<item>xrff</item>
+		<item>xls</item>
+		<item>xlsx</item>
+		<item>data</item>
+	</valid-file-type>
+</bnuminer-config>
