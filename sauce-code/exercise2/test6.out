@@ -1,0 +1,11 @@
+----Term----
+app(fix abs(collatz:->(Int,Int).abs(x:Int.if app(fix abs(ie:->(Int,Bool).
+  abs(x:Int.if =(0,x) then true else if =(1,x) then false 
+    else app(ie,-(x,2)) fi fi)),x) then app(collatz,/(x,2)) 
+      else if =(x,1) then 1 else app(collatz,+(*(3,x),1)) fi fi)),1000)
+----Type----
+Int
+----Normal Form in Structureal Operational Semantics----
+1
+----Normal Form of Natural Semantics----
+1

@@ -1,0 +1,5 @@
+----Term----
+if abs(x:Int.x) then 8 else 9 fi
+----Type----
+Main: type error
+

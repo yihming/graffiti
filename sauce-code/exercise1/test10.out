@@ -1,0 +1,8 @@
+----Term----
+app(abs(x:Int.app(abs(z:Int.*(z,x)),5)),app(abs(x:Int.^(x,2)),4))
+----Type----
+Int
+----Normal Form of Small-Step Style----
+4294967291
+----Normal Form of Big-Step Style----
+4294967291

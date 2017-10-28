@@ -1,0 +1,14 @@
+# Ignore all h5 image files
+*.h5
+
+# Ignore all pyc files
+*.pyc
+
+# Ignore emacs cache files
+*~
+
+# Ignore latex intermediate files
+*.aux
+
+# Ignore Haskell intermediate files
+*.hi

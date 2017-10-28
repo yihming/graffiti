@@ -1,0 +1,22 @@
+----Term----
+let iseven fix abs(ie:->(Int,Bool).abs(x:Int.if =(0,x) then true else 
+   if =(1,x) then false else app(ie,-(x,2)) fi fi)) 
+     let collatz fix abs(collatz:->(Int,Int).abs(x:Int.if app(iseven,x) 
+       then app(collatz,/(x,2)) else if =(x,1) 
+         then 1 else app(collatz,+(*(3,x),1)) fi fi)) app(collatz,1000)
+----Type----
+Int
+----Normal Form in Structureal Operational Semantics----
+1
+----Normal Form of Natural Semantics----
+1
+----Standard Reduction----
+1
+----CC Machine----
+1
+----CK Machine----
+1
+----CEK Machine----
+1
+----SCC Machine----
+1

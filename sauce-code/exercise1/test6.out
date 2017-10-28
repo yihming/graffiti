@@ -1,0 +1,8 @@
+----Term----
+app(abs(x:Int.1234),10)
+----Type----
+Int
+----Normal Form of Small-Step Style----
+1234
+----Normal Form of Big-Step Style----
+1234

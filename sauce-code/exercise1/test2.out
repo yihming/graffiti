@@ -1,0 +1,4 @@
+----Term----
+if +(0,0) then 8 else 9 fi
+----Type----
+Main: type error

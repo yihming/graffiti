@@ -1,0 +1,20 @@
+----Term----
+app(fix abs(f:->(Int,Int).abs(x:Int.if =(0,x) then 1 else *(x,app(f,-(x,1))) fi)),
+  app(fix abs(f:->(Int,Int).abs(x:Int.
+    if =(0,x) then 1 else *(x,app(f,-(x,1))) fi)),3))
+----Type----
+Int
+----Normal Form in Structureal Operational Semantics----
+720
+----Normal Form of Natural Semantics----
+720
+----Standard Reduction----
+720
+----CC Machine----
+720
+----CK Machine----
+720
+----CEK Machine----
+720
+----SCC Machine----
+720

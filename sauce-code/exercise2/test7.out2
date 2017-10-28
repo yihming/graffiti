@@ -1,0 +1,18 @@
+----Term----
+app(abs(x:->(Int,Int).abs(y:->(->(Int,Int),Int).app(y,x))),abs(y:Int.y))
+----Type----
+->(->(->(Int,Int),Int),Int)
+----Normal Form in Structureal Operational Semantics----
+abs(y:->(->(Int,Int),Int).app(y,abs(y:Int.y)))
+----Normal Form of Natural Semantics----
+abs(y:->(->(Int,Int),Int).app(y,abs(y:Int.y)))
+----Standard Reduction----
+abs(y:->(->(Int,Int),Int).app(y,abs(y:Int.y)))
+----CC Machine----
+abs(y:->(->(Int,Int),Int).app(y,abs(y:Int.y)))
+----CK Machine----
+abs(y:->(->(Int,Int),Int).app(y,abs(y:Int.y)))
+----CEK Machine----
+abs(y:->(->(Int,Int),Int).app(y,abs(y:Int.y)))
+----SCC Machine----
+abs(y:->(->(Int,Int),Int).app(y,abs(y:Int.y)))

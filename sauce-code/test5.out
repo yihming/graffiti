@@ -1,0 +1,106 @@
+----Term----
+app(fix abs(collatz:->(Int,Int).abs(x:Int.
+if app(fix abs(ie:->(Int,Bool).abs(x:Int.
+if =(0,x) then true else if =(1,x) then false else 
+app(ie,-(x,2)) fi fi)),x) then app(collatz,/(x,2)) 
+else if =(x,1) then 1 else app(collatz,+(*(3,x),1)) fi fi)),100)
+
+----Type----
+Int
+
+----Normal Form----
+1
+
+----DBTerm----
+app(fix abs(:->(Int,Int).abs(:Int.if app(fix abs(:->(Int,Bool).
+abs(:Int.if =(0,(Index 0)) then true else if =(1,(Index 0)) 
+then false else app((Index 1),-((Index 0), 2)) fi fi)),(Index 0)) 
+then app((Index 1),/((Index 0), 2)) else if =((Index 0),1) then 1 
+else app((Index 1),+(*(3, (Index 0)), 1)) fi fi)),100)
+
+----Natural Semantics with Clo,Env and DB Term----
+IntVal 1
+
+----CES Machine Code----
+[Close [Close [Close [Close [Int 0,Access 0,Bpr =,If,Close [Bool True],
+Close [Int 1,Access 0,Bpr =,If,Close [Bool False],Close [Access 1,
+Access 0,Int 2,Bop -,Apply]],Return],Return],Fix,Access 0,Apply,
+If,Close [Access 1,Access 0,Int 2,Bop /,Apply],Close [Access 0,Int 1,
+Bpr =,If,Close [Int 1],Close [Access 1,Int 3,Access 0,Bop *,Int 1,
+Bop +,Apply]],Return],Return],Fix,Int 100,Apply]
+
+----CES Eval----
+IntVal 1
+
+----CPS Form----
+abs(kappa:->(Int,0).app(abs(kappa:->(->(Int,->(->(Int,0),0)),0).
+app(kappa,fix abs(collatz:->(Int,->(->(Int,0),0)).abs(x:Int.abs(
+kappa:->(Int,0).app(abs(kappa:->(Bool,0).app(abs(k
+appa:->(->(Int,->(->(Bool,0),0)),0).app(kappa,fix abs(
+ie:->(Int,->(->(Bool,0),0)).abs(x:Int.abs(kappa:->(Bool,0).
+app(abs(kappa:->(Bool,0).app(abs(kappa:->(Int,0).app(kappa,0)),
+abs(v1:Int.app(abs(kappa:->(Int,0).app(kappa,x)),abs(v2:Int.
+app(kappa,=(v1,v2))))))),abs(v:Bool.if v then app(abs(kappa:->(Bool,0).
+app(kappa,true)),kappa) else app(abs(kappa:->(Bool,0).app(abs(kappa:->(Bool,0).
+app(abs(kappa:->(Int,0).app(kappa,1)),abs(v1:Int.app(abs(kappa:->(Int,0).
+app(kappa,x)),abs(v2:Int.app(kappa,=(v1,v2))))))),abs(v:Bool.if v then app(
+abs(kappa:->(Bool,0).app(kappa,false)),kappa) else app(abs(kappa:->(Bool,0).
+app(abs(kappa:->(->(Int,->(->(Bool,0),0)),0).app(kappa,ie)),abs(
+v1:->(Int,->(->(Bool,0),0)).app(abs(kappa:->(Int,0).app(abs(kappa:->(Int,0).
+app(kappa,x)),abs(v1:Int.app(abs(kappa:->(Int,0).app(kappa,2)),abs(v2:Int.
+app(kappa,-(v1,v2))))))),abs(v2:Int.app(app(v1,v2),kappa)))))),kappa) fi))),
+kappa) fi))))))),abs(v1:->(Int,->(->(Bool,0),0)).app(abs(kappa:->(Int,0).
+app(kappa,x)),abs(v2:Int.app(app(v1,v2),kappa)))))),abs(v:Bool.if v then 
+app(abs(kappa:->(Int,0).app(abs(kappa:->(->(Int,->(->(Int,0),0)),0).
+app(kappa,collatz)),abs(v1:->(Int,->(->(Int,0),0)).app(abs(kappa:->(Int,0).
+app(abs(kappa:->(Int,0).app(kappa,x)),abs(v1:Int.app(abs(kappa:->(Int,0).
+app(kappa,2)),abs(v2:Int.app(kappa,/(v1,v2))))))),abs(v2:Int.app(app(v1,v2),
+kappa)))))),kappa) else app(abs(kappa:->(Int,0).app(abs(kappa:->(Bool,0).
+app(abs(kappa:->(Int,0).app(kappa,x)),abs(v1:Int.app(abs(kappa:->(Int,0).
+app(kappa,1)),abs(v2:Int.app(kappa,=(v1,v2))))))),abs(v:Bool.if v then app(
+abs(kappa:->(Int,0).app(kappa,1)),kappa) else app(abs(kappa:->(Int,0).app(
+abs(kappa:->(->(Int,->(->(Int,0),0)),0).app(kappa,collatz)),abs(
+v1:->(Int,->(->(Int,0),0)).app(abs(kappa:->(Int,0).app(abs(kappa:->(Int,0).
+app(abs(kappa:->(Int,0).app(kappa,3)),abs(v1:Int.app(abs(kappa:->(Int,0).
+app(kappa,x)),abs(v2:Int.app(kappa,*(v1,v2))))))),abs(v1:Int.app(abs(kappa:->(Int,0).
+app(kappa,1)),abs(v2:Int.app(kappa,+(v1,v2))))))),abs(v2:Int.app(app(v1,v2),kappa)))))),
+kappa) fi))),kappa) fi))))))),abs(v1:->(Int,->(->(Int,0),0)).app(abs(kappa:->(Int,0).
+app(kappa,100)),abs(v2:Int.app(app(v1,v2),kappa))))))
+
+----CPS Type----
+->(->(Int,0),0)
+
+---CPS Normal Form----
+1
+
+----CE3R Machine Code----
+[CLOSE1 [CLOSE1 [ACCESS1 0,CLOSE2 [FIX [CLOSE1 [CLOSE1 [ACCESS1 0,CLOSE2 
+[FIX [CLOSE1 [CLOSE1 [ACCESS1 0,CONST2 0,TAILAPPLY1],CLOSE2 [CLOSE1 [ACCESS1 0,
+ACCESS2 4,TAILAPPLY1],CLOSE2 [ACCESS1 2,EQ2 1 0,TAILAPPLY1],TAILAPPLY1],TAILAPPLY1],
+CLOSE2 [IF 0 [CLOSE1 [ACCESS1 0,BOOL2 True,TAILAPPLY1],ACCESS2 1,TAILAPPLY1] 
+[CLOSE1 [CLOSE1 [CLOSE1 [ACCESS1 0,CONST2 1,TAILAPPLY1],CLOSE2 [CLOSE1 [ACCESS1 0,
+ACCESS2 6,TAILAPPLY1],CLOSE2 [ACCESS1 2,EQ2 1 0,TAILAPPLY1],TAILAPPLY1],TAILAPPLY1],
+CLOSE2 [IF 0 [CLOSE1 [ACCESS1 0,BOOL2 False,TAILAPPLY1],ACCESS2 1,TAILAPPLY1] 
+[CLOSE1 [CLOSE1 [ACCESS1 0,ACCESS2 7,TAILAPPLY1],CLOSE2 [CLOSE1 [CLOSE1 [ACCESS1 0,
+ACCESS2 8,TAILAPPLY1],CLOSE2 [CLOSE1 [ACCESS1 0,CONST2 2,TAILAPPLY1],CLOSE2 
+[ACCESS1 2,SUB2 1 0,TAILAPPLY1],TAILAPPLY1],TAILAPPLY1],CLOSE2 [ACCESS1 1,ACCESS2 0,
+ACCESS3 2,TAILAPPLY2],TAILAPPLY1],TAILAPPLY1],ACCESS2 1,TAILAPPLY1]],TAILAPPLY1],
+ACCESS2 1,TAILAPPLY1]],TAILAPPLY1]],TAILAPPLY1],CLOSE2 [CLOSE1 [ACCESS1 0,ACCESS2 4,
+TAILAPPLY1],CLOSE2 [ACCESS1 1,ACCESS2 0,ACCESS3 2,TAILAPPLY2],TAILAPPLY1],TAILAPPLY1],
+CLOSE2 [IF 0 [CLOSE1 [CLOSE1 [ACCESS1 0,ACCESS2 5,TAILAPPLY1],CLOSE2 [CLOSE1 [CLOSE1 
+[ACCESS1 0,ACCESS2 6,TAILAPPLY1],CLOSE2 [CLOSE1 [ACCESS1 0,CONST2 2,TAILAPPLY1],CLOSE2 
+[ACCESS1 2,DIV2 1 0,TAILAPPLY1],TAILAPPLY1],TAILAPPLY1],CLOSE2 [ACCESS1 1,ACCESS2 0,
+ACCESS3 2,TAILAPPLY2],TAILAPPLY1],TAILAPPLY1],ACCESS2 1,TAILAPPLY1] [CLOSE1 [CLOSE1 
+[CLOSE1 [ACCESS1 0,ACCESS2 5,TAILAPPLY1],CLOSE2 [CLOSE1 [ACCESS1 0,CONST2 1,TAILAPPLY1],
+CLOSE2 [ACCESS1 2,EQ2 1 0,TAILAPPLY1],TAILAPPLY1],TAILAPPLY1],CLOSE2 [IF 0 [CLOSE1 
+[ACCESS1 0,CONST2 1,TAILAPPLY1],ACCESS2 1,TAILAPPLY1] [CLOSE1 [CLOSE1 [ACCESS1 0,
+ACCESS2 7,TAILAPPLY1],CLOSE2 [CLOSE1 [CLOSE1 [CLOSE1 [ACCESS1 0,CONST2 3,TAILAPPLY1],
+CLOSE2 [CLOSE1 [ACCESS1 0,ACCESS2 10,TAILAPPLY1],CLOSE2 [ACCESS1 2,MUL2 1 0,TAILAPPLY1],
+TAILAPPLY1],TAILAPPLY1],CLOSE2 [CLOSE1 [ACCESS1 0,CONST2 1,TAILAPPLY1],CLOSE2 [ACCESS1 2,
+ADD2 1 0,TAILAPPLY1],TAILAPPLY1],TAILAPPLY1],CLOSE2 [ACCESS1 1,ACCESS2 0,ACCESS3 2,TAILAPPLY2],
+TAILAPPLY1],TAILAPPLY1],ACCESS2 1,TAILAPPLY1]],TAILAPPLY1],ACCESS2 1,TAILAPPLY1]],TAILAPPLY1]],
+TAILAPPLY1],CLOSE2 [CLOSE1 [ACCESS1 0,CONST2 100,TAILAPPLY1],CLOSE2 [ACCESS1 1,ACCESS2 0,
+ACCESS3 2,TAILAPPLY2],TAILAPPLY1],TAILAPPLY1],CLOSE2 [ACCESS1 0],TAILAPPLY1]
+
+----CE3R Machine----
+IntVal 1

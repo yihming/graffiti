@@ -1,0 +1,79 @@
+----Term----
+let [iseven] 
+    [let [mod] 
+         [abs(m:Int.abs(n:Int.-(m,*(n,/(m,n)))))] 
+         [abs(k:Int.=(0,app(app(mod,k),2)))]] 
+    [app(iseven,7)]
+
+----Type----
+Bool
+
+----Normal Form----
+false
+
+----DBTerm----
+let 
+    let 
+      abs(:Int.abs(:Int.-((Index 1), *((Index 0), /((Index 1), (Index 0)))))) 
+      abs(:Int.=(0,app(app((Index 1),(Index 0)),2))) 
+    app((Index 0),7)
+
+----Natural Semantics with Clo,Env and DB Term----
+BoolVal False
+
+----CES Machine Code----
+[Close [Close [Access 1,Access 0,Access 1,Access 0,Bop /,Bop *,Bop -,Return],Return],
+  Let,Close [Int 0,Access 1,Access 0,Apply,Int 2,Apply,Bpr =,Return],EndLet,
+  Let,Access 0,Int 7,Apply,EndLet]
+
+----CES Eval----
+BoolVal False
+
+----CPS Form----
+abs(kappa:->(Bool,0).app(abs(kappa:->(->(Int,->(->(Bool,0),0)),0).
+app(abs(kappa:->(->(Int,->(->(->(Int,->(->(Int,0),0)),0),0)),0).app(kappa,
+abs(m:Int.abs(kappa:->(->(Int,->(->(Int,0),0)),0).app(kappa,abs(n:Int.
+abs(kappa:->(Int,0).app(abs(kappa:->(Int,0).app(kappa,m)),abs(v1:Int.
+app(abs(kappa:->(Int,0).app(abs(kappa:->(Int,0).app(kappa,n)),abs(v1:Int.
+app(abs(kappa:->(Int,0).app(abs(kappa:->(Int,0).app(kappa,m)),abs(v1:Int.
+app(abs(kappa:->(Int,0).app(kappa,n)),abs(v2:Int.app(kappa,/(v1,v2))))))),
+abs(v2:Int.app(kappa,*(v1,v2))))))),abs(v2:Int.app(kappa,-(v1,v2))))))))))))),
+abs(v:->(Int,->(->(->(Int,->(->(Int,0),0)),0),0)).let [mod] [v] 
+[app(abs(kappa:->(->(Int,->(->(Bool,0),0)),0).app(kappa,abs(k:Int.
+abs(kappa:->(Bool,0).app(abs(kappa:->(Int,0).app(kappa,0)),abs(v1:Int.
+app(abs(kappa:->(Int,0).app(abs(kappa:->(->(Int,->(->(Int,0),0)),0).
+app(abs(kappa:->(->(Int,->(->(->(Int,->(->(Int,0),0)),0),0)),0).app(kappa,mod)),
+abs(v1:->(Int,->(->(->(Int,->(->(Int,0),0)),0),0)).app(abs(kappa:->(Int,0).
+app(kappa,k)),abs(v2:Int.app(app(v1,v2),kappa)))))),abs(v1:->(Int,->(->(Int,0),0)).
+app(abs(kappa:->(Int,0).app(kappa,2)),abs(v2:Int.app(app(v1,v2),kappa)))))),
+abs(v2:Int.app(kappa,=(v1,v2)))))))))),kappa)]))),abs(v:->(Int,->(->(Bool,0),0)).
+let [iseven] [v] [app(abs(kappa:->(Bool,0).app(
+abs(kappa:->(->(Int,->(->(Bool,0),0)),0).app(kappa,iseven)),
+abs(v1:->(Int,->(->(Bool,0),0)).app(abs(kappa:->(Int,0).
+app(kappa,7)),abs(v2:Int.app(app(v1,v2),kappa)))))),kappa)])))
+
+----CPS Type----
+->(->(Bool,0),0)
+
+---CPS Normal Form----
+false
+
+----CE3R Machine Code----
+[CLOSE1 [CLOSE1 [CLOSE1 [ACCESS1 0,CLOSE2 [ACCESS1 0,CLOSE2 [CLOSE1 
+[ACCESS1 0,ACCESS2 4,TAILAPPLY1],CLOSE2 [CLOSE1 [CLOSE1 [ACCESS1 0,
+ACCESS2 4,TAILAPPLY1],CLOSE2 [CLOSE1 [CLOSE1 [ACCESS1 0,ACCESS2 8,TAILAPPLY1],
+CLOSE2 [CLOSE1 [ACCESS1 0,ACCESS2 7,TAILAPPLY1],CLOSE2 [ACCESS1 2,DIV2 1 0,TAILAPPLY1],
+TAILAPPLY1],TAILAPPLY1],CLOSE2 [ACCESS1 2,MUL2 1 0,TAILAPPLY1],TAILAPPLY1],TAILAPPLY1],
+CLOSE2 [ACCESS1 2,SUB2 1 0,TAILAPPLY1],TAILAPPLY1],TAILAPPLY1],TAILAPPLY1],TAILAPPLY1],
+CLOSE2 [LET 0 [CLOSE1 [ACCESS1 0,CLOSE2 [CLOSE1 [ACCESS1 0,CONST2 0,TAILAPPLY1],CLOSE2 
+[CLOSE1 [CLOSE1 [CLOSE1 [ACCESS1 0,ACCESS2 7,TAILAPPLY1],CLOSE2 
+[CLOSE1 [ACCESS1 0,ACCESS2 6,TAILAPPLY1],CLOSE2 [ACCESS1 1,ACCESS2 0,ACCESS3 2,TAILAPPLY2],
+TAILAPPLY1],TAILAPPLY1],CLOSE2 [CLOSE1 [ACCESS1 0,CONST2 2,TAILAPPLY1],CLOSE2 
+[ACCESS1 1,ACCESS2 0,ACCESS3 2,TAILAPPLY2],TAILAPPLY1],TAILAPPLY1],CLOSE2 [ACCESS1 2,
+EQ2 1 0,TAILAPPLY1],TAILAPPLY1],TAILAPPLY1],TAILAPPLY1],ACCESS2 2,TAILAPPLY1],ENDLET],
+TAILAPPLY1],CLOSE2 [LET 0 [CLOSE1 [CLOSE1 [ACCESS1 0,ACCESS2 2,TAILAPPLY1],CLOSE2 
+[CLOSE1 [ACCESS1 0,CONST2 7,TAILAPPLY1],CLOSE2 [ACCESS1 1,ACCESS2 0,ACCESS3 2,TAILAPPLY2],
+TAILAPPLY1],TAILAPPLY1],ACCESS2 2,TAILAPPLY1],ENDLET],TAILAPPLY1],CLOSE2 [ACCESS1 0],TAILAPPLY1]
+
+----CE3R Machine----
+BoolVal False

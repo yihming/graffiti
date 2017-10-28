@@ -1,0 +1,8 @@
+----Term----
+if <(app(abs(x:Int.-(x,1)),2),0) then true else false fi
+----Type----
+Bool
+----Normal Form of Small-Step Style----
+false
+----Normal Form of Big-Step Style----
+false

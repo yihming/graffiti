@@ -1,0 +1,950 @@
+%% Literate Haskell script intended for lhs2TeX.
+\documentclass[10pt]{article}
+%% ODER: format ==         = "\mathrel{==}"
+%% ODER: format /=         = "\neq "
+%
+%
+\makeatletter
+\@ifundefined{lhs2tex.lhs2tex.sty.read}%
+  {\@namedef{lhs2tex.lhs2tex.sty.read}{}%
+   \newcommand\SkipToFmtEnd{}%
+   \newcommand\EndFmtInput{}%
+   \long\def\SkipToFmtEnd#1\EndFmtInput{}%
+  }\SkipToFmtEnd
+
+\newcommand\ReadOnlyOnce[1]{\@ifundefined{#1}{\@namedef{#1}{}}\SkipToFmtEnd}
+\usepackage{amstext}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\DeclareFontFamily{OT1}{cmtex}{}
+\DeclareFontShape{OT1}{cmtex}{m}{n}
+  {<5><6><7><8>cmtex8
+   <9>cmtex9
+   <10><10.95><12><14.4><17.28><20.74><24.88>cmtex10}{}
+\DeclareFontShape{OT1}{cmtex}{m}{it}
+  {<-> ssub * cmtt/m/it}{}
+\newcommand{\texfamily}{\fontfamily{cmtex}\selectfont}
+\DeclareFontShape{OT1}{cmtt}{bx}{n}
+  {<5><6><7><8>cmtt8
+   <9>cmbtt9
+   <10><10.95><12><14.4><17.28><20.74><24.88>cmbtt10}{}
+\DeclareFontShape{OT1}{cmtex}{bx}{n}
+  {<-> ssub * cmtt/bx/n}{}
+\newcommand{\tex}[1]{\text{\texfamily#1}}	% NEU
+
+\newcommand{\Sp}{\hskip.33334em\relax}
+
+\newlength{\lwidth}\setlength{\lwidth}{4.5cm}
+\newlength{\cwidth}\setlength{\cwidth}{8mm} % 3mm
+
+\newcommand{\Conid}[1]{\mathit{#1}}
+\newcommand{\Varid}[1]{\mathit{#1}}
+\newcommand{\anonymous}{\kern0.06em \vbox{\hrule\@width.5em}}
+\newcommand{\plus}{\mathbin{+\!\!\!+}}
+\newcommand{\bind}{\mathbin{>\!\!\!>\mkern-6.7mu=}}
+\newcommand{\rbind}{\mathbin{=\mkern-6.7mu<\!\!\!<}}% suggested by Neil Mitchell
+\newcommand{\sequ}{\mathbin{>\!\!\!>}}
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+\newcommand{\NB}{\textbf{NB}}
+\newcommand{\Todo}[1]{$\langle$\textbf{To do:}~#1$\rangle$}
+
+\EndFmtInput
+\makeatother
+%
+%
+%
+%
+%
+%
+% This package provides two environments suitable to take the place
+% of hscode, called "plainhscode" and "arrayhscode". 
+%
+% The plain environment surrounds each code block by vertical space,
+% and it uses \abovedisplayskip and \belowdisplayskip to get spacing
+% similar to formulas. Note that if these dimensions are changed,
+% the spacing around displayed math formulas changes as well.
+% All code is indented using \leftskip.
+%
+% Changed 19.08.2004 to reflect changes in colorcode. Should work with
+% CodeGroup.sty.
+%
+\ReadOnlyOnce{polycode.fmt}%
+\makeatletter
+
+\newcommand{\hsnewpar}[1]%
+  {{\parskip=0pt\parindent=0pt\par\vskip #1\noindent}}
+
+% can be used, for instance, to redefine the code size, by setting the
+% command to \small or something alike
+\newcommand{\hscodestyle}{}
+
+% The command \sethscode can be used to switch the code formatting
+% behaviour by mapping the hscode environment in the subst directive
+% to a new LaTeX environment.
+
+\newcommand{\sethscode}[1]%
+  {\expandafter\let\expandafter\hscode\csname #1\endcsname
+   \expandafter\let\expandafter\endhscode\csname end#1\endcsname}
+
+% "compatibility" mode restores the non-polycode.fmt layout.
+
+\newenvironment{compathscode}%
+  {\par\noindent
+   \advance\leftskip\mathindent
+   \hscodestyle
+   \let\\=\@normalcr
+   \let\hspre\(\let\hspost\)%
+   \pboxed}%
+  {\endpboxed\)%
+   \par\noindent
+   \ignorespacesafterend}
+
+\newcommand{\compaths}{\sethscode{compathscode}}
+
+% "plain" mode is the proposed default.
+% It should now work with \centering.
+% This required some changes. The old version
+% is still available for reference as oldplainhscode.
+
+\newenvironment{plainhscode}%
+  {\hsnewpar\abovedisplayskip
+   \advance\leftskip\mathindent
+   \hscodestyle
+   \let\hspre\(\let\hspost\)%
+   \pboxed}%
+  {\endpboxed%
+   \hsnewpar\belowdisplayskip
+   \ignorespacesafterend}
+
+\newenvironment{oldplainhscode}%
+  {\hsnewpar\abovedisplayskip
+   \advance\leftskip\mathindent
+   \hscodestyle
+   \let\\=\@normalcr
+   \(\pboxed}%
+  {\endpboxed\)%
+   \hsnewpar\belowdisplayskip
+   \ignorespacesafterend}
+
+% Here, we make plainhscode the default environment.
+
+\newcommand{\plainhs}{\sethscode{plainhscode}}
+\newcommand{\oldplainhs}{\sethscode{oldplainhscode}}
+\plainhs
+
+% The arrayhscode is like plain, but makes use of polytable's
+% parray environment which disallows page breaks in code blocks.
+
+\newenvironment{arrayhscode}%
+  {\hsnewpar\abovedisplayskip
+   \advance\leftskip\mathindent
+   \hscodestyle
+   \let\\=\@normalcr
+   \(\parray}%
+  {\endparray\)%
+   \hsnewpar\belowdisplayskip
+   \ignorespacesafterend}
+
+\newcommand{\arrayhs}{\sethscode{arrayhscode}}
+
+% The mathhscode environment also makes use of polytable's parray 
+% environment. It is supposed to be used only inside math mode 
+% (I used it to typeset the type rules in my thesis).
+
+\newenvironment{mathhscode}%
+  {\parray}{\endparray}
+
+\newcommand{\mathhs}{\sethscode{mathhscode}}
+
+% texths is similar to mathhs, but works in text mode.
+
+\newenvironment{texthscode}%
+  {\(\parray}{\endparray\)}
+
+\newcommand{\texths}{\sethscode{texthscode}}
+
+% The framed environment places code in a framed box.
+
+\def\codeframewidth{\arrayrulewidth}
+\RequirePackage{calc}
+
+\newenvironment{framedhscode}%
+  {\parskip=\abovedisplayskip\par\noindent
+   \hscodestyle
+   \arrayrulewidth=\codeframewidth
+   \tabular{@{}|p{\linewidth-2\arraycolsep-2\arrayrulewidth-2pt}|@{}}%
+   \hline\framedhslinecorrect\\{-1.5ex}%
+   \let\endoflinesave=\\
+   \let\\=\@normalcr
+   \(\pboxed}%
+  {\endpboxed\)%
+   \framedhslinecorrect\endoflinesave{.5ex}\hline
+   \endtabular
+   \parskip=\belowdisplayskip\par\noindent
+   \ignorespacesafterend}
+
+\newcommand{\framedhslinecorrect}[2]%
+  {#1[#2]}
+
+\newcommand{\framedhs}{\sethscode{framedhscode}}
+
+% The inlinehscode environment is an experimental environment
+% that can be used to typeset displayed code inline.
+
+\newenvironment{inlinehscode}%
+  {\(\def\column##1##2{}%
+   \let\>\undefined\let\<\undefined\let\\\undefined
+   \newcommand\>[1][]{}\newcommand\<[1][]{}\newcommand\\[1][]{}%
+   \def\fromto##1##2##3{##3}%
+   \def\nextline{}}{\) }%
+
+\newcommand{\inlinehs}{\sethscode{inlinehscode}}
+
+% The joincode environment is a separate environment that
+% can be used to surround and thereby connect multiple code
+% blocks.
+
+\newenvironment{joincode}%
+  {\let\orighscode=\hscode
+   \let\origendhscode=\endhscode
+   \def\endhscode{\def\hscode{\endgroup\def\@currenvir{hscode}\\}\begingroup}
+   %\let\SaveRestoreHook=\empty
+   %\let\ColumnHook=\empty
+   %\let\resethooks=\empty
+   \orighscode\def\hscode{\endgroup\def\@currenvir{hscode}}}%
+  {\origendhscode
+   \global\let\hscode=\orighscode
+   \global\let\endhscode=\origendhscode}%
+
+\makeatother
+\EndFmtInput
+%
+
+
+
+\usepackage{fullpage}
+\usepackage{mathpazo}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage[centertags]{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{amsthm}
+\usepackage{stmaryrd}
+\usepackage{soul}
+\usepackage{url}
+\usepackage{geometry}
+\usepackage{mathrsfs} 
+
+\usepackage{vmargin}
+\setpapersize{USletter}
+\setmarginsrb{1.1in}{1.0in}{1.1in}{0.6in}{0.3in}{0.3in}{0.0in}{0.2in}
+\parindent 0in  \setlength{\parindent}{0in}  \setlength{\parskip}{1ex}
+
+\usepackage{epsfig}
+\usepackage{rotating}
+
+\usepackage{mathpazo,amsmath,amssymb}
+\title{Exercise 3, CS 555}
+\author{\textbf{By:} Sauce Code Team (Dandan Mo, Qi Lu, Yiming Yang)}
+\date{\textbf{Due:} April 16th, 2012}
+\begin{document}
+        \maketitle
+        \thispagestyle{empty}
+        \newpage
+
+\section{De Bruijn Notation}
+
+\subsection{nameless representation}
+
+\paragraph{}
+Formally convert the ordinary lambda terms to nameless terms. Using nature numbers to replace the variable names. 
+
+\parargraph{}
+Here, we use the list of variables to keep track of the abstract depth of each one, which is just the de Bruijn indices for them. Besides, in order to go around the presumable error of generating hybrid term (S.Term with some DB.Term inside), we first convert the de Bruijn indices into \textbf{String} as the new names of the variables, and when we finish the variable name substitution, we call \textit{finalProcess} function to convert these names back into \textbf{Int} and remove the variable names in their definitions.
+
+\subsection{Haskell Implementation}
+
+\begin{hscode}\SaveRestoreHook
+${\mathbf{module}\;\Conid{DeBruijn}\;\mathbf{where}}$\\
+${}$\\
+${\mathbf{import}\;\Varid{qualified}\;\Conid{AbstractSyntax}\;\Varid{as}\;\Conid{S}}$\\
+${\mathbf{import}\;\Conid{\Conid{Data}.List}}$\\
+${\mathbf{import}\;\Conid{\Conid{Data}.Char}}$\\
+${}$\\
+${\mathbf{type}\;\Conid{Type}\mathrel{=}\Conid{\Conid{S}.Type}}$\\
+${\mathbf{data}\;\Conid{Term}\mathrel{=}\Conid{Var}\;\Conid{Int}}$\\
+${\phantom{\mathbf{data}\;\Conid{Term}\mbox{}}\mid \Conid{IntConst}\;\Conid{Integer}}$\\
+${\phantom{\mathbf{data}\;\Conid{Term}\mbox{}}\mid \Conid{Tru}}$\\
+${\phantom{\mathbf{data}\;\Conid{Term}\mbox{}}\mid \Conid{Fls}}$\\
+${\phantom{\mathbf{data}\;\Conid{Term}\mbox{}}\mid \Conid{Abs}\;\Conid{Type}\;\Conid{Term}}$\\
+${\phantom{\mathbf{data}\;\Conid{Term}\mbox{}}\mid \Conid{App}\;\Conid{Term}\;\Conid{Term}}$\\
+${\phantom{\mathbf{data}\;\Conid{Term}\mbox{}}\mid \Conid{If}\;\Conid{Term}\;\Conid{Term}\;\Conid{Term}}$\\
+${\phantom{\mathbf{data}\;\Conid{Term}\mbox{}}\mid \Conid{Fix}\;\Conid{Term}}$\\
+${\phantom{\mathbf{data}\;\Conid{Term}\mbox{}}\mid \Conid{Let}\;\Conid{Term}\;\Conid{Term}}$\\
+${\phantom{\mathbf{data}\;\Conid{Term}\mbox{}}\mid \Conid{Bop}\;\Conid{BOP}\;\Conid{Term}\;\Conid{Term}}$\\
+${\phantom{\mathbf{data}\;\Conid{Term}\mbox{}}\mid \Conid{Bpr}\;\Conid{BPR}\;\Conid{Term}\;\Conid{Term}}$\\
+${}$\\
+${\mathbf{instance}\;\Conid{Show}\;\Conid{Term}\;\mathbf{where}}$\\
+${\hskip5.00em\relax\Varid{show}\;(\Conid{Var}\;\Varid{i})\mathrel{=}\text{\tt \char34 (Index~\char34}\plus \Varid{show}\;\Varid{i}\plus \text{\tt \char34 )\char34}}$\\
+${\hskip5.00em\relax\Varid{show}\;(\Conid{IntConst}\;\Varid{i})\mathrel{=}\Varid{show}\;\Varid{i}}$\\
+${\hskip5.00em\relax\Varid{show}\;\Conid{Tru}\mathrel{=}\text{\tt \char34 true\char34}}$\\
+${\hskip5.00em\relax\Varid{show}\;\Conid{Fls}\mathrel{=}\text{\tt \char34 false\char34}}$\\
+${\hskip5.00em\relax\Varid{show}\;(\Conid{Abs}\;\tau\;\Varid{t})\mathrel{=}\text{\tt \char34 abs(\char34}\plus \text{\tt \char34 :\char34}\plus \Varid{show}\;\tau\plus \text{\tt \char34 .\char34}\plus \Varid{show}\;\Varid{t}\plus \text{\tt \char34 )\char34}}$\\
+${\hskip5.00em\relax\Varid{show}\;(\Conid{App}\;\Varid{t}_{1}\;\Varid{t}_{2})\mathrel{=}\text{\tt \char34 app(\char34}\plus \Varid{show}\;\Varid{t}_{1}\plus \text{\tt \char34 ,\char34}\plus \Varid{show}\;\Varid{t}_{2}\plus \text{\tt \char34 )\char34}}$\\
+${\hskip5.00em\relax\Varid{show}\;(\Conid{If}\;\Varid{t}_{1}\;\Varid{t}_{2}\;\Varid{t}_{3})\mathrel{=}\text{\tt \char34 if~\char34}\plus \Varid{show}\;\Varid{t}_{1}\plus \text{\tt \char34 ~then~\char34}\plus \Varid{show}\;\Varid{t}_{2}\plus \text{\tt \char34 ~else~\char34}\plus \Varid{show}\;\Varid{t}_{3}\plus \text{\tt \char34 ~fi\char34}}$\\
+${\hskip5.00em\relax\Varid{show}\;(\Conid{Fix}\;\Varid{t})\mathrel{=}\text{\tt \char34 fix~\char34}\plus \Varid{show}\;\Varid{t}}$\\
+${\hskip5.00em\relax\Varid{show}\;(\Conid{Let}\;\Varid{t}_{1}\;\Varid{t}_{2})\mathrel{=}\text{\tt \char34 let~\char34}\plus \Varid{show}\;\Varid{t}_{1}\plus \text{\tt \char34 ~\char34}\plus \Varid{show}\;\Varid{t}_{2}}$\\
+${\hskip5.00em\relax\Varid{show}\;(\Conid{Bop}\;\Varid{op}\;\Varid{t}_{1}\;\Varid{t}_{2})\mathrel{=}\Varid{show}\;\Varid{op}\plus \text{\tt \char34 (\char34}\plus \Varid{show}\;\Varid{t}_{1}\plus \text{\tt \char34 ,~\char34}\plus \Varid{show}\;\Varid{t}_{2}\plus \text{\tt \char34 )\char34}}$\\
+${\hskip5.00em\relax\Varid{show}\;(\Conid{Bpr}\;\Varid{p}\;\Varid{t}_{1}\;\Varid{t}_{2})\mathrel{=}\Varid{show}\;\Varid{p}\plus \text{\tt \char34 (\char34}\plus \Varid{show}\;\Varid{t}_{1}\plus \text{\tt \char34 ,\char34}\plus \Varid{show}\;\Varid{t}_{2}\plus \text{\tt \char34 )\char34}}$\\
+${}$\\
+${\mbox{\qquad-{}-  Binary Operator }}$\\
+${\mathbf{data}\;\Conid{BOP}\mathrel{=}\Conid{Add}\mid \Conid{Sub}\mid \Conid{Mul}\mid \Conid{Div}\mid \Conid{Nand}}$\\
+${}$\\
+${\mathbf{instance}\;\Conid{Show}\;\Conid{BOP}\;\mathbf{where}}$\\
+${\hskip5.00em\relax\Varid{show}\;\Conid{Add}\mathrel{=}\text{\tt \char34 +\char34}}$\\
+${\hskip5.00em\relax\Varid{show}\;\Conid{Sub}\mathrel{=}\text{\tt \char34 -\char34}}$\\
+${\hskip5.00em\relax\Varid{show}\;\Conid{Mul}\mathrel{=}\text{\tt \char34 *\char34}}$\\
+${\hskip5.00em\relax\Varid{show}\;\Conid{Div}\mathrel{=}\text{\tt \char34 /\char34}}$\\
+${\hskip5.00em\relax\Varid{show}\;\Conid{Nand}\mathrel{=}\text{\tt \char34 \char94 \char34}}$\\
+${}$\\
+${\mbox{\qquad-{}-  Binary Predicate}}$\\
+${\mathbf{data}\;\Conid{BPR}\mathrel{=}\Conid{Eq}\mid \Conid{Lt}}$\\
+${\mathbf{instance}\;\Conid{Show}\;\Conid{BPR}\;\mathbf{where}}$\\
+${\hskip1.00em\relax\Varid{show}\;\Conid{Eq}\mathrel{=}\text{\tt \char34 =\char34}}$\\
+${\hskip1.00em\relax\Varid{show}\;\Conid{Lt}\mathrel{=}\text{\tt \char34 <\char34}}$\\
+${}$\\
+${\mathbf{newtype}\;\Conid{Environment}\mathrel{=}\Conid{Env}\;[\mskip1.5mu \Conid{\Conid{S}.Var}\mskip1.5mu]}$\\
+${\phantom{\mathbf{newtype}\;\Conid{Environment}\mathrel{=}\mbox{}}\mathbf{deriving}\;\Conid{Show}}$\\
+${}$\\
+${\Varid{lookupEnv}\mathbin{::}\Conid{Environment}\to \Conid{\Conid{S}.Var}\to \Conid{Int}}$\\
+${\Varid{lookupEnv}\;(\Varid{e}\mathord{@}(\Conid{Env}\;[\mskip1.5mu \mskip1.5mu]))\;\Varid{x}\mathrel{=}\Varid{error}\;(\text{\tt \char34 variable~\char34}\plus \Varid{x}\plus \text{\tt \char34 ~not~bound~in~environment~\char34}\plus \Varid{show}\;\Varid{e})}$\\
+${\Varid{lookupEnv}\;(\Conid{Env}\;\Varid{es})\;\Varid{x}\mathrel{=}}$\\
+${\hskip1.00em\relax\mathbf{case}\;\Varid{elemIndices}\;\Varid{x}\;\Varid{es}\;\mathbf{of}}$\\
+${\hskip1.00em\relax\hskip1.00em\relax[\mskip1.5mu \mskip1.5mu]\to \Varid{error}\;\text{\tt \char34 This~term~has~free~variables!\char34}}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\anonymous \to \Varid{head}\mathbin{\$}\Varid{elemIndices}\;\Varid{x}\;\Varid{es}}$\\
+${}$\\
+${\Varid{finalProcess}\mathbin{::}\Conid{\Conid{S}.Term}\to \Conid{Term}}$\\
+${\Varid{finalProcess}\;(\Conid{\Conid{S}.Var}\;\Varid{x})\mathrel{=}\Conid{Var}\;(\Varid{read}\;\Varid{x}\mathbin{::}\Conid{Int})}$\\
+${\Varid{finalProcess}\;(\Conid{\Conid{S}.Abs}\;\Varid{x}\;\tau\;\Varid{t}_{1})\mathrel{=}\Conid{Abs}\;\tau\;(\Varid{finalProcess}\;\Varid{t}_{1})}$\\
+${\Varid{finalProcess}\;(\Conid{\Conid{S}.App}\;\Varid{t}_{1}\;\Varid{t}_{2})\mathrel{=}\Conid{App}\;(\Varid{finalProcess}\;\Varid{t}_{1})\;(\Varid{finalProcess}\;\Varid{t}_{2})}$\\
+${\Varid{finalProcess}\;\Conid{\Conid{S}.Tru}\mathrel{=}\Conid{Tru}}$\\
+${\Varid{finalProcess}\;\Conid{\Conid{S}.Fls}\mathrel{=}\Conid{Fls}}$\\
+${\Varid{finalProcess}\;(\Conid{\Conid{S}.If}\;\Varid{t}_{1}\;\Varid{t}_{2}\;\Varid{t}_{3})\mathrel{=}\Conid{If}\;(\Varid{finalProcess}\;\Varid{t}_{1})\;(\Varid{finalProcess}\;\Varid{t}_{2})\;(\Varid{finalProcess}\;\Varid{t}_{3})}$\\
+${\Varid{finalProcess}\;(\Conid{\Conid{S}.IntConst}\;\Varid{n})\mathrel{=}\Conid{IntConst}\;\Varid{n}}$\\
+${\Varid{finalProcess}\;(\Conid{\Conid{S}.IntAdd}\;\Varid{t}_{1}\;\Varid{t}_{2})\mathrel{=}\Conid{Bop}\;\Conid{Add}\;(\Varid{finalProcess}\;\Varid{t}_{1})\;(\Varid{finalProcess}\;\Varid{t}_{2})}$\\
+${\Varid{finalProcess}\;(\Conid{\Conid{S}.IntSub}\;\Varid{t}_{1}\;\Varid{t}_{2})\mathrel{=}\Conid{Bop}\;\Conid{Sub}\;(\Varid{finalProcess}\;\Varid{t}_{1})\;(\Varid{finalProcess}\;\Varid{t}_{2})}$\\
+${\Varid{finalProcess}\;(\Conid{\Conid{S}.IntMul}\;\Varid{t}_{1}\;\Varid{t}_{2})\mathrel{=}\Conid{Bop}\;\Conid{Mul}\;(\Varid{finalProcess}\;\Varid{t}_{1})\;(\Varid{finalProcess}\;\Varid{t}_{2})}$\\
+${\Varid{finalProcess}\;(\Conid{\Conid{S}.IntDiv}\;\Varid{t}_{1}\;\Varid{t}_{2})\mathrel{=}\Conid{Bop}\;\Conid{Div}\;(\Varid{finalProcess}\;\Varid{t}_{1})\;(\Varid{finalProcess}\;\Varid{t}_{2})}$\\
+${\Varid{finalProcess}\;(\Conid{\Conid{S}.IntNand}\;\Varid{t}_{1}\;\Varid{t}_{2})\mathrel{=}\Conid{Bop}\;\Conid{Nand}\;(\Varid{finalProcess}\;\Varid{t}_{1})\;(\Varid{finalProcess}\;\Varid{t}_{2})}$\\
+${\Varid{finalProcess}\;(\Conid{\Conid{S}.IntEq}\;\Varid{t}_{1}\;\Varid{t}_{2})\mathrel{=}\Conid{Bpr}\;\Conid{Eq}\;(\Varid{finalProcess}\;\Varid{t}_{1})\;(\Varid{finalProcess}\;\Varid{t}_{2})}$\\
+${\Varid{finalProcess}\;(\Conid{\Conid{S}.IntLt}\;\Varid{t}_{1}\;\Varid{t}_{2})\mathrel{=}\Conid{Bpr}\;\Conid{Lt}\;(\Varid{finalProcess}\;\Varid{t}_{1})\;(\Varid{finalProcess}\;\Varid{t}_{2})}$\\
+${\Varid{finalProcess}\;(\Conid{\Conid{S}.Fix}\;\Varid{t})\mathrel{=}\Conid{Fix}\;(\Varid{finalProcess}\;\Varid{t})}$\\
+${\Varid{finalProcess}\;(\Conid{\Conid{S}.Let}\;\Varid{x}\;\Varid{t}_{1}\;\Varid{t}_{2})\mathrel{=}\Conid{Let}\;(\Varid{finalProcess}\;\Varid{t}_{1})\;(\Varid{finalProcess}\;\Varid{t}_{2})}$\\
+${}$\\
+${}$\\
+${\Varid{toDeBruijn}\mathbin{::}\Conid{\Conid{S}.Term}\to \Conid{Term}}$\\
+${\Varid{toDeBruijn}\;\Varid{t}\mathrel{=}}$\\
+${\hskip1.00em\relax\Varid{finalProcess}\mathbin{\$}\Varid{f}\;(\Varid{t},\Conid{Env}\;[\mskip1.5mu \mskip1.5mu])}$\\
+${\hskip1.00em\relax\mathbf{where}}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Varid{f}\mathbin{::}(\Conid{\Conid{S}.Term},\Conid{Environment})\to \Conid{\Conid{S}.Term}}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Varid{f}\;(\Conid{\Conid{S}.Abs}\;\Varid{x}\;\tau\;\Varid{t}_{1},\Conid{Env}\;\Varid{es})\mathrel{=}\Conid{\Conid{S}.Abs}\;\Varid{x}\;\tau\;(\Varid{f}\;(\Varid{t}_{1},\Conid{Env}\;(\Varid{x}\mathbin{:}\Varid{es})))}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Varid{f}\;(\Conid{\Conid{S}.App}\;\Varid{t}_{1}\;\Varid{t}_{2},\Varid{e})\mathrel{=}\Conid{\Conid{S}.App}\;(\Varid{f}\;(\Varid{t}_{1},\Varid{e}))\;(\Varid{f}\;(\Varid{t}_{2},\Varid{e}))}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Varid{f}\;(\Conid{\Conid{S}.Var}\;\Varid{x},\Varid{e})\mathrel{=}\Conid{\Conid{S}.Var}\;(\Varid{show}\;(\Varid{lookupEnv}\;\Varid{e}\;\Varid{x}))}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Varid{f}\;(\Conid{\Conid{S}.Let}\;\Varid{x}\;\Varid{t}_{1}\;\Varid{t}_{2},\Conid{Env}\;\Varid{es})\mathrel{=}\Conid{\Conid{S}.Let}\;\Varid{x}\;(\Varid{f}\;(\Varid{t}_{1},\Conid{Env}\;\Varid{es}))\;(\Varid{f}\;(\Varid{t}_{2},\Conid{Env}\;(\Varid{x}\mathbin{:}\Varid{es})))}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Varid{f}\;(\Conid{\Conid{S}.If}\;\Varid{t}_{1}\;\Varid{t}_{2}\;\Varid{t}_{3},\Varid{e})\mathrel{=}\Conid{\Conid{S}.If}\;(\Varid{f}\;(\Varid{t}_{1},\Varid{e}))\;(\Varid{f}\;(\Varid{t}_{2},\Varid{e}))\;(\Varid{f}\;(\Varid{t}_{3},\Varid{e}))}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Varid{f}\;(\Conid{\Conid{S}.IntAdd}\;\Varid{t}_{1}\;\Varid{t}_{2},\Varid{e})\mathrel{=}\Conid{\Conid{S}.IntAdd}\;(\Varid{f}\;(\Varid{t}_{1},\Varid{e}))\;(\Varid{f}\;(\Varid{t}_{2},\Varid{e}))}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Varid{f}\;(\Conid{\Conid{S}.IntSub}\;\Varid{t}_{1}\;\Varid{t}_{2},\Varid{e})\mathrel{=}\Conid{\Conid{S}.IntSub}\;(\Varid{f}\;(\Varid{t}_{1},\Varid{e}))\;(\Varid{f}\;(\Varid{t}_{2},\Varid{e}))}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Varid{f}\;(\Conid{\Conid{S}.IntMul}\;\Varid{t}_{1}\;\Varid{t}_{2},\Varid{e})\mathrel{=}\Conid{\Conid{S}.IntMul}\;(\Varid{f}\;(\Varid{t}_{1},\Varid{e}))\;(\Varid{f}\;(\Varid{t}_{2},\Varid{e}))}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Varid{f}\;(\Conid{\Conid{S}.IntDiv}\;\Varid{t}_{1}\;\Varid{t}_{2},\Varid{e})\mathrel{=}\Conid{\Conid{S}.IntDiv}\;(\Varid{f}\;(\Varid{t}_{1},\Varid{e}))\;(\Varid{f}\;(\Varid{t}_{2},\Varid{e}))}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Varid{f}\;(\Conid{\Conid{S}.IntNand}\;\Varid{t}_{1}\;\Varid{t}_{2},\Varid{e})\mathrel{=}\Conid{\Conid{S}.IntNand}\;(\Varid{f}\;(\Varid{t}_{1},\Varid{e}))\;(\Varid{f}\;(\Varid{t}_{2},\Varid{e}))}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Varid{f}\;(\Conid{\Conid{S}.IntEq}\;\Varid{t}_{1}\;\Varid{t}_{2},\Varid{e})\mathrel{=}\Conid{\Conid{S}.IntEq}\;(\Varid{f}\;(\Varid{t}_{1},\Varid{e}))\;(\Varid{f}\;(\Varid{t}_{2},\Varid{e}))}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Varid{f}\;(\Conid{\Conid{S}.IntLt}\;\Varid{t}_{1}\;\Varid{t}_{2},\Varid{e})\mathrel{=}\Conid{\Conid{S}.IntLt}\;(\Varid{f}\;(\Varid{t}_{1},\Varid{e}))\;(\Varid{f}\;(\Varid{t}_{2},\Varid{e}))}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Varid{f}\;(\Conid{\Conid{S}.Fix}\;\Varid{t},\Varid{e})\mathrel{=}\Conid{\Conid{S}.Fix}\;(\Varid{f}\;(\Varid{t},\Varid{e}))}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Varid{f}\;(\Varid{t},\Varid{e})\mathrel{=}\Varid{t}}$\ColumnHook
+\end{hscode}\resethooks
+
+\section{Natural Semantics with Nameless Terms}
+We modify the Natural Semantics evaluation rules by adding environment and closures. The rules we modified are as the followings:\\
+
+\begin{equation*}
+e \vdash Tru \Rightarrow True
+\end{equation*}
+
+\begin{equation*}
+e \vdash Fls \Rightarrow False
+\end{equation*}
+
+%const n
+\begin{equation*}
+e \vdash \text{IntConst $n$} \Rightarrow n
+\end{equation*}
+
+\begin{equation*}
+\frac{e \vdash t_1 \Rightarrow True, e\vdash t_2 \Rightarrow \alpha}{e\vdash \text{If  $t_1$ $t_2$ $t_3$} \Rightarrow \alpha}
+\end{equation*}
+
+\begin{equation*}
+\frac{e \vdash t_1 \Rightarrow False, e\vdash t_3 \Rightarrow \beta}{e\vdash \text{If  $t_1$ $t_2$ $t_3$} \Rightarrow \beta}
+\end{equation*}
+
+%var
+\begin{equation*}
+e \vdash \text{Var $i$} \Rightarrow e[i]
+\end{equation*}
+
+%app
+\begin{equation*}
+\frac{e \vdash t_1 \Rightarrow \text{Clo $\lambda.t'$ $e'$}, e \vdash t_2 \Rightarrow v, v:e' \vdash t' \Rightarrow v'}{e \vdash \text{$t_1$ $t_2$} \Rightarrow v'}
+\end{equation*}
+
+\begin{equation*}
+\frac{e \vdash t_1 \Rightarrow \text{Clo Fix $t'$ $e'$}, e' \vdash \text{Fix $t'$}  \Rightarrow \text{Clo $\lambda.tt$ $ee$}, e \vdash t_2 \Rightarrow v, v:ee \vdash tt \Rightarrow v'}{e \vdash \text{$t_1$ $t_2$} \Rightarrow v'}
+\end{equation*}
+
+% abs
+\begin{equation*}
+e \vdash \lambda.t_1 \Rightarrow \text{Clo $\lambda.t_1$ e}
+\end{equation*}
+
+%BOP
+\begin{equation*}
+\frac{ e\vdash t_1 \Rightarrow v_1, e\vdash t_2 \Rightarrow v_2, \overline{op}(v_1,v_2) = v}{e \vdash op(t_1,t_2) \Rightarrow v}
+\end{equation*}
+where $op$ are binary arithmetical operations: Add, Sub,Mul,Div,Nand, $\overline{op}$ indicates the real arithmetical functions.
+
+%BRP
+\begin{equation*}
+\frac{ e\vdash t_1 \Rightarrow v_1, e\vdash t_2 \Rightarrow v_2, \overline{rp}(v_1,v_2) = v}{e \vdash rp(t_1,t_2) \Rightarrow v}
+\end{equation*}
+where $rp$ are binary relational operations: Eq, Lt, $\overline{rp}$ indicates the real relational functions.
+
+\begin{equation*}
+\frac{e \vdash t_1 \Rightarrow \alpha, \alpha:e \vdash t_2 \Rightarrow \beta}{e \vdash \text{Let $t_1$ $t_2$} \Rightarrow \beta}
+\end{equation*}
+
+%fix
+\begin{equation*}
+\frac{e \vdash t_1 \Rightarrow \text{Clo $\lambda.t'$ $e'$}, (\text{Clo Fix $\lambda.t'$ e'}) : e' \vdash t' \Rightarrow v}{e \vdash \text{Fix $t_1$} \Rightarrow v}
+\end{equation*}
+
+
+The followings are the implemented codes:\\
+\begin{hscode}\SaveRestoreHook
+${\mathbf{module}\;\Conid{NSWCAD}\;\mathbf{where}}$\\
+${\mathbf{import}\;\Conid{\Conid{Data}.Maybe}}$\\
+${\mathbf{import}\;\Varid{qualified}\;\Conid{DeBruijn}\;\Varid{as}\;\Conid{S}}$\\
+${\mathbf{import}\;\Varid{qualified}\;\Conid{IntegerArithmetic}\;\Varid{as}\;\Conid{I}}$\\
+${\mathbf{import}\;\Conid{\Conid{Debug}.Trace}}$\\
+${}$\\
+${\mathbf{data}\;\Conid{Value}\mathrel{=}\Conid{BoolVal}\;\Conid{Bool}\mid \Conid{IntVal}\;\Conid{Integer}\mid \Conid{Clo}\;\Conid{\Conid{S}.Term}\;\Conid{Env}}$\\
+${\mathbf{deriving}\;\Conid{Show}}$\\
+${}$\\
+${\mathbf{type}\;\Conid{Env}\mathrel{=}[\mskip1.5mu \Conid{Value}\mskip1.5mu]}$\\
+${}$\\
+${\Varid{evalInEnv}\mathbin{::}\Conid{Env}\to \Conid{\Conid{S}.Term}\to \Conid{Maybe}\;\Conid{Value}}$\\
+${\Varid{evalInEnv}\;\Varid{e}\;\Varid{t}\mathrel{=}\mathbf{case}\;\Varid{t}\;\mathbf{of}}$\\
+${\hskip1.00em\relax\mbox{\qquad-{}-  true,false}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\Conid{\Conid{S}.Tru}\to \Conid{Just}\;(\Conid{BoolVal}\;\Conid{True})}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\Conid{\Conid{S}.Fls}\to \Conid{Just}\;(\Conid{BoolVal}\;\Conid{False})}$\\
+${\hskip1.00em\relax\mbox{\qquad-{}-  integer}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\Conid{\Conid{S}.IntConst}\;\Varid{n}\to \Conid{Just}\;(\Conid{IntVal}\;\Varid{n})}$\\
+${\hskip1.00em\relax\mbox{\qquad-{}-  if}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\Conid{\Conid{S}.If}\;\Varid{t}_{1}\;\Varid{t}_{2}\;\Varid{t}_{3}\to \mathbf{case}\;\Varid{evalInEnv}\;\Varid{e}\;\Varid{t}_{1}\;\mathbf{of}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip12.00em\relax\Conid{Just}\;(\Conid{BoolVal}\;\Conid{True})\to \mathbf{case}\;\Varid{evalInEnv}\;\Varid{e}\;\Varid{t}_{2}\;\mathbf{of}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip12.00em\relax\hskip12.00em\relax\Conid{Just}\;\Varid{a}\to \Conid{Just}\;\Varid{a}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip12.00em\relax\hskip12.00em\relax\anonymous \to \Varid{error}\;\text{\tt \char34 if-t2\char34}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip12.00em\relax\Conid{Just}\;(\Conid{BoolVal}\;\Conid{False})\to \mathbf{case}\;\Varid{evalInEnv}\;\Varid{e}\;\Varid{t}_{3}\;\mathbf{of}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip12.00em\relax\phantom{\Conid{Just}\;(\Conid{BoolVal}\;\Conid{False})\to \mbox{}}\Conid{Just}\;\Varid{b}\to \Conid{Just}\;\Varid{b}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip12.00em\relax\phantom{\Conid{Just}\;(\Conid{BoolVal}\;\Conid{False})\to \mbox{}}\anonymous \to \Varid{error}\;\text{\tt \char34 if-t3\char34}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip12.00em\relax\anonymous \to \Varid{error}\;\text{\tt \char34 if-t1\char34}}$\\
+${\hskip1.00em\relax\mbox{\qquad-{}-  var}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\Conid{\Conid{S}.Var}\;\Varid{i}\to \Conid{Just}\;(\Varid{e}\mathbin{!!}\Varid{i})}$\\
+${\hskip1.00em\relax\mbox{\qquad-{}-  app}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\Conid{\Conid{S}.App}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \mathbf{case}\;\Varid{evalInEnv}\;\Varid{e}\;\Varid{t}_{1}\;\mathbf{of}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip4.00em\relax\Conid{Just}\;(\Conid{Clo}\;(\Conid{\Conid{S}.Abs}\;\tau\;\Varid{t'})\;\Varid{e'})\to \mathbf{case}\;\Varid{evalInEnv}\;\Varid{e}\;\Varid{t}_{2}\;\mathbf{of}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip4.00em\relax\hskip12.00em\relax\Conid{Just}\;\Varid{v'}\to \mathbf{case}\;\Varid{evalInEnv}\;([\mskip1.5mu \Varid{v'}\mskip1.5mu]\plus \Varid{e'})\;\Varid{t'}\;\mathbf{of}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip4.00em\relax\hskip12.00em\relax\phantom{\Conid{Just}\;\Varid{v'}\to \mathbf{case}\;\mbox{}}\Conid{Just}\;\Varid{vv}\to \Conid{Just}\;\Varid{vv}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip4.00em\relax\hskip12.00em\relax\phantom{\Conid{Just}\;\Varid{v'}\to \mathbf{case}\;\mbox{}}\anonymous \to \Varid{error}\;\text{\tt \char34 app-replacement\char34}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip4.00em\relax\hskip12.00em\relax\anonymous \to \Varid{error}\;\text{\tt \char34 app-t2~is~not~a~value\char34}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip4.00em\relax\Conid{Just}\;(\Conid{Clo}\;(\Conid{\Conid{S}.Fix}\;\Varid{t'})\;\Varid{e'})\to \mathbf{case}\;\Varid{evalInEnv}\;\Varid{e'}\;(\Conid{\Conid{S}.Fix}\;\Varid{t'})\;\mathbf{of}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip4.00em\relax\hskip12.00em\relax\Conid{Just}\;(\Conid{Clo}\;(\Conid{\Conid{S}.Abs}\;\Varid{tau'}\;\Varid{tt})\;\Varid{ee})\to \mathbf{case}\;\Varid{evalInEnv}\;\Varid{e}\;\Varid{t}_{2}\;\mathbf{of}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip4.00em\relax\hskip12.00em\relax\phantom{\Conid{Just}\;(\Conid{Clo}\;(\Conid{\Conid{S}.Abs}\;\Varid{tau'}\;\Varid{tt}\mbox{}}\Conid{Just}\;\Varid{v'}\to \mathbf{case}\;\Varid{evalInEnv}\;([\mskip1.5mu \Varid{v'}\mskip1.5mu]\plus \Varid{ee})\;\Varid{tt}\;\mathbf{of}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip4.00em\relax\hskip12.00em\relax\phantom{\Conid{Just}\;(\Conid{Clo}\;(\Conid{\Conid{S}.Abs}\;\Varid{tau'}\;\Varid{tt}\mbox{}}\hskip8.00em\relax\Conid{Just}\;\Varid{vv}\to \Conid{Just}\;\Varid{vv}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip4.00em\relax\hskip12.00em\relax\phantom{\Conid{Just}\;(\Conid{Clo}\;(\Conid{\Conid{S}.Abs}\;\Varid{tau'}\;\Varid{tt}\mbox{}}\hskip8.00em\relax\anonymous \to \Conid{Nothing}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip4.00em\relax\hskip12.00em\relax\phantom{\Conid{Just}\;(\Conid{Clo}\;(\Conid{\Conid{S}.Abs}\;\Varid{tau'}\;\Varid{tt}\mbox{}}\anonymous \to \Conid{Nothing}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip4.00em\relax\hskip12.00em\relax\anonymous \to \Conid{Nothing}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip4.00em\relax\anonymous \to \Varid{error}\;\text{\tt \char34 app-t1~is~not~an~abstraction\char34}}$\\
+${\hskip1.00em\relax\mbox{\qquad-{}-  abs}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\Conid{\Conid{S}.Abs}\;\tau\;\Varid{t}_{1}\to \Conid{Just}\;(\Conid{Clo}\;(\Conid{\Conid{S}.Abs}\;\tau\;\Varid{t}_{1})\;\Varid{e})}$\\
+${\hskip1.00em\relax\mbox{\qquad-{}-  add, sub,mul,div,nand}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\Conid{\Conid{S}.Bop}\;\Varid{op}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \mathbf{case}\;\Varid{evalInEnv}\;\Varid{e}\;\Varid{t}_{1}\;\mathbf{of}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip8.00em\relax\Conid{Just}\;(\Conid{IntVal}\;\Varid{v1})\to \mathbf{case}\;\Varid{evalInEnv}\;\Varid{e}\;\Varid{t}_{2}\;\mathbf{of}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip8.00em\relax\hskip12.00em\relax\Conid{Just}\;(\Conid{IntVal}\;\Varid{v2})\to \mathbf{case}\;\Varid{op}\;\mathbf{of}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip8.00em\relax\hskip12.00em\relax\hskip8.00em\relax\Conid{\Conid{S}.Add}\to \Conid{Just}\;(\Conid{IntVal}\;(\Varid{\Conid{I}.intAdd}\;\Varid{v1}\;\Varid{v2}))}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip8.00em\relax\hskip12.00em\relax\hskip8.00em\relax\Conid{\Conid{S}.Sub}\to \Conid{Just}\;(\Conid{IntVal}\;(\Varid{\Conid{I}.intSub}\;\Varid{v1}\;\Varid{v2}))}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip8.00em\relax\hskip12.00em\relax\hskip8.00em\relax\Conid{\Conid{S}.Mul}\to \Conid{Just}\;(\Conid{IntVal}\;(\Varid{\Conid{I}.intMul}\;\Varid{v1}\;\Varid{v2}))}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip8.00em\relax\hskip12.00em\relax\hskip8.00em\relax\Conid{\Conid{S}.Div}\to \Conid{Just}\;(\Conid{IntVal}\;(\Varid{\Conid{I}.intDiv}\;\Varid{v1}\;\Varid{v2}))}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip8.00em\relax\hskip12.00em\relax\hskip8.00em\relax\Conid{\Conid{S}.Nand}\to \Conid{Just}\;(\Conid{IntVal}\;(\Varid{\Conid{I}.intNand}\;\Varid{v1}\;\Varid{v2}))}$\\
+${}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip8.00em\relax\hskip12.00em\relax\anonymous \to \Varid{error}\;\text{\tt \char34 BOP~t2~is~not~a~value\char34}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip8.00em\relax\anonymous \to \Varid{error}\;\text{\tt \char34 BOP~t1~is~not~a~value\char34}}$\\
+${\hskip1.00em\relax\mbox{\qquad-{}-  eq,lt}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\Conid{\Conid{S}.Bpr}\;\Varid{pr}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \mathbf{case}\;\Varid{evalInEnv}\;\Varid{e}\;\Varid{t}_{1}\;\mathbf{of}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip8.00em\relax\Conid{Just}\;(\Conid{IntVal}\;\Varid{v1})\to \mathbf{case}\;\Varid{evalInEnv}\;\Varid{e}\;\Varid{t}_{2}\;\mathbf{of}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip8.00em\relax\hskip12.00em\relax\Conid{Just}\;(\Conid{IntVal}\;\Varid{v2})\to \mathbf{case}\;\Varid{pr}\;\mathbf{of}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip8.00em\relax\hskip12.00em\relax\hskip8.00em\relax\Conid{\Conid{S}.Eq}\to \mathbf{case}\;\Varid{\Conid{I}.intEq}\;\Varid{v1}\;\Varid{v2}\;\mathbf{of}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip8.00em\relax\hskip12.00em\relax\hskip8.00em\relax\hskip5.00em\relax\Conid{True}\to \Conid{Just}\;(\Conid{BoolVal}\;\Conid{True})}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip8.00em\relax\hskip12.00em\relax\hskip8.00em\relax\hskip5.00em\relax\Conid{False}\to \Conid{Just}\;(\Conid{BoolVal}\;\Conid{False})}$\\
+${}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip8.00em\relax\hskip12.00em\relax\hskip8.00em\relax\Conid{\Conid{S}.Lt}\to \mathbf{case}\;\Varid{\Conid{I}.intLt}\;\Varid{v1}\;\Varid{v2}\;\mathbf{of}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip8.00em\relax\hskip12.00em\relax\hskip8.00em\relax\hskip5.00em\relax\Conid{True}\to \Conid{Just}\;(\Conid{BoolVal}\;\Conid{True})}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip8.00em\relax\hskip12.00em\relax\hskip8.00em\relax\hskip5.00em\relax\Conid{False}\to \Conid{Just}\;(\Conid{BoolVal}\;\Conid{False})}$\\
+${}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip8.00em\relax\hskip12.00em\relax\anonymous \to \Varid{error}\;\text{\tt \char34 BRP~t2~is~not~a~value\char34}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip8.00em\relax\anonymous \to \Varid{error}\;\text{\tt \char34 BRP~t1~is~not~a~value\char34}}$\\
+${\hskip1.00em\relax\mbox{\qquad-{}-  let}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\Conid{\Conid{S}.Let}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \mathbf{case}\;\Varid{evalInEnv}\;\Varid{e}\;\Varid{t}_{1}\;\mathbf{of}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip8.00em\relax\Conid{Just}\;\Varid{a}\to \mathbf{case}\;\Varid{evalInEnv}\;([\mskip1.5mu \Varid{a}\mskip1.5mu]\plus \Varid{e})\;\Varid{t}_{2}\;\mathbf{of}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip8.00em\relax\hskip8.00em\relax\Conid{Just}\;\Varid{b}\to \Conid{Just}\;\Varid{b}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip8.00em\relax\hskip8.00em\relax\anonymous \to \Varid{error}\;\text{\tt \char34 let-t2~is~not~a~value\char34}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip8.00em\relax\anonymous \to \Varid{error}\;\text{\tt \char34 let~t1~is~not~a~value\char34}}$\\
+${\hskip1.00em\relax\mbox{\qquad-{}-  fix}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\Conid{\Conid{S}.Fix}\;\Varid{t}_{1}\to \mathbf{case}\;\Varid{evalInEnv}\;\Varid{e}\;\Varid{t}_{1}\;\mathbf{of}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip4.00em\relax\Conid{Just}\;(\Conid{Clo}\;(\Conid{\Conid{S}.Abs}\;\tau\;\Varid{t'})\;\Varid{e'})\to \mathbf{case}\;\Varid{evalInEnv}\;([\mskip1.5mu \Conid{Clo}\;(\Conid{\Conid{S}.Fix}\;(\Conid{\Conid{S}.Abs}\;\tau\;\Varid{t'}))\;\Varid{e'}\mskip1.5mu]\plus \Varid{e'})\;\Varid{t'}\;\mathbf{of}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip4.00em\relax\hskip20.00em\relax\Conid{Just}\;\Varid{b}\to \Conid{Just}\;\Varid{b}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip4.00em\relax\hskip20.00em\relax\anonymous \to \Varid{error}\;\text{\tt \char34 fix-point~error\char34}}$\\
+${\hskip1.00em\relax\hskip3.00em\relax\hskip4.00em\relax\anonymous \to \Varid{error}\;\text{\tt \char34 fix-t1~is~not~an~abstraction\char34}}$\\
+${}$\\
+${}$\\
+${\Varid{eval}\mathbin{::}\Conid{\Conid{S}.Term}\to \Conid{Value}}$\\
+${\Varid{eval}\;\Varid{t}\mathrel{=}\Varid{fromJust}\;(\Varid{evalInEnv}\;[\mskip1.5mu \mskip1.5mu]\;\Varid{t})}$\ColumnHook
+\end{hscode}\resethooks
+
+\section{C-E-S Compiler and Virtual Machine}
+
+\subsection{Formal Rules}
+
+\paragraph{}
+Foramally statting the compilation rules of C-E-S compiler and virtual machine:
+
+\[
+        C[\text{IntConst n}] = \text{CONST } n
+\]
+\ \\
+\[
+        C[\text{Var i}] = \text{ACCESS } i
+\]
+\ \\
+\[
+        C[\text{Abs t}] = \text{CLOSE } C[t]; \text{ RETURN}
+\]
+\ \\
+\[
+        C[\text{App t1 t2}] = C[t1]; C[t2]; \text{ APPLY}
+\]
+\ \\
+\[
+        C[\text{If t0 t1 t2}] = C[t0]; \text{ IF}; [Close C[t1]]; [Close C[t2]] 
+\]
+\ \\
+\[
+        C[\text{True}] = \text{ True}
+\]
+\ \\
+\[
+        C[\text{False}] = \text{ False}
+\]
+\ \\
+\[
+        C[\text{Fix t}] = C[t]; \text{ Fix}
+\]
+\ \\
+\[
+        C[\text{Let t1 t2}] = C[t1]; \text{ Let }; C[t2]; \text{ EndLet} 
+\]
+\ \\
+\[
+        C[\text{Bop t1 t2}] = C[t1]; C[t2]; \text{ Bop} \text{\quad -Binary operations: $+, -, *, /$}  
+\]
+\ \\
+\[
+        C[\text{Bpr t1 t2}] = C[t1]; C[t2]; \text{ Bpr} \text{\quad -Binary predicates: $<$; $==$}  
+\]
+\ \\
+
+\paragraph{}
+Foramally statting the transitions of C-E-S compiler and virtual machine:
+
+\[
+        \text{(Access i : c, e, s)} \rightarrow \text{(c, e, (e !! i) : s)}  
+\]
+\ \\
+\[
+        \text{(If:(Close t1):(Close t2):c, e, (Value True):s)} \rightarrow \text{(t1++c, e, s)}  
+\]
+\ \\
+\[
+        \text{(If:(Close t1):(Close t2):c, e, (Value False):s)} \rightarrow \text{(t2++c, e, s)}  
+\]
+\ \\
+
+\[
+        \text{(Close code':code, env, s)} \rightarrow \text{(code, env, Env [Clo code' env]:s)}  
+\]
+\ \\
+
+\[
+        \text{(Apply:code, env, (Value v):(Env [Clo code' env']):s)} \rightarrow \text{(code', v:env', (Code code):(Env env):s)}  
+\]
+\ \\
+\[
+        \text{(Apply:code, env, (Value v):(Value (Clo code' env')):s)} \rightarrow C[\text{(code', v:env', (Code code):(Env env):s)}  
+\]
+\ \\
+\[
+        \text{(Apply:code, env, (Value v):(Value (CloFix [Close [Close code', Return], Fix] env')):s)}]    
+\]
+\[
+        \rightarrow \text{(code', v:(CloFix [Close [Close code', Return], Fix] env'):env', (Code code):(Env env):s)}    
+\]
+
+\ \\
+\[
+        {(Return:c, e, s':(Code c'):(Env e'):s)} \rightarrow \text{(c', e', s':s)}  
+\]
+\ \\
+\[
+        \text{(Int n:c, e, s)} \rightarrow \text{(c, e, (Value n):s)}  
+\]
+\ \\
+\[
+        \text{(Bool b:c, e, s)} \rightarrow \text{(c, e, (Value b):s)}  
+\]
+\ \\
+\[
+        \text{(bop:c, e, (Value v2):(Value v1):s)} \rightarrow \text{(c, e, (Value (bop v1 v2)):s)}  
+\]
+\ \\
+\[
+        \text{(bpr:c, e, (Value v2):(Value v1):s)} \rightarrow \text{(c, e, (Value (bpr v1 v2)):s)}  
+\]
+\ \\
+\[
+        \text{(Let:code, env, (Value v):s)} \rightarrow \text{(code, v:env, s)} 
+\]
+\ \\
+
+\[
+        \text{(EndLet:code, v:env, s)} \rightarrow \text{(code, env, s)}  
+\]
+\ \\
+\[
+        \text{(Fix:code, env, (Env [Clo code' env']):s)} \rightarrow \text{(code', (CloFix [Close code', Fix] []):env, (Code code):(Env env):s)}  
+\]
+
+\subsubsection{Haskell Implementation}
+\begin{hscode}\SaveRestoreHook
+${\mathbf{module}\;\Conid{CESMachine}\;\mathbf{where}}$\\
+${\mathbf{import}\;\Conid{\Conid{Debug}.Trace}}$\\
+${\mathbf{import}\;\Varid{qualified}\;\Conid{IntegerArithmetic}\;\Varid{as}\;\Conid{I}}$\\
+${\mathbf{import}\;\Varid{qualified}\;\Conid{DeBruijn}\;\Varid{as}\;\Conid{DB}}$\\
+${}$\\
+${\mathbf{data}\;\Conid{Inst}\mathrel{=}\Conid{Int}\;\Conid{Integer}}$\\
+${\hskip4.00em\relax\mid \Conid{Bool}\;\Conid{Bool}}$\\
+${\hskip4.00em\relax\mid \Conid{Bop}\;\Conid{BOP}}$\\
+${\hskip4.00em\relax\mid \Conid{Bpr}\;\Conid{BPR}}$\\
+${\hskip4.00em\relax\mid \Conid{Access}\;\Conid{Int}}$\\
+${\hskip4.00em\relax\mid \Conid{Close}\;\Conid{Code}}$\\
+${\hskip4.00em\relax\mid \Conid{Let}}$\\
+${\hskip4.00em\relax\mid \Conid{EndLet}}$\\
+${\hskip4.00em\relax\mid \Conid{Apply}}$\\
+${\hskip4.00em\relax\mid \Conid{Return}}$\\
+${\hskip4.00em\relax\mid \Conid{If}}$\\
+${\hskip4.00em\relax\mid \Conid{Fix}}$\\
+${\hskip4.00em\relax\mathbf{deriving}\;\Conid{Show}}$\\
+${}$\\
+${\mathbf{data}\;\Conid{BOP}\mathrel{=}\Conid{Add}\mid \Conid{Sub}\mid \Conid{Mul}\mid \Conid{Div}\mid \Conid{Nand}}$\\
+${\mathbf{instance}\;\Conid{Show}\;\Conid{BOP}\;\mathbf{where}}$\\
+${\hskip5.00em\relax\Varid{show}\;\Conid{Add}\mathrel{=}\text{\tt \char34 +\char34}}$\\
+${\hskip5.00em\relax\Varid{show}\;\Conid{Sub}\mathrel{=}\text{\tt \char34 -\char34}}$\\
+${\hskip5.00em\relax\Varid{show}\;\Conid{Mul}\mathrel{=}\text{\tt \char34 *\char34}}$\\
+${\hskip5.00em\relax\Varid{show}\;\Conid{Div}\mathrel{=}\text{\tt \char34 /\char34}}$\\
+${\hskip5.00em\relax\Varid{show}\;\Conid{Nand}\mathrel{=}\text{\tt \char34 \char94 \char34}}$\\
+${}$\\
+${\mathbf{data}\;\Conid{BPR}\mathrel{=}\Conid{Eq}\mid \Conid{Lt}}$\\
+${\mathbf{instance}\;\Conid{Show}\;\Conid{BPR}\;\mathbf{where}}$\\
+${\hskip1.00em\relax\Varid{show}\;\Conid{Eq}\mathrel{=}\text{\tt \char34 =\char34}}$\\
+${\hskip1.00em\relax\Varid{show}\;\Conid{Lt}\mathrel{=}\text{\tt \char34 <\char34}}$\\
+${}$\\
+${\mathbf{type}\;\Conid{Code}\mathrel{=}[\mskip1.5mu \Conid{Inst}\mskip1.5mu]}$\\
+${\mathbf{data}\;\Conid{Value}\mathrel{=}\Conid{BoolVal}\;\Conid{Bool}\mid \Conid{IntVal}\;\Conid{Integer}\mid \Conid{Clo}\;\Conid{Code}\;\Conid{Env}\mid \Conid{CloFix}\;\Conid{Code}\;\Conid{Env}}$\\
+${\hskip4.00em\relax\mathbf{deriving}\;\Conid{Show}}$\\
+${\mathbf{type}\;\Conid{Env}\mathrel{=}[\mskip1.5mu \Conid{Value}\mskip1.5mu]}$\\
+${\mathbf{data}\;\Conid{Slot}\mathrel{=}\Conid{Value}\;\Conid{Value}\mid \Conid{Code}\;\Conid{Code}\mid \Conid{Env}\;\Conid{Env}}$\\
+${\hskip4.00em\relax\mathbf{deriving}\;\Conid{Show}}$\\
+${\mathbf{type}\;\Conid{Stack}\mathrel{=}[\mskip1.5mu \Conid{Slot}\mskip1.5mu]}$\\
+${\mathbf{type}\;\Conid{State}\mathrel{=}(\Conid{Code},\Conid{Env},\Conid{Stack})}$\\
+${\Varid{compile}\mathbin{::}\Conid{\Conid{DB}.Term}\to \Conid{Code}}$\\
+${\Varid{compile}\;\Varid{t}\mathrel{=}\mathbf{case}\;\Varid{t}\;\mathbf{of}}$\\
+${\phantom{\Varid{compile}\;\mbox{}}\Conid{\Conid{DB}.Var}\;\Varid{n}\to [\mskip1.5mu \Conid{Access}\;\Varid{n}\mskip1.5mu]}$\\
+${\phantom{\Varid{compile}\;\mbox{}}\Conid{\Conid{DB}.IntConst}\;\Varid{n}\to [\mskip1.5mu \Conid{Int}\;\Varid{n}\mskip1.5mu]}$\\
+${\phantom{\Varid{compile}\;\mbox{}}\Conid{\Conid{DB}.Abs}\;\Varid{tp}\;\Varid{t0}\to \mathbf{case}\;\Varid{compile}\;\Varid{t0}\;\mathbf{of}\;\Varid{t}_{1}\to [\mskip1.5mu \Conid{Close}\;(\Varid{t}_{1}\plus [\mskip1.5mu \Conid{Return}\mskip1.5mu])\mskip1.5mu]}$\\
+${\phantom{\Varid{compile}\;\mbox{}}\Conid{\Conid{DB}.App}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \mathbf{case}\;\Varid{compile}\;\Varid{t}_{1}\;\mathbf{of}}$\\
+${\phantom{\Varid{compile}\;\mbox{}}\hskip6.00em\relax\Varid{t}_{1}'\to \mathbf{case}\;\Varid{compile}\;\Varid{t}_{2}\;\mathbf{of}}$\\
+${\phantom{\Varid{compile}\;\mbox{}}\hskip6.00em\relax\hskip1.50em\relax\Varid{t}_{2}'\to \Varid{t}_{1}'\plus \Varid{t}_{2}'\plus [\mskip1.5mu \Conid{Apply}\mskip1.5mu]}$\\
+${\phantom{\Varid{compile}\;\mbox{}}\Conid{\Conid{DB}.If}\;\Varid{t0}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Varid{compile}\;\Varid{t0}\plus [\mskip1.5mu \Conid{If}\mskip1.5mu]\plus [\mskip1.5mu \Conid{Close}\;(\Varid{compile}\;\Varid{t}_{1})\mskip1.5mu]\plus [\mskip1.5mu \Conid{Close}\;(\Varid{compile}\;\Varid{t}_{2})\mskip1.5mu]}$\\
+${\phantom{\Varid{compile}\;\mbox{}}\Conid{\Conid{DB}.Tru}\to [\mskip1.5mu \Conid{Bool}\;\Conid{True}\mskip1.5mu]}$\\
+${\phantom{\Varid{compile}\;\mbox{}}\Conid{\Conid{DB}.Fls}\to [\mskip1.5mu \Conid{Bool}\;\Conid{False}\mskip1.5mu]}$\\
+${\phantom{\Varid{compile}\;\mbox{}}\Conid{\Conid{DB}.Fix}\;\Varid{t0}\to \mathbf{case}\;\Varid{compile}\;\Varid{t0}\;\mathbf{of}\;\Varid{t0'}\to \Varid{t0'}\plus [\mskip1.5mu \Conid{Fix}\mskip1.5mu]}$\\
+${\phantom{\Varid{compile}\;\mbox{}}\Conid{\Conid{DB}.Let}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \mathbf{case}\;\Varid{compile}\;\Varid{t}_{1}\;\mathbf{of}}$\\
+${\phantom{\Varid{compile}\;\mbox{}}\hskip6.00em\relax\Varid{t}_{1}'\to \mathbf{case}\;\Varid{compile}\;\Varid{t}_{2}\;\mathbf{of}}$\\
+${\phantom{\Varid{compile}\;\mbox{}}\hskip6.00em\relax\hskip1.50em\relax\Varid{t}_{2}'\to \Varid{t}_{1}'\plus [\mskip1.5mu \Conid{Let}\mskip1.5mu]\plus \Varid{t}_{2}'\plus [\mskip1.5mu \Conid{EndLet}\mskip1.5mu]}$\\
+${}$\\
+${\phantom{\Varid{compile}\;\mbox{}}\Conid{\Conid{DB}.Bop}\;\Varid{bop}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \mathbf{case}\;\Varid{compile}\;\Varid{t}_{1}\;\mathbf{of}}$\\
+${\phantom{\Varid{compile}\;\mbox{}}\hskip8.00em\relax\Varid{t}_{1}'\to \mathbf{case}\;\Varid{compile}\;\Varid{t}_{2}\;\mathbf{of}}$\\
+${\phantom{\Varid{compile}\;\mbox{}}\hskip8.00em\relax\hskip1.50em\relax\Varid{t}_{2}'\to \mathbf{case}\;\Varid{bop}\;\mathbf{of}}$\\
+${\phantom{\Varid{compile}\;\mbox{}}\hskip8.00em\relax\hskip1.50em\relax\hskip1.50em\relax\Conid{\Conid{DB}.Add}\to \Varid{t}_{1}'\plus \Varid{t}_{2}'\plus [\mskip1.5mu \Conid{Bop}\;\Conid{Add}\mskip1.5mu]}$\\
+${\phantom{\Varid{compile}\;\mbox{}}\hskip8.00em\relax\hskip1.50em\relax\hskip1.50em\relax\Conid{\Conid{DB}.Sub}\to \Varid{t}_{1}'\plus \Varid{t}_{2}'\plus [\mskip1.5mu \Conid{Bop}\;\Conid{Sub}\mskip1.5mu]}$\\
+${\phantom{\Varid{compile}\;\mbox{}}\hskip8.00em\relax\hskip1.50em\relax\hskip1.50em\relax\Conid{\Conid{DB}.Mul}\to \Varid{t}_{1}'\plus \Varid{t}_{2}'\plus [\mskip1.5mu \Conid{Bop}\;\Conid{Mul}\mskip1.5mu]}$\\
+${\phantom{\Varid{compile}\;\mbox{}}\hskip8.00em\relax\hskip1.50em\relax\hskip1.50em\relax\Conid{\Conid{DB}.Div}\to \Varid{t}_{1}'\plus \Varid{t}_{2}'\plus [\mskip1.5mu \Conid{Bop}\;\Conid{Div}\mskip1.5mu]}$\\
+${\phantom{\Varid{compile}\;\mbox{}}\hskip8.00em\relax\hskip1.50em\relax\hskip1.50em\relax\Conid{\Conid{DB}.Nand}\to \Varid{t}_{1}'\plus \Varid{t}_{2}'\plus [\mskip1.5mu \Conid{Bop}\;\Conid{Nand}\mskip1.5mu]}$\\
+${}$\\
+${\phantom{\Varid{compile}\;\mbox{}}\Conid{\Conid{DB}.Bpr}\;\Varid{bpr}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \mathbf{case}\;\Varid{compile}\;\Varid{t}_{1}\;\mathbf{of}}$\\
+${\phantom{\Varid{compile}\;\mbox{}}\hskip8.00em\relax\Varid{t}_{1}'\to \mathbf{case}\;\Varid{compile}\;\Varid{t}_{2}\;\mathbf{of}}$\\
+${\phantom{\Varid{compile}\;\mbox{}}\hskip8.00em\relax\hskip1.50em\relax\Varid{t}_{2}'\to \mathbf{case}\;\Varid{bpr}\;\mathbf{of}}$\\
+${\phantom{\Varid{compile}\;\mbox{}}\hskip8.00em\relax\hskip1.50em\relax\hskip1.50em\relax\Conid{\Conid{DB}.Eq}\to \Varid{t}_{1}'\plus \Varid{t}_{2}'\plus [\mskip1.5mu \Conid{Bpr}\;\Conid{Eq}\mskip1.5mu]}$\\
+${\phantom{\Varid{compile}\;\mbox{}}\hskip8.00em\relax\hskip1.50em\relax\hskip1.50em\relax\Conid{\Conid{DB}.Lt}\to \Varid{t}_{1}'\plus \Varid{t}_{2}'\plus [\mskip1.5mu \Conid{Bpr}\;\Conid{Lt}\mskip1.5mu]}$\\
+${\Varid{step}\mathbin{::}\Conid{State}\to \Conid{Maybe}\;\Conid{State}}$\\
+${\Varid{step}\;\Varid{state}\mathrel{=}\mathbf{case}\;\Varid{state}\;\mathbf{of}}$\\
+${\hskip4.00em\relax(\Conid{Access}\;\Varid{i}\mathbin{:}\Varid{c},\Varid{e},\Varid{s})\to \Conid{Just}\;(\Varid{c},\Varid{e},\Conid{Value}\;(\Varid{e}\mathbin{!!}\Varid{i})\mathbin{:}\Varid{s})}$\\
+${\hskip4.00em\relax(\Conid{If}\mathbin{:}(\Conid{Close}\;\Varid{t})\mathbin{:}(\Conid{Close}\;\Varid{f})\mathbin{:}\Varid{c},\Varid{e},(\Conid{Value}\;(\Conid{BoolVal}\;\Varid{v0}))\mathbin{:}\Varid{s})\to \mathbf{case}\;\Varid{v0}\;\mathbf{of}}$\\
+${\hskip4.00em\relax\phantom{(\Conid{If}\mathbin{:}(\Conid{Close}\;\Varid{t})\mathbin{:}(\Conid{Close}\;\Varid{f})\mathbin{:}\Varid{c},\Varid{e},(\Conid{Value}\;(\Conid{BoolVal}\;\Varid{v0}\mbox{}}\Conid{True}\to \Conid{Just}\;(\Varid{t}\plus \Varid{c},\Varid{e},\Varid{s})}$\\
+${\hskip4.00em\relax\phantom{(\Conid{If}\mathbin{:}(\Conid{Close}\;\Varid{t})\mathbin{:}(\Conid{Close}\;\Varid{f})\mathbin{:}\Varid{c},\Varid{e},(\Conid{Value}\;(\Conid{BoolVal}\;\Varid{v0}\mbox{}}\Conid{False}\to \Conid{Just}\;(\Varid{f}\plus \Varid{c},\Varid{e},\Varid{s})}$\\
+${\hskip4.00em\relax(\Conid{Close}\;\Varid{code'}\mathbin{:}\Varid{code},\Varid{env},\Varid{s})\to \Conid{Just}\;(\Varid{code},\Varid{env},(\Conid{Value}\;(\Conid{Clo}\;\Varid{code'}\;\Varid{env}))\mathbin{:}\Varid{s})}$\\
+${\hskip4.00em\relax(\Conid{Apply}\mathbin{:}\Varid{code},\Varid{env},(\Conid{Value}\;\Varid{v})\mathbin{:}(\Conid{Value}\;(\Conid{Clo}\;\Varid{code'}\;\Varid{env'}))\mathbin{:}\Varid{s})\to }$\\
+${\hskip4.00em\relax\hskip2.00em\relax\Conid{Just}\;(\Varid{code'},\Varid{v}\mathbin{:}\Varid{env'},(\Conid{Code}\;\Varid{code})\mathbin{:}(\Conid{Env}\;\Varid{env})\mathbin{:}\Varid{s})}$\\
+${\hskip4.00em\relax(\Conid{Apply}\mathbin{:}\Varid{code},\Varid{env},(\Conid{Value}\;\Varid{v})\mathbin{:}(\Conid{Value}\;(\Conid{CloFix}\;[\mskip1.5mu \Conid{Close}\;[\mskip1.5mu \Conid{Close}\;\Varid{code'},\Conid{Return}\mskip1.5mu],\Conid{Fix}\mskip1.5mu]\;\Varid{env'}))\mathbin{:}\Varid{s})\to }$\\
+${\hskip4.00em\relax\hskip2.00em\relax\Conid{Just}\;(\Varid{code'},\Varid{v}\mathbin{:}(\Conid{CloFix}\;[\mskip1.5mu \Conid{Close}\;[\mskip1.5mu \Conid{Close}\;\Varid{code'},\Conid{Return}\mskip1.5mu],\Conid{Fix}\mskip1.5mu]\;\Varid{env'})\mathbin{:}\Varid{env'},(\Conid{Code}\;\Varid{code})\mathbin{:}(\Conid{Env}\;\Varid{env})\mathbin{:}\Varid{s})}$\\
+${\hskip4.00em\relax(\Conid{Return}\mathbin{:}\Varid{c},\Varid{e},\Varid{s'}\mathbin{:}(\Conid{Code}\;\Varid{c'})\mathbin{:}(\Conid{Env}\;\Varid{e'})\mathbin{:}\Varid{s})\to \Conid{Just}\;(\Varid{c'},\Varid{e'},\Varid{s'}\mathbin{:}\Varid{s})}$\\
+${\hskip4.00em\relax(\Conid{Int}\;\Varid{n}\mathbin{:}\Varid{c},\Varid{e},\Varid{s})\to \Conid{Just}\;(\Varid{c},\Varid{e},(\Conid{Value}\;(\Conid{IntVal}\;\Varid{n}))\mathbin{:}\Varid{s})}$\\
+${\hskip4.00em\relax(\Conid{Bool}\;\Varid{b}\mathbin{:}\Varid{c},\Varid{e},\Varid{s})\to \Conid{Just}\;(\Varid{c},\Varid{e},(\Conid{Value}\;(\Conid{BoolVal}\;\Varid{b}))\mathbin{:}\Varid{s})}$\\
+${\hskip4.00em\relax((\Conid{Bop}\;\Varid{bop})\mathbin{:}\Varid{c},\Varid{e},(\Conid{Value}\;(\Conid{IntVal}\;\Varid{v2}))\mathbin{:}(\Conid{Value}\;(\Conid{IntVal}\;\Varid{v1}))\mathbin{:}\Varid{s})\to \mathbf{case}\;\Varid{bop}\;\mathbf{of}}$\\
+${\hskip4.00em\relax\phantom{((\Conid{Bop}\;\Varid{bop})\mathbin{:}\Varid{c},\Varid{e},(\Conid{Value}\;\mbox{}}\Conid{Add}\to \Conid{Just}\;(\Varid{c},\Varid{e},(\Conid{Value}\;(\Conid{IntVal}\;(\Varid{\Conid{I}.intAdd}\;\Varid{v1}\;\Varid{v2})))\mathbin{:}\Varid{s})}$\\
+${\hskip4.00em\relax\phantom{((\Conid{Bop}\;\Varid{bop})\mathbin{:}\Varid{c},\Varid{e},(\Conid{Value}\;\mbox{}}\Conid{Sub}\to \Conid{Just}\;(\Varid{c},\Varid{e},(\Conid{Value}\;(\Conid{IntVal}\;(\Varid{\Conid{I}.intSub}\;\Varid{v1}\;\Varid{v2})))\mathbin{:}\Varid{s})}$\\
+${\hskip4.00em\relax\phantom{((\Conid{Bop}\;\Varid{bop})\mathbin{:}\Varid{c},\Varid{e},(\Conid{Value}\;\mbox{}}\Conid{Mul}\to \Conid{Just}\;(\Varid{c},\Varid{e},(\Conid{Value}\;(\Conid{IntVal}\;(\Varid{\Conid{I}.intMul}\;\Varid{v1}\;\Varid{v2})))\mathbin{:}\Varid{s})}$\\
+${\hskip4.00em\relax\phantom{((\Conid{Bop}\;\Varid{bop})\mathbin{:}\Varid{c},\Varid{e},(\Conid{Value}\;\mbox{}}\Conid{Div}\to \Conid{Just}\;(\Varid{c},\Varid{e},(\Conid{Value}\;(\Conid{IntVal}\;(\Varid{\Conid{I}.intDiv}\;\Varid{v1}\;\Varid{v2})))\mathbin{:}\Varid{s})}$\\
+${\hskip4.00em\relax\phantom{((\Conid{Bop}\;\Varid{bop})\mathbin{:}\Varid{c},\Varid{e},(\Conid{Value}\;\mbox{}}\Conid{Nand}\to \Conid{Just}\;(\Varid{c},\Varid{e},(\Conid{Value}\;(\Conid{IntVal}\;(\Varid{\Conid{I}.intNand}\;\Varid{v1}\;\Varid{v2})))\mathbin{:}\Varid{s})}$\\
+${\hskip4.00em\relax((\Conid{Bpr}\;\Varid{bpr})\mathbin{:}\Varid{c},\Varid{e},(\Conid{Value}\;(\Conid{IntVal}\;\Varid{v2}))\mathbin{:}(\Conid{Value}\;(\Conid{IntVal}\;\Varid{v1}))\mathbin{:}\Varid{s})\to \mathbf{case}\;\Varid{bpr}\;\mathbf{of}}$\\
+${\hskip4.00em\relax\phantom{((\Conid{Bpr}\;\Varid{bpr})\mathbin{:}\Varid{c},\Varid{e},(\Conid{Value}\;\mbox{}}\Conid{Eq}\to \Conid{Just}\;(\Varid{c},\Varid{e},(\Conid{Value}\;(\Conid{BoolVal}\;(\Varid{\Conid{I}.intEq}\;\Varid{v1}\;\Varid{v2})))\mathbin{:}\Varid{s})}$\\
+${\hskip4.00em\relax\phantom{((\Conid{Bpr}\;\Varid{bpr})\mathbin{:}\Varid{c},\Varid{e},(\Conid{Value}\;\mbox{}}\Conid{Lt}\to \Conid{Just}\;(\Varid{c},\Varid{e},(\Conid{Value}\;(\Conid{BoolVal}\;(\Varid{\Conid{I}.intLt}\;\Varid{v1}\;\Varid{v2})))\mathbin{:}\Varid{s})}$\\
+${\hskip4.00em\relax(\Conid{Let}\mathbin{:}\Varid{code},\Varid{env},(\Conid{Value}\;\Varid{v})\mathbin{:}\Varid{s})\to \Conid{Just}\;(\Varid{code},\Varid{v}\mathbin{:}\Varid{env},\Varid{s})}$\\
+${\hskip4.00em\relax(\Conid{EndLet}\mathbin{:}\Varid{code},\Varid{v}\mathbin{:}\Varid{env},\Varid{s})\to \Conid{Just}\;(\Varid{code},\Varid{env},\Varid{s})}$\\
+${\hskip4.00em\relax(\Conid{Fix}\mathbin{:}\Varid{code},\Varid{env},(\Conid{Value}\;(\Conid{Clo}\;\Varid{code'}\;\Varid{env'}))\mathbin{:}\Varid{s})\to }$\\
+${\hskip4.00em\relax\phantom{(\Conid{Fix}\mbox{}}\Conid{Just}\;(\Varid{code'},(\Conid{CloFix}\;[\mskip1.5mu \Conid{Close}\;\Varid{code'},\Conid{Fix}\mskip1.5mu]\;[\mskip1.5mu \mskip1.5mu])\mathbin{:}\Varid{env},(\Conid{Code}\;\Varid{code})\mathbin{:}(\Conid{Env}\;\Varid{env})\mathbin{:}\Varid{s})}$\\
+${\hskip4.00em\relax\anonymous \to \Conid{Nothing}}$\\
+${\Varid{loop}\mathbin{::}\Conid{State}\to \Conid{State}}$\\
+${\Varid{loop}\;\Varid{state}\mathrel{=}}$\\
+${\hskip4.00em\relax\mathbf{case}\;\Varid{step}\;\Varid{state}\;\mathbf{of}}$\\
+${\hskip4.00em\relax\hskip4.00em\relax\Conid{Just}\;\Varid{state'}\to \Varid{loop}\;\Varid{state'}}$\\
+${\hskip4.00em\relax\hskip4.00em\relax\Conid{Nothing}\to \Varid{state}}$\\
+${}$\\
+${\Varid{eval}\mathbin{::}\Conid{\Conid{DB}.Term}\to \Conid{Value}}$\\
+${\Varid{eval}\;\Varid{t}\mathrel{=}\mathbf{case}\;\Varid{loop}\;(\Varid{compile}\;\Varid{t},[\mskip1.5mu \mskip1.5mu],[\mskip1.5mu \mskip1.5mu])\;\mathbf{of}}$\\
+${\hskip8.00em\relax(\anonymous ,\anonymous ,\Conid{Value}\;\Varid{v}\mathbin{:\char95 })\to \Varid{v}}$\\
+${\hskip8.00em\relax\anonymous \to \Varid{error}\;\text{\tt \char34 not~a~value\char34}}$\ColumnHook
+\end{hscode}\resethooks
+
+
+
+\section{CPS}
+
+\paragraph{}
+
+Implement CPS for the core lambda-language consisting of variables, abstractions, applications, primitive constants, primitive operations (+, -, etc.), if, let, and fix.
+
+\subsection{CPS Transformation Rules}
+
+\paragraph{}
+The CPS transformation scheme to be used is the one shown in class (the original Fischer-Plotkin CPS transformation). Here it is:
+
+\begin{align*}
+        \text{variables:\quad \quad } \llbracket x \rrbracket & = \lambda \kappa.\text{ }\kappa\text{ }x\\
+        \text{abstractions:\quad \quad } \llbracket \lambda x.t_1 \rrbracket & = \lambda \kappa.\text{ }\kappa\text{ }(\lambda x.\llbracket t_1 \rrbracket)\\
+        \text{applications:\quad \quad } \llbracket t_1\text{ }t_2 \rrbracket & = \lambda \kappa.\text{ }\llbracket t_1 \rrbracket (\lambda v_1.\text{ }\llbracket t_2 \rrbracket (\lambda v_2.\text{ }v_1\text{ }v_2\text{ }\kappa))\\
+        \text{constants:\quad \quad} \llbracket c \rrbracket &= \lambda \kappa.\text{ }\kappa\text{ }c
+\end{align*}
+
+\paragraph{}
+The constants include boolean and integer constants. Besides, we also implemented the following rules:
+
+\begin{align*}
+        \text{conditional terms:\quad \quad } \llbracket \text{ If } t_1 \text{ } t_2 \text{ }t_3 \rrbracket & = \lambda \kappa.\text{ }\llbracket t_1 \rrbracket \text{ }(\lambda v.\text{ If } v \text{ }(\llbracket t_2 \rrbracket \text{ }\kappa)\text{ }(\llbracket t_3 \rrbracket \text{ }\kappa))\\
+        \text{let bindings \cite{letBinding}:\quad \quad }\llbracket \text{ Let } x\text{ }t_1 \text{ } t_2 \rrbracket & = \lambda \kappa.\text{ }\llbracket t_1 \rrbracket \text{ }(\lambda v.\text{ Let } x \text{ }v\text{ }(\llbracket t_2 \rrbracket \text{ }\kappa))\\
+        \text{binary operators:\quad \quad }\llbracket bop\text{ }t_1 \text{ }t_2 \rrbracket &= \lambda \kappa.\text{ }\llbracket t_1 \rrbracket \text{ }(\lambda v_1.\text{ }\llbracket t_2 \rrbracket \text{ }(\lambda v_2.\text{ }(\kappa\text{ }(bop\text{ }v_1\text{ }v_2)))\\                                                                   
+        \text{fix terms:\quad \quad }\llbracket \text{ Fix } t_1\text{ }\rrbracket &= \begin{cases}
+                                                                                        \lambda \kappa.\text{ }\kappa\text{ }(\text{Fix }\lambda f.\text{ }\lambda x.\text{ }\llbracket t_{11} \rrbracket) &\text{\quad if } t_1 = \lambda f.\text{ }\lambda x.\text{ }t_{11},\\
+                                                                                        \lambda \kappa.\text{ }\llbracket t_1 \rrbracket \text{ }(\lambda v_1.\text{ }(\text{Fix } v_1)\text{ }\kappa) &\text{\quad otherwise.}
+                                                                                      \end{cases}
+\end{align*}
+
+\subsection{Type-Preserved CPS Transformation}
+
+\paragraph{}
+In addition, we also implement the type-preserved CPS transformation using a function to transform the types into CPS form, i.e. \textit{toCPSType} function in CPS module. Formally \cite{typeCPS}, given a primitive type $\sigma$ (TypeInt, TypeBool), its CPS form type $\sigma'$ is:
+\[
+        \sigma' = \sigma
+\]
+And for function type $\alpha \rightarrow \beta$, the associated CPS form $(\alpha \rightarrow \beta)'$ is:
+\[
+        (\alpha \rightarrow \beta)' = \alpha' \rightarrow (\beta' \rightarrow o) \rightarrow o 
+\]
+where $o$ is a pseudo continuation return ``type". Since continuations actually don't return values, we can set this $o$ to any type. In our implementation, we just add one parameter named \textit{answerType} for all CPS transformation functions, leaving it as a user option. But we also add ``\textbf{TypeNull}" in \textbf{Type} data structure of \emph{AbstractSyntax} module for debugging. Besides, for the generated continuation types, for example, given the transformation:
+\[
+        \llbracket t_1\text{ }t_2 \rrbracket = \lambda \kappa.\text{ }\llbracket t_1 \rrbracket (\lambda v_1.\text{ }\llbracket t_2 \rrbracket (\lambda v_2.\text{ }v_1\text{ }v_2\text{ }\kappa))
+\]
+if $t_1$ is of type $\alpha \rightarrow \beta$, then $v_1$ must be of type $(\alpha \rightarrow \beta)' = \alpha' \rightarrow (\beta' \rightarrow o) \rightarrow o$, $v_2$ of type $\alpha'$, and $\kappa$ of type $\beta' \rightarrow o$. And it is similar for all the other transformation rules.
+
+\subsection{Get Type With Context}
+
+\paragraph{}
+At first, we use \textbf{typeCheck} function in \emph{Typing} module to calculate the type for each subterm. However, for the case of variables and the subterms within abstractions and fix terms, since the type information of some variables are out of the scope, this method will fail.
+
+\paragraph{}
+So instead, we use \textbf{typing} function in \emph{Typing} module, which takes one argument of the current typing context $\Gamma$ explicitly. And in \emph{CPS} module, we also write a function \textbf{toCPSWithContext} to take this $\Gamma$ as an explicit argument. Then, we can just make the function \textbf{toCPS} to call it, starting with an empty typing context.
+\paragraph{}
+With this implementation, we can know that the only cases of adding typing pairs into $\Gamma$ are the \textbf{Let} bindings and the abstractions. For all the other cases, we can recursively call the \textbf{toCPSWithContext} function for the subterms with the current $\Gamma$.
+
+
+
+
+\paragraph{}
+The implementation of CPS transformation is as follows:
+
+
+\begin{hscode}\SaveRestoreHook
+${\mathbf{module}\;\Conid{CPS}\;\mathbf{where}}$\\
+${}$\\
+${\mathbf{import}\;\Conid{\Conid{Data}.Maybe}}$\\
+${}$\\
+${\mathbf{import}\;\Varid{qualified}\;\Conid{AbstractSyntax}\;\Varid{as}\;\Conid{S}}$\\
+${\mathbf{import}\;\Varid{qualified}\;\Conid{Typing}\;\Varid{as}\;\Conid{T}}$\\
+${}$\\
+${\Varid{toCPSType}\mathbin{::}\Conid{\Conid{S}.Type}\to \Conid{\Conid{S}.Type}\to \Conid{\Conid{S}.Type}}$\\
+${\Varid{toCPSType}\;\Conid{\Conid{S}.TypeBool}\;\anonymous \mathrel{=}\Conid{\Conid{S}.TypeBool}}$\\
+${\Varid{toCPSType}\;\Conid{\Conid{S}.TypeInt}\;\anonymous \mathrel{=}\Conid{\Conid{S}.TypeInt}}$\\
+${\Varid{toCPSType}\;(\Conid{\Conid{S}.TypeArrow}\;\tau_{1}\;\tau_{2})\;\Varid{answerType}\mathrel{=}}$\\
+${\hskip1.00em\relax\Conid{\Conid{S}.TypeArrow}\;(\Varid{toCPSType}\;\tau_{1}\;\Varid{answerType})\;(\Conid{\Conid{S}.TypeArrow}\;(\Conid{\Conid{S}.TypeArrow}\;(\Varid{toCPSType}\;\tau_{2}\;\Varid{answerType})\;\Varid{answerType})}$\\
+${\hskip1.00em\relax\hskip8.00em\relax\Varid{answerType})}$\\
+${}$\\
+${\Varid{toCPSWithContext}\mathbin{::}\Conid{\Conid{S}.Type}\to \Conid{\Conid{S}.Term}\to \Conid{\Conid{T}.Context}\to \Conid{\Conid{S}.Term}}$\\
+${\Varid{toCPSWithContext}\;\Varid{answerType}\;\Varid{t}\;\Gamma\mathrel{=}}$\\
+${\hskip1.00em\relax\mathbf{case}\;\Varid{t}\;\mathbf{of}}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Conid{\Conid{S}.IntConst}\;\Varid{n}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;(\Conid{\Conid{S}.TypeArrow}\;\Conid{\Conid{S}.TypeInt}\;\Varid{answerType})\;(\Conid{\Conid{S}.App}\;(\Conid{\Conid{S}.Var}\;\text{``}\kappa\text{``})\;\Varid{t})}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Conid{\Conid{S}.Tru}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;(\Conid{\Conid{S}.TypeArrow}\;\Conid{\Conid{S}.TypeBool}\;\Varid{answerType})\;(\Conid{\Conid{S}.App}\;(\Conid{\Conid{S}.Var}\;\text{``}\kappa\text{``})\;\Varid{t})}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Conid{\Conid{S}.Fls}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;(\Conid{\Conid{S}.TypeArrow}\;\Conid{\Conid{S}.TypeBool}\;\Varid{answerType})\;(\Conid{\Conid{S}.App}\;(\Conid{\Conid{S}.Var}\;\text{``}\kappa\text{``})\;\Varid{t})}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Conid{\Conid{S}.Var}\;\Varid{x}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;(\Conid{\Conid{S}.TypeArrow}\;(\Varid{toCPSType}\;(\Varid{fromJust}\mathbin{\$}\Varid{\Conid{T}.typing}\;\Gamma\;\Varid{t})\;\Varid{answerType})\;\Varid{answerType})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.Var}\;\Varid{x}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Conid{\Conid{S}.Var}\;\text{``}\kappa\text{``})\;\Varid{t})}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Conid{\Conid{S}.App}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;(\Conid{\Conid{S}.TypeArrow}\;(\Varid{toCPSType}\;(\Varid{fromJust}\mathbin{\$}\Varid{\Conid{T}.typing}\;\Gamma\;\Varid{t})\;\Varid{answerType})\;\Varid{answerType})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.App}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Varid{toCPSWithContext}\;\Varid{answerType}\;\Varid{t}_{1}\;\Gamma)\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.App}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;(\Varid{toCPSType}\;(\Varid{fromJust}\mathbin{\$}\Varid{\Conid{T}.typing}\;\Gamma\;\Varid{t}_{1})\;\Varid{answerType})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.App}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Varid{toCPSWithContext}\;\Varid{answerType}\;\Varid{t}_{2}\;\Gamma)\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.App}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;(\Varid{toCPSType}\;(\Varid{fromJust}\mathbin{\$}\Varid{\Conid{T}.typing}\;\Gamma\;\Varid{t}_{2})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.App}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\hskip10.00em\relax\Varid{answerType})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.App}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Conid{\Conid{S}.App}\;(\Conid{\Conid{S}.Var}\;\text{\tt \char34 v1\char34})\;(\Conid{\Conid{S}.Var}\;\text{\tt \char34 v2\char34}))\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.App}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.Var}\;\text{``}\kappa\text{``}))))))}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Conid{\Conid{S}.Abs}\;\Varid{x}\;\tau_{1}\;\Varid{t}_{1}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;(\Conid{\Conid{S}.TypeArrow}\;(\Varid{toCPSType}\;(\Varid{fromJust}\mathbin{\$}\Varid{\Conid{T}.typing}\;\Gamma\;\Varid{t})\;\Varid{answerType})\;\Varid{answerType})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.Abs}\;\Varid{x}\;\tau_{1}\;\Varid{t}_{1}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Conid{\Conid{S}.Var}\;\text{``}\kappa\text{``})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.Abs}\;\Varid{x}\;\tau_{1}\;\Varid{t}_{1}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.Abs}\;\Varid{x}\;(\Varid{toCPSType}\;\tau_{1}\;\Varid{answerType})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.Abs}\;\Varid{x}\;\tau_{1}\;\Varid{t}_{1}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\Varid{x}\;\mbox{}}(\Varid{toCPSWithContext}\;\Varid{answerType}\;\Varid{t}_{1}\;(\Conid{\Conid{T}.Bind}\;\Gamma\;\Varid{x}\;\tau_{1}))))}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Conid{\Conid{S}.If}\;\Varid{t}_{1}\;\Varid{t}_{2}\;\Varid{t}_{3}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;(\Conid{\Conid{S}.TypeArrow}\;(\Varid{toCPSType}\;(\Varid{fromJust}\mathbin{\$}\Varid{\Conid{T}.typing}\;\Gamma\;\Varid{t})\;\Varid{answerType})\;\Varid{answerType})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.If}\;\Varid{t}_{1}\;\Varid{t}_{2}\;\Varid{t}_{3}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Varid{toCPSWithContext}\;\Varid{answerType}\;\Varid{t}_{1}\;\Gamma)\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.If}\;\Varid{t}_{1}\;\Varid{t}_{2}\;\Varid{t}_{3}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v\char34}\;(\Varid{toCPSType}\;(\Varid{fromJust}\mathbin{\$}\Varid{\Conid{T}.typing}\;\Gamma\;\Varid{t}_{1})\;\Varid{answerType})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.If}\;\Varid{t}_{1}\;\Varid{t}_{2}\;\Varid{t}_{3}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v\char34}\;\mbox{}}(\Conid{\Conid{S}.If}\;(\Conid{\Conid{S}.Var}\;\text{\tt \char34 v\char34})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.If}\;\Varid{t}_{1}\;\Varid{t}_{2}\;\Varid{t}_{3}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v\char34}\;\mbox{}}\hskip1.00em\relax(\Conid{\Conid{S}.App}\;(\Varid{toCPSWithContext}\;\Varid{answerType}\;\Varid{t}_{2}\;\Gamma)\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.If}\;\Varid{t}_{1}\;\Varid{t}_{2}\;\Varid{t}_{3}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v\char34}\;\mbox{}}\hskip1.00em\relax\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.Var}\;\text{``}\kappa\text{``}))\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.If}\;\Varid{t}_{1}\;\Varid{t}_{2}\;\Varid{t}_{3}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v\char34}\;\mbox{}}\hskip1.00em\relax(\Conid{\Conid{S}.App}\;(\Varid{toCPSWithContext}\;\Varid{answerType}\;\Varid{t}_{3}\;\Gamma)\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.If}\;\Varid{t}_{1}\;\Varid{t}_{2}\;\Varid{t}_{3}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v\char34}\;\mbox{}}\hskip1.00em\relax\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.Var}\;\text{``}\kappa\text{``})))))}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Conid{\Conid{S}.Let}\;\Varid{x}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;(\Conid{\Conid{S}.TypeArrow}\;(\Varid{toCPSType}\;(\Varid{fromJust}\mathbin{\$}\Varid{\Conid{T}.typing}\;\Gamma\;\Varid{t})\;\Varid{answerType})\;\Varid{answerType})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.Let}\;\Varid{x}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Varid{toCPSWithContext}\;\Varid{answerType}\;\Varid{t}_{1}\;\Gamma)\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.Let}\;\Varid{x}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v\char34}\;(\Varid{toCPSType}\;(\Varid{fromJust}\mathbin{\$}\Varid{\Conid{T}.typing}\;\Gamma\;\Varid{t}_{1})\;\Varid{answerType})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.Let}\;\Varid{x}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v\char34}\;\mbox{}}(\Conid{\Conid{S}.Let}\;\Varid{x}\;(\Conid{\Conid{S}.Var}\;\text{\tt \char34 v\char34})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.Let}\;\Varid{x}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Let}\;\Varid{x}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Varid{toCPSWithContext}\;\Varid{answerType}\;\Varid{t}_{2}\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.Let}\;\Varid{x}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Let}\;\Varid{x}\;\mbox{}}\hskip5.50em\relax(\Conid{\Conid{T}.Bind}\;\Gamma\;\Varid{x}\;(\Varid{fromJust}\mathbin{\$}\Varid{\Conid{T}.typing}}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.Let}\;\Varid{x}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Let}\;\Varid{x}\;\mbox{}}\hskip5.50em\relax\phantom{(\Conid{\Conid{T}.Bind}\;\Gamma\;\Varid{x}\;(\mbox{}}\Gamma\;\Varid{t}_{1})))\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.Let}\;\Varid{x}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Let}\;\Varid{x}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.Var}\;\text{``}\kappa\text{``})))))}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Conid{\Conid{S}.Fix}\;\Varid{t}_{1}\to }$\\
+${\hskip1.00em\relax\hskip1.00em\relax\hskip1.00em\relax\mathbf{case}\;\Varid{t}_{1}\;\mathbf{of}}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\hskip1.00em\relax\hskip1.00em\relax\Conid{\Conid{S}.Abs}\;\Varid{f}\;\tau_{1}\;(\Conid{\Conid{S}.Abs}\;\Varid{x}\;\tau_{2}\;\Varid{t11})\to }$\\
+${\hskip1.00em\relax\hskip1.00em\relax\hskip1.00em\relax\hskip1.00em\relax\hskip2.00em\relax\Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;(\Conid{\Conid{S}.TypeArrow}\;(\Varid{toCPSType}\;(\Varid{fromJust}\mathbin{\$}\Varid{\Conid{T}.typing}\;\Gamma\;\Varid{t})\;\Varid{answerType})\;\Varid{answerType})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\hskip1.00em\relax\hskip1.00em\relax\hskip2.00em\relax\phantom{\Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Conid{\Conid{S}.Var}\;\text{``}\kappa\text{``})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\hskip1.00em\relax\hskip1.00em\relax\hskip2.00em\relax\phantom{\Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.Fix}\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\hskip1.00em\relax\hskip1.00em\relax\hskip2.00em\relax\phantom{\Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\hskip1.00em\relax(\Conid{\Conid{S}.Abs}\;\Varid{f}\;(\Varid{toCPSType}\;\tau_{1}\;\Varid{answerType})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\hskip1.00em\relax\hskip1.00em\relax\hskip2.00em\relax\phantom{\Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\hskip1.00em\relax\phantom{(\Conid{\Conid{S}.Abs}\;\Varid{f}\;\mbox{}}(\Conid{\Conid{S}.Abs}\;\Varid{x}\;(\Varid{toCPSType}\;\tau_{2}\;\Varid{answerType})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\hskip1.00em\relax\hskip1.00em\relax\hskip2.00em\relax\phantom{\Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\hskip1.00em\relax\phantom{(\Conid{\Conid{S}.Abs}\;\Varid{f}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\Varid{x}\;\mbox{}}(\Varid{toCPSWithContext}\;\Varid{answerType}\;\Varid{t11}\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\hskip1.00em\relax\hskip1.00em\relax\hskip2.00em\relax\phantom{\Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\hskip1.00em\relax\phantom{(\Conid{\Conid{S}.Abs}\;\Varid{f}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\Varid{x}\;\mbox{}}\hskip2.50em\relax(\Conid{\Conid{T}.Bind}\;(\Conid{\Conid{T}.Bind}\;\Gamma\;\Varid{f}\;\tau_{1})\;\Varid{x}\;\tau_{2}))))))}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\hskip1.00em\relax\hskip1.00em\relax\anonymous \to }$\\
+${\hskip1.00em\relax\hskip1.00em\relax\hskip1.00em\relax\hskip1.00em\relax\hskip2.00em\relax\Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;(\Conid{\Conid{S}.TypeArrow}\;(\Varid{toCPSType}\;(\Varid{fromJust}\mathbin{\$}\Varid{\Conid{T}.typing}\;\Gamma\;\Varid{t})\;\Varid{answerType})\;\Varid{answerType})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\hskip1.00em\relax\hskip1.00em\relax\hskip2.00em\relax\phantom{\Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Varid{toCPSWithContext}\;\Varid{answerType}\;\Varid{t}_{1}\;\Gamma)\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\hskip1.00em\relax\hskip1.00em\relax\hskip2.00em\relax\phantom{\Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;(\Varid{toCPSType}\;(\Varid{fromJust}\mathbin{\$}\Varid{\Conid{T}.typing}\;\Gamma\;\Varid{t}_{1})\;\Varid{answerType})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\hskip1.00em\relax\hskip1.00em\relax\hskip2.00em\relax\phantom{\Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Conid{\Conid{S}.Fix}\;(\Conid{\Conid{S}.Var}\;\text{\tt \char34 v1\char34}))\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\hskip1.00em\relax\hskip1.00em\relax\hskip2.00em\relax\phantom{\Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.Var}\;\text{``}\kappa\text{``}))))}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Conid{\Conid{S}.IntAdd}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;(\Conid{\Conid{S}.TypeArrow}\;\Conid{\Conid{S}.TypeInt}\;\Varid{answerType})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntAdd}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Varid{toCPSWithContext}\;\Varid{answerType}\;\Varid{t}_{1}\;\Gamma)\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntAdd}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\Conid{\Conid{S}.TypeInt}\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntAdd}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Varid{toCPSWithContext}\;\Varid{answerType}\;\Varid{t}_{2}\;\Gamma)\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntAdd}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;\Conid{\Conid{S}.TypeInt}\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntAdd}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Conid{\Conid{S}.Var}\;\text{``}\kappa\text{``})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntAdd}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.IntAdd}\;(\Conid{\Conid{S}.Var}\;\text{\tt \char34 v1\char34})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntAdd}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.IntAdd}\;\mbox{}}(\Conid{\Conid{S}.Var}\;\text{\tt \char34 v2\char34})))))))}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Conid{\Conid{S}.IntSub}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;(\Conid{\Conid{S}.TypeArrow}\;\Conid{\Conid{S}.TypeInt}\;\Varid{answerType})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntSub}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Varid{toCPSWithContext}\;\Varid{answerType}\;\Varid{t}_{1}\;\Gamma)\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntSub}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\Conid{\Conid{S}.TypeInt}\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntSub}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Varid{toCPSWithContext}\;\Varid{answerType}\;\Varid{t}_{2}\;\Gamma)\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntSub}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;\Conid{\Conid{S}.TypeInt}\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntSub}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Conid{\Conid{S}.Var}\;\text{``}\kappa\text{``})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntSub}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.IntSub}\;(\Conid{\Conid{S}.Var}\;\text{\tt \char34 v1\char34})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntSub}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.IntSub}\;\mbox{}}(\Conid{\Conid{S}.Var}\;\text{\tt \char34 v2\char34})))))))}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Conid{\Conid{S}.IntMul}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;(\Conid{\Conid{S}.TypeArrow}\;\Conid{\Conid{S}.TypeInt}\;\Varid{answerType})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntMul}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Varid{toCPSWithContext}\;\Varid{answerType}\;\Varid{t}_{1}\;\Gamma)\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntMul}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\Conid{\Conid{S}.TypeInt}\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntMul}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Varid{toCPSWithContext}\;\Varid{answerType}\;\Varid{t}_{2}\;\Gamma)\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntMul}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;\Conid{\Conid{S}.TypeInt}\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntMul}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Conid{\Conid{S}.Var}\;\text{``}\kappa\text{``})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntMul}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.IntMul}\;(\Conid{\Conid{S}.Var}\;\text{\tt \char34 v1\char34})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntMul}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.IntMul}\;\mbox{}}(\Conid{\Conid{S}.Var}\;\text{\tt \char34 v2\char34})))))))}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Conid{\Conid{S}.IntDiv}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;(\Conid{\Conid{S}.TypeArrow}\;\Conid{\Conid{S}.TypeInt}\;\Varid{answerType})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntDiv}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Varid{toCPSWithContext}\;\Varid{answerType}\;\Varid{t}_{1}\;\Gamma)\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntDiv}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\Conid{\Conid{S}.TypeInt}\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntDiv}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Varid{toCPSWithContext}\;\Varid{answerType}\;\Varid{t}_{2}\;\Gamma)\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntDiv}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;\Conid{\Conid{S}.TypeInt}\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntDiv}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Conid{\Conid{S}.Var}\;\text{``}\kappa\text{``})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntDiv}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.IntDiv}\;(\Conid{\Conid{S}.Var}\;\text{\tt \char34 v1\char34})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntDiv}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.IntDiv}\;\mbox{}}(\Conid{\Conid{S}.Var}\;\text{\tt \char34 v2\char34})))))))}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Conid{\Conid{S}.IntNand}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;(\Conid{\Conid{S}.TypeArrow}\;\Conid{\Conid{S}.TypeInt}\;\Varid{answerType})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntNand}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Varid{toCPSWithContext}\;\Varid{answerType}\;\Varid{t}_{1}\;\Gamma)\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntNand}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\Conid{\Conid{S}.TypeInt}\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntNand}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Varid{toCPSWithContext}\;\Varid{answerType}\;\Varid{t}_{2}\;\Gamma)\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntNand}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;\Conid{\Conid{S}.TypeInt}\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntNand}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Conid{\Conid{S}.Var}\;\text{``}\kappa\text{``})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntNand}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.IntNand}\;(\Conid{\Conid{S}.Var}\;\text{\tt \char34 v1\char34})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntNand}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.IntNand}\;\mbox{}}(\Conid{\Conid{S}.Var}\;\text{\tt \char34 v2\char34})))))))}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Conid{\Conid{S}.IntEq}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;(\Conid{\Conid{S}.TypeArrow}\;\Conid{\Conid{S}.TypeBool}\;\Varid{answerType})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntEq}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Varid{toCPSWithContext}\;\Varid{answerType}\;\Varid{t}_{1}\;\Gamma)\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntEq}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\Conid{\Conid{S}.TypeInt}\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntEq}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Varid{toCPSWithContext}\;\Varid{answerType}\;\Varid{t}_{2}\;\Gamma)\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntEq}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;\Conid{\Conid{S}.TypeInt}\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntEq}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Conid{\Conid{S}.Var}\;\text{``}\kappa\text{``})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntEq}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.IntEq}\;(\Conid{\Conid{S}.Var}\;\text{\tt \char34 v1\char34})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntEq}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.IntEq}\;\mbox{}}(\Conid{\Conid{S}.Var}\;\text{\tt \char34 v2\char34})))))))}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\Conid{\Conid{S}.IntLt}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;(\Conid{\Conid{S}.TypeArrow}\;\Conid{\Conid{S}.TypeBool}\;\Varid{answerType})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntLt}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Varid{toCPSWithContext}\;\Varid{answerType}\;\Varid{t}_{1}\;\Gamma)\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntLt}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\Conid{\Conid{S}.TypeInt}\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntLt}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Varid{toCPSWithContext}\;\Varid{answerType}\;\Varid{t}_{2}\;\Gamma)\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntLt}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;\Conid{\Conid{S}.TypeInt}\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntLt}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;\mbox{}}(\Conid{\Conid{S}.App}\;(\Conid{\Conid{S}.Var}\;\text{``}\kappa\text{``})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntLt}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v1\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phantom{(\Conid{\Conid{S}.Abs}\;\text{\tt \char34 v2\char34}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}(\Conid{\Conid{S}.IntLt}\;(\Conid{\Conid{S}.Var}\;\text{\tt \char34 v1\char34})\;}$\\
+${\hskip1.00em\relax\hskip1.00em\relax\phantom{\Conid{\Conid{S}.IntLt}\;\Varid{t}_{1}\;\Varid{t}_{2}\to \Conid{\Conid{S}.Abs}\;\text{``}\kappa\text{``}\;\mbox{}}\phantom{(\Conid{\Conid{S}.App}\;\mbox{}}\phanto

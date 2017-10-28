@@ -1,0 +1,15 @@
+----Term----
+abs(x:Int.3)
+----Type----
+->(Int,Int)
+----DBTerm----
+abs(:Int.3)
+----Natural Semantics with Clo,Env and DB Term----
+Clo abs(:Int.3) []
+----CES Machine Code----
+[Close [Int 3,Return]]
+
+----CES Final state----
+([],[],[Env [Clo [Int 3,Return] []]])
+
+----CES Eval----

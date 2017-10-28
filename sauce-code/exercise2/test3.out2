@@ -1,0 +1,20 @@
+----Term----
+app(app(fix abs(e:->(Int,->(Int,Int)).
+  abs(x:Int.abs(y:Int.if =(0,y) then 1 
+    else *(x,app(app(e,x),-(y,1))) fi))),2),3)
+----Type----
+Int
+----Normal Form in Structureal Operational Semantics----
+8
+----Normal Form of Natural Semantics----
+8
+----Standard Reduction----
+8
+----CC Machine----
+8
+----CK Machine----
+8
+----CEK Machine----
+8
+----SCC Machine----
+8

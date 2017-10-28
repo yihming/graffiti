@@ -1,0 +1,1 @@
+app(abs(x:Int.app(abs(z:Int.*(z,x)) ,5)), app(abs(x:Int.^(x, 2)), 4))

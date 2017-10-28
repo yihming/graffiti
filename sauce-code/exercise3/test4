@@ -1,0 +1,1 @@
+  app(app(app(abs(x:Int.abs(y:Int.abs(z:Int. +(x, *(y, z))))), 2), 3), 6)

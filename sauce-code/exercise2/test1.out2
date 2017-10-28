@@ -1,0 +1,20 @@
+----Term----
+let iseven 
+  let mod abs(m:Int.abs(n:Int.-(m,*(n,/(m,n))))) 
+      abs(k:Int.=(0,app(app(mod,k),2))) app(iseven,7)
+----Type----
+Bool
+----Normal Form in Structureal Operational Semantics----
+false
+----Normal Form of Natural Semantics----
+false
+----Standard Reduction----
+false
+----CC Machine----
+false
+----CK Machine----
+false
+----CEK Machine----
+false
+----SCC Machine----
+false

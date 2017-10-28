@@ -1,0 +1,40 @@
+----Term----
+if <(app(abs(x:Int.-(x,1)),2),0) then true else false fi
+----Type----
+Bool
+----DBTerm----
+if <(app(abs(:Int.-((Index 0), 1)),2),0) then true else false fi
+----Natural Semantics with Clo,Env and DB Term----
+BoolVal False
+----CES Machine Code----
+[Close [Access 0,Int 1,Bop -,Return],Int 2,Apply,Int 0,Bpr <,Bool True,Bool False,If]
+
+----CES Final state----
+([],[],[Value (BoolVal False)])
+
+----CES Eval----
+BoolVal False
+----CPS Form----
+abs(kappa:->(Bool,Int).app(abs(kappa:->(Int,Int).app(abs(kappa:->(Int,Int).app(abs
+(kappa:->(->(Int,->(->(Int,Int),Int)),Int).app(kappa,abs(x:Int.abs(kappa:->
+(Int,Int).app(abs(kappa:->(Int,Int).app(kappa,x)),abs(v1:Int.app(abs(kappa:->
+(Int,Int).app(kappa,1)),abs(v2:Int.app(kappa,-(v1,v2)))))))))),abs(v1:->(Int,->
+(->(Int,Int),Int)).app(abs(kappa:->(Int,Int).app(kappa,2)),abs(v2:Int.app(app
+(v1,v2),kappa)))))),abs(v1:Int.app(abs(kappa:->(Int,Int).app(kappa,0)),abs
+(v2:Int.app(kappa,<(v1,v2))))))),abs(v:Bool.if v then app(abs(kappa:->(Bool,
+Int).app(kappa,true)),kappa) else app(abs(kappa:->(Bool,Int).app(kappa,false)),kappa) fi)))
+---CPS Normal Form----
+false
+----CE3R DBterm----
+app(abs(:->(Bool,Int).app(abs(:->(Int,Int).app(abs(:->(Int,Int).app(abs(:->
+(->(Int,->(->(Int,Int),Int)),Int).app((Index 0),abs(:Int.abs(:->(Int,Int).app
+(abs(:->(Int,Int).app((Index 0),(Index 2))),abs(:Int.app(abs(:->(Int,Int).app(
+(Index 0),1)),abs(:Int.app((Index 2),-((Index 1), (Index 0))))))))))),abs(:->
+(Int,->(->(Int,Int),Int)).app(abs(:->(Int,Int).app((Index 0),2)),abs(:Int.app
+(app((Index 1),(Index 0)),(Index 2))))))),abs(:Int.app(abs(:->(Int,Int).app(
+(Index 0),0)),abs(:Int.app((Index 2),<((Index 1),(Index 0)))))))),abs(:Bool.if 
+(Index 0) then app(abs(:->(Bool,Int).app((Index 0),true)),(Index 1)) else app
+(abs(:->(Bool,Int).app((Index 0),false)),(Index 1)) fi))),abs(:Int.(Index 0)))
+----CE3R Machine----
+Main: Unsupported term
+

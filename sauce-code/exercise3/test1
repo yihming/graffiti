@@ -1,0 +1,1 @@
+app (abs (k:Int. =(0, app(app(abs (m:Int. abs(n:Int. -(m, *(n, /(m, n))))), k), 2))), 7)

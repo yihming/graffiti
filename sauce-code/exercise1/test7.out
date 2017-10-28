@@ -1,0 +1,8 @@
+----Term----
+if true then true else false fi
+----Type----
+Bool
+----Normal Form of Small-Step Style----
+true
+----Normal Form of Big-Step Style----
+true

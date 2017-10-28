@@ -1,0 +1,20 @@
+----Term----
+app(fix abs(ie:->(Int,Bool).abs(x:Int.
+  if =(0,x) then true else if =(0,-(x,1)) then false 
+    else app(ie,-(x,2)) fi fi)),7)
+----Type----
+Bool
+----Normal Form in Structureal Operational Semantics----
+false
+----Normal Form of Natural Semantics----
+false
+----Standard Reduction----
+false
+----CC Machine----
+false
+----CK Machine----
+false
+----CEK Machine----
+false
+----SCC Machine----
+false

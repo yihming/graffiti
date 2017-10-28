@@ -1,0 +1,85 @@
+----Term----
+app(fix abs(f:->(Int,Int).abs(x:Int.if =(0,x) then 1 else *(x,app(f,-(x,1))) fi)),
+app(fix abs(f:->(Int,Int).abs(x:Int.if =(0,x) then 1 else *(x,app(f,-(x,1))) fi)),3))
+
+----Type----
+Int
+
+----Normal Form----
+720
+
+----DBTerm----
+app(fix abs(:->(Int,Int).abs(:Int.if =(0,(Index 0)) then 1 else *((Index 0), 
+app((Index 1),-((Index 0), 1))) fi)),app(fix abs(:->(Int,Int).
+abs(:Int.if =(0,(Index 0)) then 1 else *((Index 0), 
+app((Index 1),-((Index 0), 1))) fi)),3))
+
+----Natural Semantics with Clo,Env and DB Term----
+IntVal 720
+
+----CES Machine Code----
+[Close [Close [Int 0,Access 0,Bpr =,If,Close [Int 1],
+Close [Access 0,Access 1,Access 0,Int 1,Bop -,Apply,Bop *],Return],Return],
+Fix,Close [Close [Int 0,Access 0,Bpr =,If,Close [Int 1],
+Close [Access 0,Access 1,Access 0,Int 1,Bop -,Apply,Bop *],Return],Return],
+Fix,Int 3,Apply,Apply]
+
+----CES Eval----
+IntVal 720
+
+----CPS Form----
+abs(kappa:->(Int,0).app(abs(kappa:->(->(Int,->(->(Int,0),0)),0).app(kappa,
+fix abs(f:->(Int,->(->(Int,0),0)).abs(x:Int.abs(kappa:->(Int,0).app(abs(kappa:->(Bool,0).
+app(abs(kappa:->(Int,0).app(kappa,0)),abs(v1:Int.app(abs(kappa:->(Int,0).
+app(kappa,x)),abs(v2:Int.app(kappa,=(v1,v2))))))),abs(v:Bool.if v then 
+app(abs(kappa:->(Int,0).app(kappa,1)),kappa) else app(abs(kappa:->(Int,0).
+app(abs(kappa:->(Int,0).app(kappa,x)),abs(v1:Int.app(abs(kappa:->(Int,0).
+app(abs(kappa:->(->(Int,->(->(Int,0),0)),0).app(kappa,f)),
+abs(v1:->(Int,->(->(Int,0),0)).app(abs(kappa:->(Int,0).app(abs(
+kappa:->(Int,0).app(kappa,x)),abs(v1:Int.app(abs(kappa:->(Int,0).
+app(kappa,1)),abs(v2:Int.app(kappa,-(v1,v2))))))),abs(v2:Int.app(
+app(v1,v2),kappa)))))),abs(v2:Int.app(kappa,*(v1,v2))))))),kappa) fi))))))),
+abs(v1:->(Int,->(->(Int,0),0)).app(abs(kappa:->(Int,0).app(abs(
+kappa:->(->(Int,->(->(Int,0),0)),0).app(kappa,fix abs(f:->(Int,->(->(Int,0),0)).
+abs(x:Int.abs(kappa:->(Int,0).app(abs(kappa:->(Bool,0).app(abs(kappa:->(Int,0).
+app(kappa,0)),abs(v1:Int.app(abs(kappa:->(Int,0).app(kappa,x)),abs(v2:Int.app(
+kappa,=(v1,v2))))))),abs(v:Bool.if v then app(abs(kappa:->(Int,0).app(kappa,1)),
+kappa) else app(abs(kappa:->(Int,0).app(abs(kappa:->(Int,0).app(kappa,x)),
+abs(v1:Int.app(abs(kappa:->(Int,0).app(abs(kappa:->(->(Int,->(->(Int,0),0)),0).
+app(kappa,f)),abs(v1:->(Int,->(->(Int,0),0)).app(abs(kappa:->(Int,0).app(abs(
+kappa:->(Int,0).app(kappa,x)),abs(v1:Int.app(abs(kappa:->(Int,0).app(kappa,1)),
+abs(v2:Int.app(kappa,-(v1,v2))))))),abs(v2:Int.app(app(v1,v2),kappa)))))),
+abs(v2:Int.app(kappa,*(v1,v2))))))),kappa) fi))))))),abs(v1:->(Int,->(->(Int,0),0)).
+app(abs(kappa:->(Int,0).app(kappa,3)),abs(v2:Int.app(app(v1,v2),kappa)))))),
+abs(v2:Int.app(app(v1,v2),kappa))))))
+
+----CPS Type----
+->(->(Int,0),0)
+
+---CPS Normal Form----
+720
+
+----CE3R Machine Code----
+[CLOSE1 [CLOSE1 [ACCESS1 0,CLOSE2 [FIX [CLOSE1 [CLOSE1 [ACCESS1 0,CONST2 0,TAILAPPLY1],
+CLOSE2 [CLOSE1 [ACCESS1 0,ACCESS2 4,TAILAPPLY1],CLOSE2 [ACCESS1 2,EQ2 1 0,TAILAPPLY1],
+TAILAPPLY1],TAILAPPLY1],CLOSE2 [IF 0 [CLOSE1 [ACCESS1 0,CONST2 1,TAILAPPLY1],ACCESS2 1,
+TAILAPPLY1] [CLOSE1 [CLOSE1 [ACCESS1 0,ACCESS2 4,TAILAPPLY1],CLOSE2 [CLOSE1 [CLOSE1 
+[ACCESS1 0,ACCESS2 7,TAILAPPLY1],CLOSE2 [CLOSE1 [CLOSE1 [ACCESS1 0,ACCESS2 8,TAILAPPLY1],
+CLOSE2 [CLOSE1 [ACCESS1 0,CONST2 1,TAILAPPLY1],CLOSE2 [ACCESS1 2,SUB2 1 0,TAILAPPLY1],
+TAILAPPLY1],TAILAPPLY1],CLOSE2 [ACCESS1 1,ACCESS2 0,ACCESS3 2,TAILAPPLY2],TAILAPPLY1],
+TAILAPPLY1],CLOSE2 [ACCESS1 2,MUL2 1 0,TAILAPPLY1],TAILAPPLY1],TAILAPPLY1],ACCESS2 1,
+TAILAPPLY1]],TAILAPPLY1]],TAILAPPLY1],CLOSE2 [CLOSE1 [CLOSE1 [ACCESS1 0,CLOSE2 [FIX 
+[CLOSE1 [CLOSE1 [ACCESS1 0,CONST2 0,TAILAPPLY1],CLOSE2 [CLOSE1 [ACCESS1 0,ACCESS2 4,
+TAILAPPLY1],CLOSE2 [ACCESS1 2,EQ2 1 0,TAILAPPLY1],TAILAPPLY1],TAILAPPLY1],CLOSE2 [IF 0 
+[CLOSE1 [ACCESS1 0,CONST2 1,TAILAPPLY1],ACCESS2 1,TAILAPPLY1] [CLOSE1 [CLOSE1 [ACCESS1 0,
+ACCESS2 4,TAILAPPLY1],CLOSE2 [CLOSE1 [CLOSE1 [ACCESS1 0,ACCESS2 7,TAILAPPLY1],CLOSE2 
+[CLOSE1 [CLOSE1 [ACCESS1 0,ACCESS2 8,TAILAPPLY1],CLOSE2 [CLOSE1 [ACCESS1 0,CONST2 1,
+TAILAPPLY1],CLOSE2 [ACCESS1 2,SUB2 1 0,TAILAPPLY1],TAILAPPLY1],TAILAPPLY1],CLOSE2 
+[ACCESS1 1,ACCESS2 0,ACCESS3 2,TAILAPPLY2],TAILAPPLY1],TAILAPPLY1],CLOSE2 [ACCESS1 2,
+MUL2 1 0,TAILAPPLY1],TAILAPPLY1],TAILAPPLY1],ACCESS2 1,TAILAPPLY1]],TAILAPPLY1]],TAILAPPLY1],
+CLOSE2 [CLOSE1 [ACCESS1 0,CONST2 3,TAILAPPLY1],CLOSE2 [ACCESS1 1,ACCESS2 0,ACCESS3 2,
+TAILAPPLY2],TAILAPPLY1],TAILAPPLY1],CLOSE2 [ACCESS1 1,ACCESS2 0,ACCESS3 2,TAILAPPLY2],
+TAILAPPLY1],TAILAPPLY1],CLOSE2 [ACCESS1 0],TAILAPPLY1]
+
+----CE3R Machine----
+IntVal 720

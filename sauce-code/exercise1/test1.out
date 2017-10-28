@@ -1,0 +1,8 @@
+----Term----
+app(abs(x:Int.+(x,3)),4)
+----Type----
+Int
+----Normal Form of Small-Step Style----
+7
+----Normal Form of Big-Step Style----
+7

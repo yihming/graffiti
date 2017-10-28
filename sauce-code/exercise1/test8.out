@@ -1,0 +1,8 @@
+----Term----
+if =(0,0) then 8 else 9 fi
+----Type----
+Int
+----Normal Form of Small-Step Style----
+8
+----Normal Form of Big-Step Style----
+8
