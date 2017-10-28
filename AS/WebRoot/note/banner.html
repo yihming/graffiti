@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>banner</title>
+<script language="javascript" src="../js/jquery-1.2.6.min.js"></script>
+<script language="javascript"> 
+   $("document").ready(function(){
+      $("#banner ul li:first").addClass("active");
+       $("#banner ul li").click(function(){
+	   $(this).siblings().removeClass("active");
+	       $(this).addClass("active");
+	   });
+	});
+</script>
+
+<link href="../css/base.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+
+<div id="banner">
+<div id="banner_left"></div>
+<div id="banner_middle" >
+   <ul>
+      
+      
+      <li ><a href="noteAdd.jsp" target="body">添加新便签</a></li>
+      <li ><a href="noteHistory.jsp" target="body">历史便签</a></li>
+ 
+   </ul>
+   </div>
+   <div id="banner_right" ></div>
+</div>
+</body>
+</html>

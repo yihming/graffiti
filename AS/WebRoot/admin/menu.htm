@@ -1,0 +1,180 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE></TITLE>
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<META http-equiv=Pragma content=no-cache>
+<META http-equiv=Cache-Control content=no-cache>
+<META http-equiv=Expires content=-1000>
+<LINK href="images/admin.css" type=text/css rel=stylesheet>
+<SCRIPT language=javascript>
+			function expand(el)
+			{
+				childObj = document.getElementById("child" + el);
+
+				if (childObj.style.display == 'none')
+				{
+					childObj.style.display = 'block';
+				}
+				else
+				{
+					childObj.style.display = 'none';
+				}
+
+				return;
+			}
+		</SCRIPT>
+
+<META content="MSHTML 6.00.3790.3959" name=GENERATOR></HEAD>
+<BODY>
+<TABLE height="100%" cellSpacing=0 cellPadding=0 width=170 
+background=images/menu_bg.jpg border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top align=middle>
+      <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD height=10></TD></TR></TBODY></TABLE>
+      <TABLE cellSpacing=0 cellPadding=0 width=150 border=0>
+        <TBODY>
+        <TR height=22>
+          <TD style="PADDING-LEFT: 30px" background=images/menu_bt.jpg><A 
+            class=menuParent onclick=expand(1) 
+            href="javascript:void(0);">用户信息管理</A></TD></TR>
+        <TR height=4>
+          <TD></TD></TR></TBODY></TABLE>
+      <TABLE id=child1 style="DISPLAY: none" cellSpacing=0 cellPadding=0 
+      width=150 border=0>
+        <TBODY>
+        <TR height=20>
+          <TD align=middle width=30><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            href="info/adduser.jsp" 
+            target="main">添加用户</A></TD>
+        </TR>
+        <TR height=20>
+          <TD align=middle width=30><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            href="info/search_member.html" 
+            target="main">查询用户信息</A></TD>
+        </TR>
+			 
+			
+			 
+			
+        <TR height=4>
+          <TD colSpan=2></TD></TR></TBODY></TABLE>
+		  
+		  
+      <TABLE cellSpacing=0 cellPadding=0 width=150 border=0>
+        <TBODY>
+        <TR height=22>
+          <TD style="PADDING-LEFT: 30px" background=images/menu_bt.jpg><A 
+            class=menuParent onclick=expand(2) 
+            href="javascript:void(0);">会议管理</A></TD></TR>
+        <TR height=4>
+          <TD></TD></TR></TBODY></TABLE>
+      <TABLE id=child2 style="DISPLAY: none" cellSpacing=0 cellPadding=0 
+      width=150 border=0>
+        <TBODY>
+        <TR height=20>
+          <TD align=middle width=30><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            href="conference/add_room.jsp" 
+            target=main>新增会议室</A></TD>
+        </TR>
+       
+      
+        <TR height=20>
+          <TD align=middle width=30><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            href="conference/room_list.jsp" 
+            target=main>管理会议室</A></TD></TR>
+			
+			
+		<TR height=20>
+          <TD align=middle width=30><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            href="conference/approve_meeting.jsp" 
+            target=main>审批会议申请</A></TD></TR>
+			
+		
+		<TR height=20>
+          <TD align=middle width=30><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            href="conference/add_device.jsp" 
+            target=main>新增会议室设备</A></TD></TR>
+		
+		<TR height=20>
+          <TD align=middle width=30><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            href="conference/device_list.jsp"
+            target=main>管理会议室设备</A></TD></TR>
+       
+       
+        <TR height=4>
+          <TD colSpan=2></TD></TR></TBODY></TABLE>
+      <TABLE cellSpacing=0 cellPadding=0 width=150 border=0>
+        <TBODY>
+        <TR height=22>
+          <TD style="PADDING-LEFT: 30px" background=images/menu_bt.jpg><A 
+            class=menuParent onclick=expand(3) 
+            href="javascript:void(0);">权限管理</A></TD></TR>
+        <TR height=4>
+          <TD></TD></TR></TBODY></TABLE>
+      <TABLE id=child3 style="DISPLAY: none" cellSpacing=0 cellPadding=0 
+      width=150 border=0>
+        <TBODY>
+        <TR height=20>
+          <TD align=middle width=30><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            href="role/index.jsp" 
+            target=main>管理用户组权限</A></TD>
+        </TR>
+        <TR height=4>
+  
+        <TR height=4>
+        <TR height=20>
+          <TD align=middle width=30><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            href="role/userrole.jsp" 
+            target=main>用户权限管理</A></TD>
+        </TR>
+        <TR height=4>
+          <TD colSpan=2></TD></TR></TBODY></TABLE>
+		  
+		  
+      <TABLE cellSpacing=0 cellPadding=0 width=150 border=0>
+        <TBODY>
+        <TR height=22>
+          <TD style="PADDING-LEFT: 30px" background=images/menu_bt.jpg><A 
+            class=menuParent onclick=expand(4) 
+            href="javascript:void(0);">公司员工通讯簿</A></TD></TR>
+        <TR height=4>
+          <TD></TD></TR></TBODY></TABLE>
+      <TABLE id=child4 style="DISPLAY: none" cellSpacing=0 cellPadding=0 
+      width=150 border=0>
+        <TBODY>
+        <TR height=20>
+          <TD align=middle width=30><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            href="inner_list_manage.html" 
+            target=main>维护通讯簿</A></TD>
+        </TR>
+
+        <TR height=4>
+          <TD colSpan=2></TD></TR></TBODY></TABLE>
+		  
+		  
+      
+      <TABLE cellSpacing=0 cellPadding=0 width=150 border=0>
+        </TABLE></BODY></HTML>

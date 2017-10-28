@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=gbk"/>
+  <title>Facebox 1.0</title>
+  <link href="facebox/facebox.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="facebox/faceplant.css" media="screen" rel="stylesheet" type="text/css" />
+  <script src="facebox/jquery.js" type="text/javascript"></script>
+  <script src="facebox/facebox.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    jQuery(document).ready(function($) {
+      $('a[rel*=facebox]').facebox() ;
+    })
+  </script>
+</head>
+
+<body>
+  <div id="main">
+    <div id="shadow">
+      <div id="content">
+        <div id="logo">
+          <img src="facebox/logo.png"/>
+        </div>
+
+        <div class="example">
+          <h2>它是什么?</h2>
+          <p> 
+   facebox是一个jquery为基础的lightbox，可显示图像， divs ，或者远程页面。 
+
+它的使用简单，容易。下载js，请查看例子，然后开始享受facebox给我们带来的乐趣。 
+
+          </p> 
+
+        </div>
+
+        <div class="example">
+          <h2>下载</h2>
+
+          <p>需要<a href="http://jquery.com">jQuery 1.2.1</a>.</p>
+          <p>
+		  你需要在js和css里面 加上 loading图片，和四个角的图片和边框图片。
+       这就是你要做的。
+          </p>
+          <p>
+            <strong><a href="http://www.cssrain.cn/demo/facebox-1.0/facebox-1.0.rar">Download Facebox v1.0</a></strong>
+          </p>
+
+        </div>
+
+
+        <div class="example">
+          <h2>图片</h2>
+
+          <p> <a href="http://www.cssrain.cn/demo/pic/21.jpg" rel="facebox">用Facebox观看图片</a> </p>
+
+          <div class="code">
+            <h3>代码</h3>
+            <code>&lt;a href="cssrain.jpg" rel="facebox"&gt;text&lt;/a&gt;</code>
+          </div>
+        </div>
+
+        <div class="example">
+          <h2>Divs</h2>
+
+          <p> <a href="#info" rel="facebox">用Facebox观看div</a> </p>
+
+          <div class="code">
+            <h3>代码</h3>
+            <code>&lt;a href="#info" rel="facebox"&gt;text&lt;/a&gt;</code>
+          </div>
+        </div>
+
+        <div class="example">
+          <h2>Ajax</h2>
+
+          <p> <a href="facebox/remote.html" rel="facebox">用Facebox观看加载远程的页面内容1</a> </p>
+
+          <p> <a href="facebox/remote.html" rel="facebox[.bolder]">用Facebox观看加载远程的页面内容2</a> </p>
+
+          <div class="code">
+            <h3>代码</h3>
+            <code>&lt;a href="cssrain.html" rel="facebox"&gt;text&lt;/a&gt;</code>
+          </div>
+        </div>
+
+        <div class="example">
+          <h2>用法</h2>
+
+          <p>facebox应该导入</p>
+
+          <div class="code">
+            <code>
+              &lt;script src="jquery.js" type="text/javascript"&gt;&lt;/script&gt;<br/>
+              &lt;link href="/facebox/facebox.css" media="screen" rel="stylesheet" type="text/css"/&gt;<br/>
+              &lt;script src="/facebox/facebox.js" type="text/javascript"&gt;&lt;/script&gt;
+            </code>
+          </div>
+
+		    <h2></h2>
+          <div class="code">
+            <code>
+              jQuery(document).ready(function($) {<br/>
+                &nbsp;&nbsp;$('a[rel*=facebox]').facebox() <br/>
+              })
+            </code>
+          </div>
+
+        </div>
+
+
+
+        <div class="example">
+          <h2>深入研究</h2>
+          <div class="code">
+            <code><a href="http://famspam.com/facebox/">http://famspam.com/facebox/</a></code>
+          </div>
+        </div>
+
+        <div class="example">
+          <h2>截图</h2>
+          <p>
+            在 <a href="http://famspam.com">FamSpam</a> 看效果.
+          </p>
+          <ul id="screenshots">
+            <li><a href="http://famspam.com/facebox/screenshots/photo.png" rel="facebox"><img src="http://famspam.com/facebox/screenshots/photo_small.png"></a></li>
+            <li><a href="http://famspam.com/facebox/screenshots/error.png" rel="facebox"><img src="http://famspam.com/facebox/screenshots/error_small.png"></a></li>
+            <li><a href="http://famspam.com/facebox/screenshots/success.png" rel="facebox"><img src="http://famspam.com/facebox/screenshots/success_small.png"></a></li>
+            <li><a href="http://famspam.com/facebox/screenshots/preview.png" rel="facebox"><img src="http://famspam.com/facebox/screenshots/preview_small.png"></a></li>
+          </ul>
+
+        </div>
+
+        <div class="example">
+          <h2>感谢 <span class="amp">&amp;</span> 联系</h2>
+          <p> 
+			感谢Facebook的理念和风格。感谢Mindy Tchieu她在工作中对我的帮助。 
+          </p>
+          <p>
+            facebox作者Email: <a href="mailto:chris@ozmm.org">chris@ozmm.org</a>
+			      </p>
+				          <p>
+            翻译作者Email: <a href="mailto:cssrain@gmail.com">cssrain@gmail.com</a> &nbsp;Blog:<a href="http://www.cssrain.cn">http://www.cssrain.cn</a>
+			      </p>
+        </div>
+      </div>
+    </div>
+
+    <div id="footer">
+      <p class="right">
+        <a href="mailto:chris@ozmm.org">联系</a>
+      </p>
+
+      <ul>
+        <li> Code &copy;2007 Chris Wanstrath </li>
+        <li> Style &copy;2007 Facebook </li>
+        <li>MIT License</li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="info" style="display:none;">
+    <p> Hey, I'm the 'info' div! </p>
+    <p> I look like this: </p>
+    <code> 
+      &lt;div id="info" style="display:none;"&gt; <br/>
+        &nbsp;&nbsp;text<br/>
+      &lt;/div&gt;
+    </code>
+  </div>
+
+</body>
+</html>

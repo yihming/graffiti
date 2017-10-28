@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>公司员工通讯录</title>
+</head>
+
+<body>
+<form>
+
+	<table width="80%" align="center">
+		<tr><td width="20%"><div align="center"><img src="images/input-tablet.png" alt="标题LOGO" /></div></td>
+		<td width="80%"><h1 align="center">公司通讯录列表</h1></td>
+		</tr>
+	</table>
+	<table width="80%" align="center">
+		<tr bgcolor="#EAEAE6">
+			<td align="center">姓名</td>
+			<td align="center">性别</td>
+			<td align="center">部门</td>
+			<td align="center">职务</td>
+			<td align="center">生日</td>
+			<td align="center">座机</td>
+			<td align="center">手机</td>
+			<td align="center">办公室</td>
+			<td align="center">E-mail</td>
+			<td align="center">操作</td>
+		</tr>
+		<tr bgcolor="#F7F7F7">
+			<td align="center">kevin</td>
+			<td align="center">男</td>
+			<td align="center">AS小组</td>
+			<td align="center">组长</td>
+			<td align="center">1988-01-01</td>
+			<td align="center">12345678</td>
+			<td align="center">13800138000</td>
+			<td align="center">团委106</td>
+			<td align="center">kevin@163.com</td>
+			<td align="center"><input type="button" value="编辑" onclick="doEdit(this)" /><input type="button" value="删除" onclick="doDelete(this)" /></td>
+		</tr>
+		<tr bgcolor="#F7F7F7">
+			<td align="center">kebebrar</td>
+			<td align="center">男</td>
+			<td align="center">AS小组</td>
+			<td align="center">首席架构师</td>
+			<td align="center">1988-11-01</td>
+			<td align="center">12345978</td>
+			<td align="center">13800238000</td>
+			<td align="center">电子楼506</td>
+			<td align="center">heyue@mail.bnu.edu.cn</td>
+			<td align="center"><input type="button" value="编辑" onclick="doEdit(this)" /><input type="button" value="删除" onclick="doDelete(this)" /></td>
+		</tr>
+	</table>
+</form>
+<script>
+	//修改   
+  function   doEdit(src)   {   
+  if(src.value   ==   "编辑")   {   
+        for(i   =   0;   i   <   9;   i++)   {   
+                  obj   =   src.parentElement.parentElement.children[i];   
+                  obj.innerHTML   =   "<input size='8' type='text' value='"   +     obj.innerText   +   "'>";   
+        }   
+          src.value="保存";   
+  }else   if(src.value   ==   "保存"){   
+          for(i   =   0;   i   <  9;   i++)   {   
+  			obj   =   src.parentElement.parentElement.children[i];   
+  			obj.innerHTML   =   obj.children[0].value;   
+  		}   
+        src.value="编辑";   
+  	}   
+  }   
+    
+  //删除   
+  function   doDelete(src)   {   
+                                i   =   src.parentElement.parentElement.rowIndex;   
+    
+            if(window.confirm("确定要删除吗?"))   {   
+  src.parentElement.parentElement.parentElement.deleteRow(i);   
+            }   
+  }   
+</script>
+</body>
+</html>

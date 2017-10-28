@@ -1,0 +1,182 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>kimosft-jscalendar 寮€鍙戞枃妗�</title>
+<style type="text/css">
+<!--
+body {
+	font-family: "寰蒋闆呴粦", Tahoma, Verdana;
+	font-size: 12px;
+	font-weight: normal;
+	margin: 50px 10px;
+}
+span, label, p, input {
+	font-family: "寰蒋闆呴粦", Tahoma, Verdana;
+	font-size: 12px;
+	font-weight: normal;
+}
+form {
+	margin: 0;
+	padding: 0;
+}
+ul {
+	margin: 0;
+}
+h1 {
+	font-family: "寰蒋闆呴粦", Tahoma, Verdana;
+	font-size: 16px;
+	font-weight: bold;
+}
+h2 {
+	font-family: "寰蒋闆呴粦", Tahoma, Verdana;
+	font-size: 14px;
+	font-weight: bold;
+}
+div.effect {
+	border: 1px dotted #3C78B5;
+	background-color: #D8E4F1;
+	padding: 10px;
+	width: 98%;
+}
+div.source {
+	border: 1px solid #CCC;/*#090*/
+	background-color: #F5F5F5;/*#DFD*/
+	padding: 10px;
+	width: 98%;
+}
+.color_red {
+	color:#FF0000;
+}
+.b {
+	font-weight: bold;
+}
+-->
+</style>
+</head>
+<body>
+<script type="text/javascript" src="calendar.js"></script>
+<form id="form1" name="form1" method="post" action="">
+  <h1>1銆佷粈涔堟槸 kimsoft-jscalendar ?</h1>
+  <ul>
+    <li>涓€涓畝娲佺殑avaScript鏃ュ巻鎺т欢锛屽彲鍦↗ava Web 椤圭洰锛�.NET Web 椤圭洰涓娇鐢�</li>
+  </ul>
+  <h1>2銆乲imsoft-jscalendar 鏈変粈涔堢壒鐐癸紵</h1>
+  <ul>
+    <li>1銆佸皬宸э紝鍗曟枃浠� </li>
+    <li>2銆佹敮鎸佸璇█锛屽苟鍙嚜鐢辨墿鍏咃紙鐩墠鏀寔绠€浣撲腑鏂囷紝绻佷綋涓枃锛岃嫳璇編鍥藉拰鑻辫鑻卞浗锛�</li>
+    <li> 3銆佸吋瀹筰e6.0+, firefox1.0+, Opera9锛屽叾瀹冩祻瑙堝櫒鏈祴璇�</li>
+    <li>4銆佸洖鏄鹃€夊畾鐨勬椂闂达紝杩欐槸寰堝鍏跺畠鏃ュ巻鎺т欢娌℃湁鐨� </li>
+    <li>5銆丄pache license 2.0锛屽晢涓氬弸濂姐€傚彲鍏嶈垂浣跨敤锛岃嚜鐢变慨鏀逛紶鎾紝浣嗚淇濈暀鐗堟潈淇℃伅</li>
+    <li>6銆佺敤 iframe 瑙ｅ喅 IE 涓眰鍦� select 鎺т欢涓婃樉绀虹殑闂</li>
+    <li>7銆佸叾瀹冪壒鐐规湁寰呭彂鐜�...</li>
+  </ul>
+  <h1>3銆佺増鏈�:</h1>
+  <ul>
+    <li>V20081226锛堝姞浜嗘棩鏂囩増鏈紝鎰熻阿缃戝弸 yangyuqi[at]gmail.com 鎻愪緵鐨勬棩鏂囩炕璇戯級</li>
+    <li>V20080409锛堝埗浣滀簡姝ゅ府鍔╂枃妗ｏ級 <a href="http://code.google.com/p/kimsoft-jscalendar/downloads/list" target="_blank">涓嬭浇</a></li>
+    <li>V20080322锛堢涓€娆″湪Google Code涓婂彂甯冿級</li>
+  </ul>
+  <h1>4銆佷娇鐢ㄨ鏄�:</h1>
+  <h2>4.1銆佸皢 js 鏂囦欢瀵煎叆鍒伴〉闈腑锛堝彲浠ユ槸 html, jsp, asp, aspx, php锛夌瓑銆�</h2>
+  <div class="source">&lt;script type=&quot;text/javascript&quot; src=&quot;calendar.js&quot;&gt;&lt;/script&gt;</div>
+  <br />
+  娉ㄦ剰浠ヤ笅鐐癸細
+  <ul>
+    <li>&nbsp;calendar.js 鏂囦欢鍐呭缂栧啓鏄疷TF-8锛岃涓€瀹氳灏嗘鏂囦欢鐨勭紪鐮佽缃负UTF-8</li>
+    <li>&nbsp;涓婇潰鐨勪唬鐮佸唴瀹�<span class="color_red b">涓€瀹氳鏀惧湪HTML鐨�&lt;body&gt;&lt;/body&gt;涔嬮棿</span>锛岀壒鍒槸鍦ㄧ鍚圶HTML瑙勮寖鐨勬枃妗ｄ腑</li>
+    <li>鍖呭惈姝ゆ枃浠跺悗锛屾椤甸潰宸茬粡鑷姩瀹炰緥鍖栦簡涓€涓棩鍘嗗璞� calendar锛岀幇鍦ㄥ氨鍙互浣跨敤浜�</li>
+  </ul>
+  <h2>4.2銆佷竴涓渶绠€鍗曠殑渚嬪瓙<br />
+  </h2>
+  <div class="source">鐢ㄩ瀹氫箟鐨� calendar 瀵硅薄鐢熸垚鏃ュ巻浠ｇ爜锛�&lt;input name=&quot;date&quot; type=&quot;text&quot; id=&quot;date&quot; onclick=<strong>&quot;calendar.show(this);</strong>&quot; size=&quot;10&quot; maxlength=&quot;10&quot; readonly=&quot;readonly&quot; /&gt;<br />
+  </div>
+  <br />
+  <div class="effect">鏁堟灉锛�
+    <input name="date" type="text" id="date" onclick="calendar.show(this);" size="10" maxlength="10" readonly="readonly" />
+  </div>
+  <br />
+  褰撶劧涔熷彲浠ヨ繖鏍凤細<br />
+  </p>
+  <div class="source">new 涓€涓柊鐨勬棩鍘嗗璞″苟鐢熸垚鏃ュ巻浠ｇ爜锛�&lt;input name=&quot;date&quot; type=&quot;text&quot; id=&quot;date&quot; onclick=<strong>&quot;new Calendar().show(this);</strong>&quot; size=&quot;10&quot; maxlength=&quot;10&quot; readonly=&quot;readonly &quot;/&gt;<br />
+  </div>
+  <br />
+  <div class="effect">鏁堟灉锛�
+    <input name="date2" type="text" id="date2" onclick="new Calendar().show(this);" size="10" maxlength="10" readonly="readonly" />
+  </div>
+  <br />
+  <h2>4.3銆佹寚瀹氬紑濮嬪勾浠藉拰缁撴潫骞翠唤鐨勬棩鍘�<br />
+  </h2>
+  <div class="source"> 鎸囧畾寮€濮嬪勾浠藉拰缁撴潫骞翠唤鐨勬棩鍘嗕唬鐮侊細&lt;input name=&quot;range_date&quot; type=&quot;text&quot; id=&quot;range_date&quot; onclick=&quot;new Calendar(2000, 2008).show(this);&quot; size=&quot;10&quot; maxlength=&quot;10&quot; readonly=&quot;readonly&quot; /&gt;<br />
+  </div>
+  <br />
+  <div class="effect"> 鍙兘閫夋嫨 2000 鍒� 2008骞撮棿鐨勬棩鏈燂細
+    <input name="range_date" type="text" id="range_date" onclick="new Calendar(2000, 2008).show(this);" size="10" maxlength="10" readonly="readonly" />
+  </div>
+  <h2>4.4銆佸璇█鐗堟湰鏀寔锛堝彲鑷敱鎵╁厖锛夛紝鐩墠鏀寔鐨勮瑷€锛�0(zh_cn)|1(en_us)|2(en_en)|3(zh_tw)</h2>
+  <div class="source"> 涓枃鏃ュ巻浠ｇ爜锛�    &lt;input name=&quot;cn_date&quot; type=&quot;text&quot; id=&quot;cn_date&quot; onclick=&quot;new Calendar().show(this);&quot; size=&quot;10&quot; maxlength=&quot;10&quot; readonly=&quot;readonly&quot; /&gt;<br />
+  </div>
+  <br />
+  <div class="effect">涓枃鏃ュ巻鏁堟灉锛�
+    <input name="cn_date" type="text" id="cn_date" onclick="new Calendar().show(this);" size="10" maxlength="10" readonly="readonly"/>
+  </div>
+  <br />
+  <div class="source"> 绻佷綋涓枃鏃ュ巻浠ｇ爜锛�    &lt;input name=&quot;tw_date&quot; type=&quot;text&quot; id=&quot;tw_date&quot; onclick=&quot;new Calendar(null, null, 3).show(this);&quot; size=&quot;10&quot; maxlength=&quot;10&quot; readonly=&quot;readonly&quot; /&gt;<br />
+  </div>
+  <br />
+  <div class="effect">绻佷綋涓枃鏃ュ巻鏁堟灉锛�
+    <input name="tw_date" type="text" id="tw_date" onclick="new Calendar(null, null, 3).show(this);" size="10" maxlength="10" readonly="readonly" />
+    <br />
+  </div>
+  <br />
+  <div class="source"> 鑻辨枃鏃ュ巻浠ｇ爜锛�    &lt;input name=&quot;en_date&quot; type=&quot;text&quot; id=&quot;en_date&quot; onclick=&quot;new Calendar(null, null, 1).show(this);&quot; size=&quot;10&quot; maxlength=&quot;10&quot; readonly=&quot;readonly&quot; /&gt;<br />
+  </div>
+  <br />
+  <div class="effect">鑻辨枃鏃ュ巻鏁堟灉锛�
+    <input name="en_date" type="text" id="en_date" onclick="new Calendar(null, null, 1).show(this);" size="10" maxlength="10" readonly="readonly" />
+  </div>
+  <br />
+  <div class="source"> 鏃ユ枃鏃ュ巻浠ｇ爜锛�    &lt;input name=&quot;en_date&quot; type=&quot;text&quot; id=&quot;en_date&quot; onclick=&quot;new Calendar(null, null, 4).show(this);&quot; size=&quot;10&quot; maxlength=&quot;10&quot; readonly=&quot;readonly&quot; /&gt;<br />
+  </div>
+  <br />
+  <div class="effect">鏃ユ枃鏃ュ巻鏁堟灉锛�
+    <input name="en_date" type="text" id="en_date" onclick="new Calendar(null, null, 4).show(this);" size="10" maxlength="10" readonly="readonly" />
+    <span style="color:#F00; font-weight: bold;">锛堟劅璋㈢綉鍙� yangyuqi[at]gmail.com 鎻愪緵鐨勬棩鏂囩炕璇戯級</span> </div>
+  <h2>4.5銆佸湪涓€涓帶浠朵笂鐐瑰嚮閫夋嫨锛屽湪鍙﹀涓€涓帶浠朵笂鏄剧ず鏃ユ湡</h2>
+  <div class="source"> 浠ｇ爜锛�<br />
+    &lt;input name=&quot;control_date&quot; type=&quot;text&quot; id=&quot;control_date&quot;size=&quot;10&quot; maxlength=&quot;10&quot; readonly=&quot;readonly&quot; /&gt;<br />
+    &lt;input type=&quot;button&quot; name=&quot;button&quot; id=&quot;button&quot; value=&quot;閫夋嫨鏃ユ湡&quot; onclick=&quot;new Calendar().show(this.form.control_date);&quot; /&gt;<br />
+  </div>
+  <br />
+  <div class="effect">鏁堟灉锛�
+    <input name="control_date" type="text" id="control_date"size="10" maxlength="10" readonly="readonly" />
+    <label>
+      <input type="button" name="button" id="button" value="閫夋嫨鏃ユ湡" onclick="new Calendar().show(this.form.control_date);" />
+    </label>
+  </div>
+  <h2>4.6銆佸叾瀹冨姛鑳�</h2>
+  鍏跺畠鍔熻兘璇峰弬鑰� calendar.js 婧愮爜锛岄噷闈㈡湁璇︾粏鐨勬敞閲婏紝鏈枃妗ｆ簮鐮佷篃鏄緢濂界殑浠ｇ爜璧勬簮锛屾湁闂璇�<a href="http://code.google.com/p/kimsoft-jscalendar/issues/list" target="_blank">鎻愪氦ISSUES</a><br />
+  <h1>5銆佺浉鍏宠祫婧�:</h1>
+  <ul>
+    <li>Google Code: <a href="http://code.google.com/p/kimsoft-jscalendar/" target="_blank">http://code.google.com/p/kimsoft-jscalendar/</a></li>
+    <li>kimsoft's Blog: <a href="http://blog.csdn.net/kimsoft" target="_blank">http://blog.csdn.net/kimsoft</a></li>
+    <li>kimsoft's Mail: <a href="mailto:jinqinghua@gmail.com">jinqinghua[at]gmail.com</a></li>
+  </ul>
+  <h1>6銆丩icense:</h1>
+  <ul>
+    <li>鍩轰簬 Apache license 2.0锛屽晢涓氬弸濂姐€傚彲鍏嶈垂浣跨敤锛岃嚜鐢变慨鏀逛紶鎾紝浣嗚淇濈暀鐗堟潈淇℃伅</li>
+  </ul>
+</form>
+<script type="text/javascript"><!--
+google_ad_client = "pub-4212279479115850";
+/* 728x90, 鍒涘缓浜� 08-12-23 */
+google_ad_slot = "7934960061";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</body>
+</html>

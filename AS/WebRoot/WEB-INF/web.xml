@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4" 
+	xmlns="http://java.sun.com/xml/ns/j2ee" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
+	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	
+ 
+
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>MeetingServlet</servlet-name>
+    <servlet-class>com.as.conference.MeetingServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>RoomServlet</servlet-name>
+    <servlet-class>com.as.conference.RoomServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>DeviceServlet</servlet-name>
+    <servlet-class>com.as.conference.DeviceServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>userlog</servlet-name>
+    <servlet-class>com.as.user.userlog</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>userinfo</servlet-name>
+    <servlet-class>com.as.user.userinfo</servlet-class>
+  </servlet>
+    <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>msgServlet</servlet-name>
+    <servlet-class>com.as.msg.msgServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>AgencyServletAdmin</servlet-name>
+    <servlet-class>com.as.agency.AgencyServletAdmin</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>AgencyServlet</servlet-name>
+    <servlet-class>com.as.agency.AgencyServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>RoleServlet</servlet-name>
+    <servlet-class>com.as.role.RoleServlet</servlet-class>
+  </servlet>
+
+<servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>friendoperation</servlet-name>
+    <servlet-class>com.as.user.friendoperation</servlet-class>
+  </servlet>
+<servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>UploadFile</servlet-name>
+    <servlet-class>com.as.netfile.UploadFile</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MeetingServlet</servlet-name>
+    <url-pattern>/conference/MeetingServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>RoomServlet</servlet-name>
+    <url-pattern>/conference/RoomServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>DeviceServlet</servlet-name>
+    <url-pattern>/conference/DeviceServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>userlog</servlet-name>
+    <url-pattern>/userlog</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>userinfo</servlet-name>
+    <url-pattern>/userinfo</url-pattern>
+  </servlet-mapping>
+<servlet-mapping>
+    <servlet-name>msgServlet</servlet-name>
+    <url-pattern>/servlet/msgServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AgencyServletAdmin</servlet-name>
+    <url-pattern>/admin/agency/AgencyServletAdmin</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AgencyServlet</servlet-name>
+    <url-pattern>/agency/AgencyServlet</url-pattern>
+  </servlet-mapping>
+      <servlet-mapping>
+    <servlet-name>friendoperation</servlet-name>
+    <url-pattern>/friendoperation</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>UploadFile</servlet-name>
+    <url-pattern>/servlet/UploadFile</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>RoleServlet</servlet-name>
+    <url-pattern>/admin/role/RoleServlet</url-pattern>
+  </servlet-mapping>
+<!-- 这里设置的是session 的过期时间 -->
+<session-config> 
+<session-timeout>60</session-timeout>
+</session-config> 
+
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>

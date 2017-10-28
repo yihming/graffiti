@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>jQuery UI Tabs - Content via Ajax</title>
+	<link type="text/css" href="js/jqueryui/css/ui.all.css" rel="stylesheet" />
+	<link type="text/css" href="css/base.css" rel="stylesheet"/>
+
+	<script type="text/javascript" src="js/jqueryui/ui/jquery-1.3.2.js"></script>
+	<script type="text/javascript" src="js/jqueryui/ui/ui.core.js"></script>
+	<script type="text/javascript" src="js/jqueryui/ui/ui.tabs.js"></script>
+ 
+	<script type="text/javascript">
+	$(function() {
+		$("#tabs").tabs();
+	});
+	</script>
+</head>
+<body>
+
+<div id="tabs">
+	<ul>
+		<li><a href="#tabs-1">偏好设置</a></li>
+		<li><a href="#tabs-2">其他设置</a></li>
+		 
+	</ul>
+  <div id="tabs-1">
+  <h2>偏好设置</h2>
+     <table border="1" width="98%">
+	<tr class="smallhead">
+	  <td width="22%">设置项目</td>
+	  <td width="78%">设置内容</td>
+	</tr>
+	<tr>
+	  <td>每页记录条数</td>
+	  <td><label>
+	    <select name="select">
+	      <option value="10">10</option>
+	      <option value="20">20</option>
+	      <option value="30">30</option>
+	      </select>
+	  </label></td>
+	</tr>
+    <tr>
+      <td>有无右边栏</td>
+      <td><label>
+        <input type="radio" name="radiobutton" value="radiobutton">
+        有
+        <input type="radio" name="radiobutton" value="radiobutton">
+        无
+      </label></td>
+    </tr>
+	</table>
+  </div>
+	<div id="tabs-2">
+	 <h2>其他设置……（待扩展用）</h2>
+	</div>
+	 
+</div>
+
+ 
+</body>
+</html>

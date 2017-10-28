@@ -1,0 +1,89 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+<form>
+<table width="98%"  border="1" cellpadding="1" cellspacing="0" align="center">
+  <tr align="center">
+    <td width="9%">姓名</td>
+    <td width="17%">头衔</td>
+    <td width="24%">电子邮件</td>
+    <td width="20%">联系方式</td>
+    <td width="12%">详细</td>
+	<td width="18%">操作</td>
+  </tr>
+  <tr align="center">
+    <td>张三</td>
+    <td>人事部经理</td>
+    <td>xyznaruto@163.com</td>
+    <td>121654646</td>
+    <td><a href="../add_card.html">详细</a></td>
+	<td><input type="button" value="修改" onClick="doEdit(this)">
+	<input type="button" value="删除" onClick="doDelete(this)"></td>
+  </tr>
+  <tr align="center">
+    <td>李四</td>
+    <td>人事部经理</td>
+    <td>xyznaruto@163.com</td>
+    <td>121654646</td>
+    <td><a href="../add_card.html">详细</a></td>
+	<td><input type="button" value="修改" onClick="doEdit(this)">
+	<input type="button" value="删除" onClick="doDelete(this)"></td>
+  </tr>
+  <tr align="center">
+    <td>王五</td>
+    <td>人事部经理</td>
+    <td>xyznaruto@163.com</td>
+    <td>121654646</td>
+    <td><a href="../add_card.html">详细</a></td>
+	<td><input type="button" value="修改" onClick="doEdit(this)">
+	<input type="button" value="删除" onClick="doDelete(this)"></td>
+  </tr>
+  <tr align="center">
+    <td>何六</td>
+    <td>人事部经理</td>
+    <td>xyznaruto@163.com</td>
+    <td>121654646</td>
+    <td><a href="../add_card.html">详细</a></td>
+	<td><input type="button" value="修改" onClick="doEdit(this)">
+	<input type="button" value="删除" onClick="doDelete(this)"></td>
+  </tr>
+</table>
+</form>
+<p>&nbsp;</p>
+<script>   
+    
+          //修改   
+          function   doEdit(src)   {   
+  if(src.value   ==   "修改")   {   
+        for(i   =   0;   i   < 5;   i++)   {   
+                  obj   =   src.parentElement.parentElement.children[i];   
+				  
+                  obj.innerHTML   =   "<input   type='text'   size=15     value='"   +     obj.innerText   +   "'>";   
+        }   
+          src.value="保存";   
+  }else   if(src.value   ==   "保存"){   
+          for(i   =   0;   i   <  5;   i++)   {   
+  obj   =   src.parentElement.parentElement.children[i];   
+  obj.innerHTML   =   obj.children[0].value;   
+  }   
+        src.value="修改";   
+  }   
+          }   
+    
+  //删除   
+  function   doDelete(src)   {   
+                                i   =   src.parentElement.parentElement.rowIndex;   
+    
+            if(window.confirm("确定要删除吗?"))   {   
+  src.parentElement.parentElement.parentElement.deleteRow(i);   
+            }   
+  }   
+  </script>
+</body>
+</html>

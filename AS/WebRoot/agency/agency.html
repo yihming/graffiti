@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>jQuery UI Tabs - Content via Ajax</title>
+	<link type="text/css" href="../js/jqueryui/css/ui.all.css" rel="stylesheet" />
+	<link type="text/css" href="../css/base.css" rel="stylesheet"/>
+
+	<script type="text/javascript" src="../js/jqueryui/ui/jquery-1.3.2.js"></script>
+	<script type="text/javascript" src="../js/jqueryui/ui/ui.core.js"></script>
+	<script type="text/javascript" src="../js/jqueryui/ui/ui.tabs.js"></script>
+ 
+	<script type="text/javascript">
+	$(function() {
+		$("#tabs").tabs();
+	});
+	</script>
+</head>
+<body>
+<div class="thickbox_content">
+<div id="tabs">
+	<ul>
+		<li><a href="#tabs-1">申请代理</a></li>
+		<li><a href="#tabs-2">取消代理</a></li>
+		<li><a href="#tabs-3">查看历史代理</a></li>
+	</ul>
+  <div id="tabs-1">
+     <form action="#" method="post">
+		<table width="98%" border="0" style="border:0px;">
+		  <tr>
+			<td width="14%">选择代办人</td>
+			<td width="86%"><label>
+			  <select name="select">
+				<option value="1" selected>赵虎</option>
+				<option value="2">党德鹏</option>
+				<option value="3">胡晓雁</option>
+			  </select>
+			</label></td>
+		  </tr>
+		  <tr>
+			<td colspan="2"><table width="98%" border="0">
+			  <tr class="smallhead">
+				<td>事情</td>
+				<td>权限</td>
+			  </tr>
+			  <tr>
+				<td>站内短信</td>
+				<td>
+				  <input type="checkbox" name="checkbox1" value="checkbox[]" />
+				查看
+				<input type="checkbox" name="checkbox2" value="checkbox[]" />
+				回复</td>
+			  </tr>
+			  <tr>
+				<td>会议申请</td>
+				<td>
+				  <input type="checkbox" name="checkbox3" value="checkbox[]" />
+				提交
+				<input type="checkbox" name="checkbox4" value="checkbox[]"/>
+				删除
+				<input type="checkbox" name="checkbox5" value="checkbox[]" />
+				查看
+				
+				<input type="checkbox" name="checkbox6" value="checkbox[]" />
+				更新</td>
+			  </tr>
+			  <tr>
+				<td>网络硬盘管理</td>
+				<td>
+				  <input type="checkbox" name="checkbox7" value="checkbox[]" />
+				查看
+				<input type="checkbox" name="checkbox8" value="checkbox[]" />
+				上传
+				<input type="checkbox" name="checkbox9" value="checkbox[]" />
+				下载				</td>
+			  </tr>
+			  <tr>
+				<td>授权时间</td>
+				<td><label>
+				  <input name="textfield" type="text" value="2006年8月19日9点">
+				到
+				<input name="textfield2" type="text" value="2006年8月19日20点">
+				</label></td>
+			  </tr>
+			  <tr>
+			    <td>&nbsp;</td>
+			    <td><input type="submit" name="Submit" value=" " class="sure_submit"/></td>
+			    </tr>
+			</table></td>
+			</tr>
+		</table>
+		</form>
+   </div>
+	<div id="tabs-2">
+	    <p>目前赵虎在给你代办，你可以取消</p>
+		<input  type="button" value="取消代办"/>
+	</div>
+	<div id="tabs-3">
+	  <table border="1" width="98%">
+	<tr class="smallhead">
+	  <td>代理人</td>
+	  <td>代理时间</td>
+	  <td>给以权限</td>
+	</tr>
+	<tr><td>&nbsp;</td>
+	  <td>&nbsp;</td>
+	  <td>&nbsp;</td>
+	</tr>
+    <tr><td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+	</table>
+	</div>
+</div>
+</div>
+ 
+</body>
+</html>

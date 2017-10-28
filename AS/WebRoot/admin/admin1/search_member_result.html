@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<TITLE> 查询用户结果 </TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<link href="../css/base.css" rel="stylesheet" type="text/css">
+</HEAD>
+
+<BODY>
+<div class="thickbox_content">
+<form action="edit_info.html">
+	<table width="80%" cellSpacing=1 cellPadding=0 border="0">
+	<caption>查询结果</caption>
+	<tr class="smallhead">
+	<td align="center">姓名</td>
+	<td align="center">部门</td>
+	<td align="center">职务</td>
+	<td align="center">办公室电话</td>
+	<td align="center">电子信箱</td>
+	<td align="center">操作</td>
+	</tr>
+
+	<tr>
+	<td align="center">张三</td>
+	<td align="center">人事部</td>
+	<td align="center">经理</td>
+	<td align="center">58807194</td>
+	<td align="center">zhangsan@mail.bnu.edu.cn</td>
+	<td align="center"><input type="submit" name="edit_user" value="编辑" /><input type="button" value="删除" onClick="doDelete(this)" /></td>
+	</tr>
+	</table>
+</form>
+<script>
+
+function   doDelete(src)   {   
+                                i   =   src.parentElement.parentElement.rowIndex;   
+    
+            if(window.confirm("确定要删除吗?"))   {   
+  src.parentElement.parentElement.parentElement.deleteRow(i);   
+            }   
+  }   
+</script>
+</div>
+</BODY>
+</HTML>

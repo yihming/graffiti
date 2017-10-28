@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>banner</title>
+<script language="javascript" src="../js/jquery-1.2.6.min.js"></script>
+<script language="javascript"> 
+   $("document").ready(function(){
+      $("#banner ul li:first").addClass("active");
+       $("#banner ul li").click(function(){
+	   $(this).siblings().removeClass("active");
+	       $(this).addClass("active");
+		   
+	       
+	   });
+	});
+</script>
+<style type="text/css">
+#banner{
+height:33px;
+font-size:14px;
+width:98%;
+margin-left:0px;
+clear:both;
+}
+#banner_left{
+height:33px;
+background:url(../images/tab_bg_left.gif) no-repeat;
+float:left;
+width:4px;
+z-index:-1;
+}
+#banner_middle{
+background:url(../images/tab_bg_middle.gif) repeat-x;
+height:33px;
+float:left;
+width:90%;
+z-index:-1;
+}
+#banner_right{
+background:url(../images/tab_bg_right.gif) no-repeat;
+width:7px;
+float:left;
+height:33px;
+z-index:-1;
+}
+#banner  ul{
+list-style:none;
+display:block;
+margin-left:0px;
+padding-left:0px;
+margin-top:0px;
+}
+#banner ul li{
+float:left;
+width:76px;
+height:34px;
+line-height:34px;
+background:url(../images/tab.gif) no-repeat;
+text-align:center;
+}
+#banner ul li a{
+text-decoration:none;
+color:#000000;
+display:block;
+}
+#banner ul li a:link{
+display:block;
+}
+#banner ul li a:visited{
+color:#000000;
+}
+#banner ul li a:hover{
+background:url(../images/tab_bg.gif) no-repeat;
+}
+#banner .active{
+background:url(../images/tab_bg.gif) no-repeat;
+}
+</style>
+</head>
+
+<body>
+
+<div id="banner">
+<div id="banner_left"></div>
+<div id="banner_middle" >
+   <ul>
+      <li><a href="#" >短信</a></li>
+	  <li><a href="#">收件箱</a></li>
+	  <li><a href="#">发件箱</a></li>
+	  <li><a href="#">群邮件</a></li>
+	  <li><a href="#">垃圾箱</a></li>
+   </ul>
+ </div>
+
+ <div id="banner_right"></div>
+</div>
+</body>
+</html>

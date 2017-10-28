@@ -1,0 +1,124 @@
+*{
+font-size:12px;
+}
+html,body,div,ul,ol,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,pre,form,p,blockquote,fieldset,input,img{ margin: 0; padding: 0; }
+ul,ol { list-style: none; }
+fieldset,img { border: none; }
+caption,th { text-align: left; }
+table { border-collapse: collapse; border-spacing: 0;border:1px solid #ddd; margin-top:10px; margin-bottom:10px;}
+
+table tr{
+height:25px;
+line-height:25px;
+}
+
+table .smallhead{
+background:#f7f7f7;
+}
+
+h1{ font-weight:bold; font-size:16px}
+h2{ font-weight:bold; font-size:18px}
+h3{ font-weight:bold; font-size:14px}
+h4{ font-weight:bold; font-size:13px}
+p{font-size:12px;}
+
+form input{
+margin:5px auto 5px 10px;
+}
+form input submit{
+border:1px solid #f7f7f7;
+}
+form .sure_submit{
+background:url(../images/submit_utton_bg.gif) no-repeat;
+width:171px;
+height:25px;
+overflow:hidden;
+border:0px;
+cursor:pointer;
+margin-top:10px;
+}
+
+.close_thickbox_bottom{
+background:url(../images/close_thickbox_bottom.gif) no-repeat;
+width:93px;
+height:25px;
+border:0px;
+}
+
+.thickbox_content{
+padding-left:20px;
+}
+/*
+这个css 是用于banner也就是框架页的小的banner的csss
+*/
+#banner{
+height:33px;
+font-size:14px;
+width:98%;
+margin-left:0px;
+clear:both;
+}
+#banner_left{
+height:33px;
+background:url(../images/tab_bg_left.gif) no-repeat;
+float:left;
+width:4px;
+z-index:-1;
+}
+#banner_middle{
+background:url(../images/tab_bg_middle.gif) repeat-x;
+height:33px;
+float:left;
+width:93%;
+z-index:-1;
+}
+#banner_right{
+background:url(../images/tab_bg_right.gif) no-repeat;
+width:7px;
+float:left;
+height:33px;
+z-index:-1;
+}
+#banner  ul{
+list-style:none;
+display:block;
+margin-left:0px;
+padding-left:0px;
+margin-top:0px;
+}
+#banner ul li{
+float:left;
+width:76px;
+height:34px;
+line-height:34px;
+background:url(../images/tab.gif) no-repeat;
+text-align:center;
+}
+#banner ul li a{
+text-decoration:none;
+color:#000000;
+display:block;
+}
+#banner ul li a:link{
+display:block;
+}
+#banner ul li a:visited{
+color:#000000;
+}
+#banner ul li a:hover{
+background:url(../images/tab_bg.gif) no-repeat;
+}
+#banner .active{
+background:url(../images/tab_bg.gif) no-repeat;
+}
+/*
+这个css 是用于banner也就是框架页的小的banner的csss
+完毕
+*/
+/*
+*成功或者失败的时候的提示
+*/
+.successFail{
+border:1px solid #FF0000;
+background:#FFFF00;
+}
