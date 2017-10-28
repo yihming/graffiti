@@ -1,0 +1,13 @@
+connect
+cd
+ls_r
+ls_l
+pwd
+read_r
+read
+write
+del
+upload
+backup
+restore
+revert
