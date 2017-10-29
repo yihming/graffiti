@@ -232,8 +232,8 @@ def model(X_train, Y_train, X_test, Y_test, learning_rate = 0.0001,
 
         # lets save the parameters in a variable
         parameters = sess.run(parameters)
-        save_path = "model.npy"
-        np.save("model.npy", parameters)
+        save_path = "dnn.npy"
+        np.save("dnn.npy", parameters)
         print ("Model saved in file: %s" % save_path)
         print ("Parameters have been trained!")
 
@@ -261,7 +261,7 @@ def showImage(index):
     print("y = " + str(np.squeeze(Y_train_orig[:, index])))
 
 def restoreParams():
-    parameters = np.load("model.npy")
+    parameters = np.load("dnn.npy")
     return parameters.item()
 
 def predict_image(filepath, parameters):
