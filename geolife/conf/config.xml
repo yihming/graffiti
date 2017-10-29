@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<geolife-config>
+	<Data-Root-Path>
+		./trajectory_data
+	</Data-Root-Path>
+</geolife-config>

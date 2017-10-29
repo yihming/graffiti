@@ -21,3 +21,6 @@
 
 # Ignore CVS directory
 /**/CVS/
+
+# Ignore GeoLife Dataset
+/**/trajectory_data/
