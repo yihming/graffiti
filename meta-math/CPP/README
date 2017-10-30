@@ -1,0 +1,26 @@
+I. Configure ANTLR3
+---------------------
+1. cd /usr/local/lib
+2. wget http://www.antlr3.org/download/antlr-3.5-complete.jar
+3. Open "~/.bashrc" file, add the following lines at the bottom:
+	export CLASSPATH=.:/usr/local/lib/antlr-3.5-complete.jar:$CLASSPATH
+4. Save the file, and restart the terminal.
+
+
+II. Build and Run the Project
+----------------------
+1. Run 'make';
+2. Type the following command to run the program:
+	java MetaMath <your file name>
+3. After running the program, there will be one DOT file denoting the AST structure of the source C++ program, and one C++ file with ".output.cpp" extension denoting the modified C++ program due to the in-code markup commands;
+4. Type the following command to generate PNG graph of the AST structure:
+	dot -Tpng -o <target file name> <your DOT file name>
+
+
+III. Source Files
+---------------------
+CPP.g: ANTLR3 grammar of C++ language (I modified the one in the ANTLR3 grammar list);
+CPPGen.g: ANTLR3 Tree grammar file, which is used to manipulate and modify the C++ Abstract Syntax Trees;
+CPP.stg: the String Template for C++ language, used as the code generating phase;
+MetaMath.java: Top-level Java program for the project.
+

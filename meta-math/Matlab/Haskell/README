@@ -1,0 +1,33 @@
+Author: Yiming Yang
+
+I. Description: 
+
+    This is a Matlab source code processor written in Haskell. The features hitherto are:
+
+a) Parse a subset of Matlab syntax into Abstract Syntax Trees (AST). The test case is in Test/heat.m;
+
+b) Use GraphViz to visualize the generated AST. The sample is Test/heat.m.dot and Test/heat.png.
+
+
+II. Installation:
+
+  1. make sure that you have both Glasgow Haskell Compiler (GHC) and Haskell Cabal (a system for building and packaging Haskell libraries and programs) installed on your system.
+
+  2. Use cabal to install "GraphViz" package (notice: not necessarily to use sudo):
+
+                 cabal install graphviz
+
+  3. run "make".
+
+
+III. How to Use:
+
+  The executable file "MetaMath" generated in II is the main program to run. You just need to add one option -- source file name. For instance,
+
+                ./MetaMath Test/heat.m
+
+then the DOT file indicating its AST structure will be generated in Test. To emit the PNG result, you can use the following command:
+
+                dot -Tpng -o heat.png heat.m.dot
+
+Now you have the visualized AST picture.

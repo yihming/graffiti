@@ -1,0 +1,11 @@
+I. Configure ANTLR3
+---------------------
+1. cd /usr/local/lib
+2. wget http://www.antlr3.org/download/antlr-3.5-complete.jar
+3. Open "~/.bashrc" file, add the following lines at the bottom:
+	export CLASSPATH=.:/usr/local/lib/antlr-3.5-complete.jar:$CLASSPATH
+	alias antlr='java org.antlr.Tool'
+4. Save the file, and restart the terminal.
+5. For some ANTLR grammar file (e.g. test.g), you can generate the Lexer and Parser through the following command:
+	antlr test.g
+

@@ -1,0 +1,41 @@
+digraph {
+    graph [ordering=out
+          ,ranksep=0.4
+          ,bgcolor=lightgray];
+    node [shape=box
+         ,fixedsize=false
+         ,fontsize=12
+         ,fontname="Helvetica-bold"
+         ,fontcolor=blue
+         ,width=0.25
+         ,height=0.25
+         ,color=black
+         ,fillcolor=white
+         ,style="filled,solid,bold"];
+    edge [arrowsize=0.5
+         ,color=black
+         ,style=bold];
+    0 [label="File \"../Test/heat.m\""];
+    1 [label=FuncDef];
+    3 [label=Return];
+    4 [label=q];
+    2 [label=calculate_heat_flux];
+    5 [label=Argument];
+    6 [label=k];
+    7 [label=T_front];
+    8 [label=T_back];
+    9 [label=x_front];
+    10 [label=x_back];
+    11 [label=Body];
+    0 -> 1;
+    3 -> 4;
+    5 -> 6;
+    5 -> 7;
+    5 -> 8;
+    5 -> 9;
+    5 -> 10;
+    1 -> 3;
+    1 -> 2;
+    1 -> 5;
+    1 -> 11;
+}

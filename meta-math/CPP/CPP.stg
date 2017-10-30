@@ -1,0 +1,261 @@
+group CPP;
+
+file(header, decls, metamath) ::= <<
+<header>
+
+<metamath; separator="\n">
+
+<decls>
+>>
+
+headerGen(items) ::= "<items>"
+
+usingGen(name, flag) ::= <<
+using <if (flag)>namespace<else>typename<endif> <name>;
+
+
+>>
+
+declGen(flag, name, isInit, init, typeName, metamathName, isStmt) ::= <<
+<if (flag)><metamathName><else><typeName><endif>  <name><if (isInit)> = <init><endif><if (isStmt)>;<endif>
+>>
+
+bodyGen(content, metamath) ::= <<
+{
+  <metamath; separator="\n">
+    
+  <content; separator="\n">
+}
+>>
+
+
+returnGen(id, expr) ::= <<
+return <id><expr>;
+
+>>
+
+gotoGen(id) ::= <<
+goto <id>;
+
+>>
+
+constStmtGen(content) ::= <<
+<content>;
+
+>>
+
+ifGen(cond, thenBranch, elseBranch, flag) ::= <<
+if <cond> <thenBranch><if (flag)> else <elseBranch><endif>
+
+>>
+
+switchGen(cond, content) ::= <<
+switch (<cond>) <content>
+
+>>
+
+caseGen(cond, content) ::= <<
+case <cond>:  <content>
+
+>>
+
+defaultGen(content) ::= <<
+default:  <content>
+
+>>
+
+whileGen(cond, content) ::= <<
+while <cond> <content>
+
+>>
+
+dowhileGen(content, cond) ::= <<
+do <content> while <cond>;
+
+>>
+
+forinitGen(content) ::= <<
+<content>
+>>
+
+forGen(forinit, forend, forupdate, content) ::= <<
+for (<forinit>; <forend>; <forupdate>) <content>
+
+>>
+
+
+expressionlistGen(content) ::= <<
+<content; separator=", ">
+>>
+
+paramGen(metamathflag, prefix, type, name, suffix_expr, metamath, suffixsqflag) ::= <<
+<prefix><if (metamathflag)><metamath><else><type><endif>  <name><if (suffixsqflag)>[<suffix_expr>]<endif>
+>>
+
+paramListGen(params, isVoid) ::= << <if (isVoid)>void<else><params; separator=", "><endif> >>
+
+funcdefGen(template, type, name, paramlist, body, metamath, paramMetaMath) ::= <<
+
+<paramMetaMath; separator="\n">
+
+<template>
+<type> <name>( <paramlist> ) {
+    <metamath; separator="\n">
+    <body>
+}
+
+
+>>
+
+namespaceGen(name, content, metamath) ::= <<
+
+namespace <name> {
+    <metamath; separator="\n">
+
+    <content; separator="\n">
+}
+
+>>
+
+varGen(name, isPointer, ptrOpt, isDecl, prefix, type, metamath, hasMetaMath, isInit, init) ::= <<
+<if (isDecl)><prefix><if (hasMetaMath)><metamath>  <else><type>  <endif><endif><if (isPointer)><ptrOpt><endif><name><if (isInit)> = <init><endif>
+>>
+
+vardeclGen(content) ::= <<
+<content; separator=";\n">;
+
+>>
+
+classWholeGen(isExtern, func_specs, restDecl, varList) ::= <<
+
+<if (isExtern)>extern <endif><func_specs; separator=" "> 
+<restDecl><varList>;
+
+>>
+
+declspecExprGen(head, content) ::= "<head>(<content>)"
+
+classdeclGen(head, declspecs, name, var) ::= <<
+<head> <declspecs; separator=" "> <name> <var> >>
+
+baseClauseGen(content) ::= << : <content; separator=", "> >>
+
+classdefGen(head, declspecs, name, baseclause, body, metamath) ::= <<
+<head> <declspecs; separator=" "> <name><baseclause> {
+    <metamath; separator="\n">
+    
+    <body; separator="\n">
+}>>
+
+accessSpecifierGen(name) ::= <<
+<name>:
+
+>>
+
+
+expressionStmtGen(content) ::= <<
+<content; separator=", ">;
+
+>>
+
+assignExprGen(op, left, right) ::= <<
+<left> <op.text> <right>
+>>
+
+bopGen(op, left, right) ::= <<
+<left> <op.text> <right>
+>>
+
+topGen(left, middle, right) ::= <<
+(<left> ? <middle> : <right>)
+>>
+
+parenExpressionGen(content) ::= <<
+(<content>)
+>>
+
+uopGen(op, oprand) ::= <<
+(<op.text><oprand>)
+>>
+
+castExprGen(type, expr) ::= <<
+((<type>) <expr>)
+>>
+
+castOpGen(op, isConst, type, isPtr, ptrop, expr) ::= <<
+(<op>\< <if (isConst)>const <endif><type> <if (isPtr)><ptrop><endif>\>(<expr>))
+>>
+
+callGen(name, args) ::= <<
+<name>(<args>)
+>>
+
+arrayGen(name, expr) ::= <<
+<name>[<expr>]
+>>
+
+memberDotGen(name, member) ::= <<
+<name>.<member>
+>>
+
+memberPointerGen(name, member) ::= <<
+<name>-><member>
+>>
+
+postopExprGen(expr, op) ::= <<
+<expr><op>
+>>
+
+////////////////////////////
+//////// Template  /////////
+////////////////////////////
+
+templateGen(tplist) ::= <<
+template \< <tplist> \>
+>>
+
+tplistGen(params) ::= <<
+<params; separator=", ">
+>>
+
+tplParamGen1(tag, name, flag, value) ::= <<
+<tag> <name><if (flag)> = <value><endif>
+>>
+
+scopeTagGen(content, template, isTemplate, remain) ::= <<
+<remain><if (isTemplate)>template <endif><content><if (isTemplate)>\< <template> \><endif>::
+>>
+
+qualifiedIdGen(name, scopeTag) ::= <<
+<scopeTag><name>
+>>
+
+
+//////////////////////////
+////// Constructor ///////
+//////////////////////////
+
+ctorDefGen(head, body) ::= <<
+<head> <body>
+
+>>
+
+ctorHeadGen(prefix, content) ::= <<
+<prefix><content>
+>>
+
+ctorDeclaratorGen(name, params) ::= <<
+<name>(<params>)
+>>
+
+ctorBodyGen(init, hasInitializer, content) ::= <<
+<if (hasInitializer)>: <init> <endif><content>
+>>
+
+ctorInitializerGen(items) ::= <<
+<items; separator = ", ">
+>>
+
+superclassInitGen(name, expr) ::= <<
+<name>(<expr>)
+>>

@@ -1,0 +1,241 @@
+digraph {
+
+	ordering=out;
+	ranksep=.4;
+	bgcolor="lightgrey"; node [shape=box, fixedsize=false, fontsize=12, fontname="Helvetica-bold", fontcolor="blue"
+		width=.25, height=.25, color="black", fillcolor="white", style="filled, solid, bold"];
+	edge [arrowsize=.5, color="black", style="bold"]
+
+  n0 [label="FILE"];
+  n1 [label="HEADER"];
+  n1 [label="HEADER"];
+  n2 [label="#include...tream>\n"];
+  n3 [label="USINGNSPS"];
+  n3 [label="USINGNSPS"];
+  n4 [label="std"];
+  n4 [label="std"];
+  n5 [label="NOSCOPETAG"];
+  n6 [label="METAMATH"];
+  n6 [label="METAMATH"];
+  n7 [label="retval"];
+  n8 [label="METAMATHINFO"];
+  n8 [label="METAMATHINFO"];
+  n9 [label="METAMATHENTRY"];
+  n9 [label="METAMATHENTRY"];
+  n10 [label="quantity"];
+  n11 [label="Force"];
+  n12 [label="METAMATHENTRY"];
+  n12 [label="METAMATHENTRY"];
+  n13 [label="unit"];
+  n14 [label="Si"];
+  n15 [label="METAMATH"];
+  n15 [label="METAMATH"];
+  n16 [label="param"];
+  n17 [label="m"];
+  n17 [label="m"];
+  n18 [label="NOSCOPETAG"];
+  n19 [label="METAMATHINFO"];
+  n19 [label="METAMATHINFO"];
+  n20 [label="METAMATHENTRY"];
+  n20 [label="METAMATHENTRY"];
+  n21 [label="quantity"];
+  n22 [label="Mass"];
+  n23 [label="METAMATHENTRY"];
+  n23 [label="METAMATHENTRY"];
+  n24 [label="unit"];
+  n25 [label="Si"];
+  n26 [label="METAMATH"];
+  n26 [label="METAMATH"];
+  n27 [label="param"];
+  n28 [label="a"];
+  n28 [label="a"];
+  n29 [label="NOSCOPETAG"];
+  n30 [label="METAMATHINFO"];
+  n30 [label="METAMATHINFO"];
+  n31 [label="METAMATHENTRY"];
+  n31 [label="METAMATHENTRY"];
+  n32 [label="quantity"];
+  n33 [label="Acc"];
+  n34 [label="METAMATHENTRY"];
+  n34 [label="METAMATHENTRY"];
+  n35 [label="unit"];
+  n36 [label="Si"];
+  n37 [label="FUNCDEF"];
+  n37 [label="FUNCDEF"];
+  n38 [label="FUNCDEFBODY"];
+  n38 [label="FUNCDEFBODY"];
+  n39 [label="DECLSPECIFIERS"];
+  n39 [label="DECLSPECIFIERS"];
+  n40 [label="TYPE"];
+  n40 [label="TYPE"];
+  n41 [label="float"];
+  n42 [label="comp_force"];
+  n42 [label="comp_force"];
+  n43 [label="NOSCOPETAG"];
+  n44 [label="ARGS"];
+  n44 [label="ARGS"];
+  n45 [label="ARG"];
+  n45 [label="ARG"];
+  n46 [label="DECLSPECIFIERS"];
+  n46 [label="DECLSPECIFIERS"];
+  n47 [label="TYPE"];
+  n47 [label="TYPE"];
+  n48 [label="float"];
+  n49 [label="m"];
+  n49 [label="m"];
+  n50 [label="NOSCOPETAG"];
+  n51 [label="ARG"];
+  n51 [label="ARG"];
+  n52 [label="DECLSPECIFIERS"];
+  n52 [label="DECLSPECIFIERS"];
+  n53 [label="TYPE"];
+  n53 [label="TYPE"];
+  n54 [label="float"];
+  n55 [label="a"];
+  n55 [label="a"];
+  n56 [label="NOSCOPETAG"];
+  n57 [label="BLOCK"];
+  n57 [label="BLOCK"];
+  n58 [label="return"];
+  n58 [label="return"];
+  n59 [label="EXPR"];
+  n59 [label="EXPR"];
+  n60 [label="*"];
+  n60 [label="*"];
+  n61 [label="m"];
+  n61 [label="m"];
+  n62 [label="NOSCOPETAG"];
+  n63 [label="a"];
+  n63 [label="a"];
+  n64 [label="NOSCOPETAG"];
+  n65 [label="FUNCDEF"];
+  n65 [label="FUNCDEF"];
+  n66 [label="FUNCDEFBODY"];
+  n66 [label="FUNCDEFBODY"];
+  n67 [label="DECLSPECIFIERS"];
+  n67 [label="DECLSPECIFIERS"];
+  n68 [label="TYPE"];
+  n68 [label="TYPE"];
+  n69 [label="int"];
+  n70 [label="main"];
+  n70 [label="main"];
+  n71 [label="NOSCOPETAG"];
+  n72 [label="BLOCK"];
+  n72 [label="BLOCK"];
+  n73 [label="EXPR"];
+  n73 [label="EXPR"];
+  n74 [label="<<"];
+  n74 [label="<<"];
+  n75 [label="<<"];
+  n75 [label="<<"];
+  n76 [label="cout"];
+  n76 [label="cout"];
+  n77 [label="NOSCOPETAG"];
+  n78 [label="CALL"];
+  n78 [label="CALL"];
+  n79 [label="comp_force"];
+  n79 [label="comp_force"];
+  n80 [label="NOSCOPETAG"];
+  n81 [label="ELIST"];
+  n81 [label="ELIST"];
+  n82 [label="4.0"];
+  n83 [label="2.3"];
+  n84 [label="endl"];
+  n84 [label="endl"];
+  n85 [label="NOSCOPETAG"];
+  n86 [label="return"];
+  n86 [label="return"];
+  n87 [label="EXPR"];
+  n87 [label="EXPR"];
+  n88 [label="0"];
+
+  n0 -> n1 // "FILE" -> "HEADER"
+  n1 -> n2 // "HEADER" -> "#include...tream>\n"
+  n0 -> n3 // "FILE" -> "USINGNSPS"
+  n3 -> n4 // "USINGNSPS" -> "std"
+  n4 -> n5 // "std" -> "NOSCOPETAG"
+  n0 -> n6 // "FILE" -> "METAMATH"
+  n6 -> n7 // "METAMATH" -> "retval"
+  n6 -> n8 // "METAMATH" -> "METAMATHINFO"
+  n8 -> n9 // "METAMATHINFO" -> "METAMATHENTRY"
+  n9 -> n10 // "METAMATHENTRY" -> "quantity"
+  n9 -> n11 // "METAMATHENTRY" -> "Force"
+  n8 -> n12 // "METAMATHINFO" -> "METAMATHENTRY"
+  n12 -> n13 // "METAMATHENTRY" -> "unit"
+  n12 -> n14 // "METAMATHENTRY" -> "Si"
+  n0 -> n15 // "FILE" -> "METAMATH"
+  n15 -> n16 // "METAMATH" -> "param"
+  n15 -> n17 // "METAMATH" -> "m"
+  n17 -> n18 // "m" -> "NOSCOPETAG"
+  n15 -> n19 // "METAMATH" -> "METAMATHINFO"
+  n19 -> n20 // "METAMATHINFO" -> "METAMATHENTRY"
+  n20 -> n21 // "METAMATHENTRY" -> "quantity"
+  n20 -> n22 // "METAMATHENTRY" -> "Mass"
+  n19 -> n23 // "METAMATHINFO" -> "METAMATHENTRY"
+  n23 -> n24 // "METAMATHENTRY" -> "unit"
+  n23 -> n25 // "METAMATHENTRY" -> "Si"
+  n0 -> n26 // "FILE" -> "METAMATH"
+  n26 -> n27 // "METAMATH" -> "param"
+  n26 -> n28 // "METAMATH" -> "a"
+  n28 -> n29 // "a" -> "NOSCOPETAG"
+  n26 -> n30 // "METAMATH" -> "METAMATHINFO"
+  n30 -> n31 // "METAMATHINFO" -> "METAMATHENTRY"
+  n31 -> n32 // "METAMATHENTRY" -> "quantity"
+  n31 -> n33 // "METAMATHENTRY" -> "Acc"
+  n30 -> n34 // "METAMATHINFO" -> "METAMATHENTRY"
+  n34 -> n35 // "METAMATHENTRY" -> "unit"
+  n34 -> n36 // "METAMATHENTRY" -> "Si"
+  n0 -> n37 // "FILE" -> "FUNCDEF"
+  n37 -> n38 // "FUNCDEF" -> "FUNCDEFBODY"
+  n38 -> n39 // "FUNCDEFBODY" -> "DECLSPECIFIERS"
+  n39 -> n40 // "DECLSPECIFIERS" -> "TYPE"
+  n40 -> n41 // "TYPE" -> "float"
+  n38 -> n42 // "FUNCDEFBODY" -> "comp_force"
+  n42 -> n43 // "comp_force" -> "NOSCOPETAG"
+  n38 -> n44 // "FUNCDEFBODY" -> "ARGS"
+  n44 -> n45 // "ARGS" -> "ARG"
+  n45 -> n46 // "ARG" -> "DECLSPECIFIERS"
+  n46 -> n47 // "DECLSPECIFIERS" -> "TYPE"
+  n47 -> n48 // "TYPE" -> "float"
+  n45 -> n49 // "ARG" -> "m"
+  n49 -> n50 // "m" -> "NOSCOPETAG"
+  n44 -> n51 // "ARGS" -> "ARG"
+  n51 -> n52 // "ARG" -> "DECLSPECIFIERS"
+  n52 -> n53 // "DECLSPECIFIERS" -> "TYPE"
+  n53 -> n54 // "TYPE" -> "float"
+  n51 -> n55 // "ARG" -> "a"
+  n55 -> n56 // "a" -> "NOSCOPETAG"
+  n38 -> n57 // "FUNCDEFBODY" -> "BLOCK"
+  n57 -> n58 // "BLOCK" -> "return"
+  n58 -> n59 // "return" -> "EXPR"
+  n59 -> n60 // "EXPR" -> "*"
+  n60 -> n61 // "*" -> "m"
+  n61 -> n62 // "m" -> "NOSCOPETAG"
+  n60 -> n63 // "*" -> "a"
+  n63 -> n64 // "a" -> "NOSCOPETAG"
+  n0 -> n65 // "FILE" -> "FUNCDEF"
+  n65 -> n66 // "FUNCDEF" -> "FUNCDEFBODY"
+  n66 -> n67 // "FUNCDEFBODY" -> "DECLSPECIFIERS"
+  n67 -> n68 // "DECLSPECIFIERS" -> "TYPE"
+  n68 -> n69 // "TYPE" -> "int"
+  n66 -> n70 // "FUNCDEFBODY" -> "main"
+  n70 -> n71 // "main" -> "NOSCOPETAG"
+  n66 -> n72 // "FUNCDEFBODY" -> "BLOCK"
+  n72 -> n73 // "BLOCK" -> "EXPR"
+  n73 -> n74 // "EXPR" -> "<<"
+  n74 -> n75 // "<<" -> "<<"
+  n75 -> n76 // "<<" -> "cout"
+  n76 -> n77 // "cout" -> "NOSCOPETAG"
+  n75 -> n78 // "<<" -> "CALL"
+  n78 -> n79 // "CALL" -> "comp_force"
+  n79 -> n80 // "comp_force" -> "NOSCOPETAG"
+  n78 -> n81 // "CALL" -> "ELIST"
+  n81 -> n82 // "ELIST" -> "4.0"
+  n81 -> n83 // "ELIST" -> "2.3"
+  n74 -> n84 // "<<" -> "endl"
+  n84 -> n85 // "endl" -> "NOSCOPETAG"
+  n72 -> n86 // "BLOCK" -> "return"
+  n86 -> n87 // "return" -> "EXPR"
+  n87 -> n88 // "EXPR" -> "0"
+
+}

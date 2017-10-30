@@ -1,0 +1,23 @@
+Software Requirement:
+
+1. The Glasgow Haskell Compiler (GHC) Version > 7.4
+
+2. Install cabal. For example, on Ubuntu, type the following command:
+               sudo apt-get install cabal-install
+   and on Fedora, type the following command:
+               sudo yum install cabal-install
+
+3. Type the following command to install Dimensional and NumType libraries (no need to use sudo command):
+               cabal install dimensional numtype
+
+
+How to play:
+
+1. Type "make" command in the current directory to get source code compiled by GHC compiler.
+
+2. Type
+                   ./heat
+
+to run the executable file.
+
+3. You can refer HeatConduction.hs file for the details in Haskell implementation.
