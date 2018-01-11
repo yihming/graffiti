@@ -15,10 +15,10 @@ A set of deep learning model implementation with training on realistic problems.
   * Using Google TensorFlow by Python3
   * Training with Adam optimizer, which took about 10 minutes
   * Achieved 99% correction rate on the training set, and 71% on the testing set.
+  * Implemented a CNN model, achieving a little bit more testing correction rate.
 
 #### Next steps:
 
-* Implement a CNN model to resolve the possible overfitting issue in DNN, and thus improve the testing rate.
 * Implement both models using MXNET.
 
 ## BNU Miner
