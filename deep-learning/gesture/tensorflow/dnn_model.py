@@ -234,7 +234,7 @@ def model(X_train, Y_train, X_test, Y_test, learning_rate = 0.0001,
         parameters = sess.run(parameters)
         save_path = "dnn.npy"
         np.save("dnn.npy", parameters)
-        print ("Model saved in file: %s" % save_path)
+        print ("DNN Model saved in file: %s" % save_path)
         print ("Parameters have been trained!")
 
         
@@ -255,6 +255,7 @@ def model(X_train, Y_train, X_test, Y_test, learning_rate = 0.0001,
 def train_model():
     parameters = model(X_train, Y_train, X_test, Y_test)
     return parameters
+        
 
 def showImage(index):
     plt.imshow(X_train_orig[index])
