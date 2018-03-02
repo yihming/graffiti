@@ -16,7 +16,7 @@ class myWebsocketClient(gdax.WebsocketClient):
 
     def on_close(self):
         print("-- Goodbye! --")
-
+        
 #wsClient = myWebsocketClient()
 #wsClient.start()
 #print(wsClient.url, wsClient.products)
